@@ -1,0 +1,13 @@
+spring:
+  config:
+    import:
+  profiles:
+    group:
+      main:
+      local:
+      - data-local
+      - web-local
+      prod:
+      release:
+      performance:
+    default: local
