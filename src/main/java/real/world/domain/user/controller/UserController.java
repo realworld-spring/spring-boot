@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import real.world.domain.user.UserService;
+import real.world.domain.user.service.UserService;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
 
