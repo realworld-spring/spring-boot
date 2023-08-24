@@ -1,6 +1,18 @@
 logging:
   level:
-    root: info
+    root: debug
 
 server:
   port: 8080
+
+base:
+  bio: Hello!
+  img:
+    url: image.png
+
+spring:
+  jackson:
+    deserialization:
+      unwrap-root-value: true
+    serialization:
+      wrap-root-value: true
