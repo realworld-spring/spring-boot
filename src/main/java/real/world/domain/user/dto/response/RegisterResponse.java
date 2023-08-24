@@ -1,9 +1,11 @@
 package real.world.domain.user.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import real.world.domain.user.entity.User;
 
 @Getter
+@JsonRootName(value = "user")
 public class RegisterResponse {
 
     private final String username;
