@@ -1,13 +1,14 @@
 package real.world.domain.user.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import real.world.domain.user.service.UserService;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
+import real.world.domain.user.service.UserService;
 
 @RestController
 public class UserController {
@@ -23,7 +24,7 @@ public class UserController {
         @RequestBody @Valid RegisterRequest registerRequest) {
         final RegisterResponse response = userService.register(registerRequest);
 
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 }
