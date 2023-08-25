@@ -28,7 +28,7 @@ public class UserService {
 
     public RegisterResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new RuntimeException("이미있음"); // TODO 예외처리
+            throw new IllegalArgumentException("이미 존재하는 유저네임"); // TODO 예외처리
         }
         final User user = requestToEntity(registerRequest);
         userRepository.save(user);
