@@ -9,8 +9,8 @@ import real.world.domain.user.entity.User;
 public enum UserFixtures {
 
     JOHN("John", "1234", "john@email.com", "im john", "john.png"),
-    Alice("Alice", "1234", "alice@email.com", "im alice", "alice.png"),
-    Bob("Bob", "1234", "bob@email.com", "im bob", "bob.png");
+    ALICE("Alice", "1234", "alice@email.com", "im alice", "alice.png"),
+    BOB("Bob", "1234", "bob@email.com", "im bob", "bob.png");
 
     private final String username;
     private final String password;
