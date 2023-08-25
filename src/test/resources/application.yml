@@ -1,0 +1,24 @@
+server:
+  port: 8083
+
+spring:
+  jackson:
+    deserialization:
+      unwrap-root-value: true
+    serialization:
+      wrap-root-value: true
+
+  datasource:
+    url: jdbc:h2:mem:test_real;MODE=MYSQL;
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+      show_sql: true
+    open-in-view: false
+
+base:
+  bio: Hello!
+  img:
+    url: image.png
