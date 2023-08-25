@@ -1,9 +1,11 @@
 package real.world.fixture;
 
+import lombok.Getter;
 import org.springframework.test.util.ReflectionTestUtils;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.entity.User;
 
+@Getter
 public enum UserFixtures {
 
     JOHN("John", "1234", "john@email.com", "im john", "john.png"),
@@ -46,26 +48,6 @@ public enum UserFixtures {
         ReflectionTestUtils.setField(request, "password", this.password);
         ReflectionTestUtils.setField(request, "email", this.email);
         return request;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
     }
 
 }
