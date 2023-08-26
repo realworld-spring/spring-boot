@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
+import real.world.error.exception.EmailInvalidException;
+import real.world.error.exception.UsernameInvalidException;
 
 @Getter
 @Entity(name = "users")
@@ -57,16 +59,13 @@ public class User {
 
     private void validateUsername() {
         if(this.username.length() > MAX_USERNAME_LENGTH) {
-            throw new IllegalArgumentException("username too long");
+            throw new UsernameInvalidException();
         }
     }
 
     private void validateEmail() {
-        if(this.email.length() > MAX_EMAIL_LENGTH) {
-            throw new IllegalArgumentException("email too long");
-        }
-        if(!EMAIL_PATTERN.matcher(email).matches()) {
-            throw new IllegalArgumentException("wrong email pattern");
+        if(this.email.length() > MAX_EMAIL_LENGTH || !EMAIL_PATTERN.matcher(email).matches()) {
+            throw new EmailInvalidException();
         }
     }
 
