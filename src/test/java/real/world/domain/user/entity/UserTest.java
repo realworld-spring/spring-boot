@@ -3,6 +3,8 @@ package real.world.domain.user.entity;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
+import real.world.error.exception.EmailInvalidException;
+import real.world.error.exception.UsernameInvalidException;
 
 public class UserTest {
 
@@ -17,7 +19,7 @@ public class UserTest {
                 "",
                 "image.png"
             )
-        ).isInstanceOf(IllegalArgumentException.class);
+        ).isInstanceOf(UsernameInvalidException.class);
     }
 
     @Test
@@ -31,7 +33,7 @@ public class UserTest {
                 "",
                 "image.png"
             )
-        ).isInstanceOf(IllegalArgumentException.class);
+        ).isInstanceOf(EmailInvalidException.class);
     }
 
     @Test
@@ -45,7 +47,7 @@ public class UserTest {
                 "",
                 "image.png"
             )
-        ).isInstanceOf(IllegalArgumentException.class);
+        ).isInstanceOf(EmailInvalidException.class);
     }
 
 }
