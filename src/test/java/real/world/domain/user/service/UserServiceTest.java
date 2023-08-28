@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.UsernameAlreadyExistsException;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -57,7 +58,7 @@ public class UserServiceTest {
             // when & then
             assertThatThrownBy(
                 () -> userService.register(request)
-            ).isInstanceOf(IllegalArgumentException.class);
+            ).isInstanceOf(UsernameAlreadyExistsException.class);
         }
 
     }

@@ -7,6 +7,7 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.UsernameAlreadyExistsException;
 
 @Service
 public class UserService {
@@ -28,7 +29,7 @@ public class UserService {
 
     public RegisterResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
-            throw new IllegalArgumentException("이미 존재하는 유저네임"); // TODO 예외처리
+            throw new UsernameAlreadyExistsException();
         }
         final User user = requestToEntity(registerRequest);
         userRepository.save(user);
