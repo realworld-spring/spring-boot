@@ -5,7 +5,7 @@ plugins {
 
 
 	// restdocs + swagger
-	id 'com.epages.restdocs-api-spec' version '0.17.1'
+	id 'com.epages.restdocs-api-spec' version '0.18.2'
 	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
@@ -47,7 +47,7 @@ dependencies {
 	testImplementation 'io.rest-assured:rest-assured'
 	testImplementation 'com.h2database:h2'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'
+	testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.2'
 }
 
 test {
@@ -59,7 +59,7 @@ tasks.withType(GenerateSwaggerUI).configureEach {
 
 	delete file('src/main/resources/static/docs/')
 	copy {
-		from "build/resources/main/static/docs/"
+		from "build/docs/"
 		into "src/main/resources/static/docs/"
 	}
 }
@@ -69,8 +69,6 @@ bootJar{
 }
 
 openapi3 {
-	mkdir 'build/resources/main/static/docs'
-
 	server = "http://localhost:8080"
 	title = "Swagger API Docs"
 	description = "Spring REST Docs with SwaggerUI."
@@ -78,6 +76,6 @@ openapi3 {
 	outputFileNamePrefix = 'open-api'
 	format = 'json'
 
-	outputDirectory = 'build/resources/main/static/docs'
+	outputDirectory = 'build/docs'
 }
 
