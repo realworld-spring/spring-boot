@@ -7,6 +7,10 @@
 
 name: Spring CI with Gradle
 
+permissions:
+  checks: write
+  pull-requests: write
+  
 on:
   push:
     branches:
@@ -43,7 +47,7 @@ jobs:
       run: ./gradlew build
 
     - name: PR comment for test result
-      uses: EnricoMi/publish-unit-test-result-action@v1
+      uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
         files: 'build/test-results/test/TEST-*.xml'
@@ -53,5 +57,4 @@ jobs:
       if: always()
       with:
         report_paths: 'build/test-results/test/TEST-*.xml'
-        
     
