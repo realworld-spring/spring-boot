@@ -59,7 +59,7 @@ tasks.withType(GenerateSwaggerUI).configureEach {
 
 	delete file('src/main/resources/static/docs/')
 	copy {
-		from "build/docs/"
+		from "build/main/resources/static/docs/"
 		into "src/main/resources/static/docs/"
 	}
 }
@@ -76,6 +76,6 @@ openapi3 {
 	outputFileNamePrefix = 'open-api'
 	format = 'json'
 
-	outputDirectory = 'build/docs'
+	outputDirectory = 'build/main/resources/static/docs/'
 }
 
