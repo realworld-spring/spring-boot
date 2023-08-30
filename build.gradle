@@ -69,6 +69,8 @@ bootJar{
 }
 
 openapi3 {
+	mkdir 'build/resources/main/static/docs'
+
 	server = "http://localhost:8080"
 	title = "Swagger API Docs"
 	description = "Spring REST Docs with SwaggerUI."
@@ -78,3 +80,4 @@ openapi3 {
 
 	outputDirectory = 'build/resources/main/static/docs'
 }
+
