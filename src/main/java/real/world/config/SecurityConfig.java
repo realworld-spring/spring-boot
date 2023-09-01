@@ -17,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private static final String[] AUTH_PATH = {"/api/users", "/api/users/login"};
+    private static final String[] SWAGGER_PATH = {"/docs/open-api.json", "/swagger-ui/**", "/v3/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,6 +28,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(
                 auth ->
                     auth.requestMatchers(HttpMethod.POST, AUTH_PATH).permitAll()
+                        .requestMatchers(HttpMethod.GET, SWAGGER_PATH).permitAll()
                         .anyRequest().authenticated()
             );
         return http.build();
