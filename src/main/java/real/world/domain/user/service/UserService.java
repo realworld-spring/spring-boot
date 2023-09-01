@@ -3,7 +3,9 @@ package real.world.domain.user.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import real.world.domain.user.dto.request.LoginRequest;
 import real.world.domain.user.dto.request.RegisterRequest;
+import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
@@ -44,6 +46,13 @@ public class UserService {
             BASE_BIO,
             BASE_IMAGE_URL
         );
+    }
+
+    public LoginResponse login(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+
+        return LoginResponse.of(user);
     }
 
 }
