@@ -16,13 +16,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         return userRepository.findByEmail(email)
             .map(user -> new CustomUserDetails(
                 user,
                 Collections.singleton(new SimpleGrantedAuthority(
                     user.getRole().getValue()))))
-            .orElseThrow(() -> new RuntimeException(email));
+            .orElseThrow(() -> new UsernameNotFoundException(email));
     }
 
 }
