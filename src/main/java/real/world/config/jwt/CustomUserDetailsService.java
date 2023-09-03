@@ -5,9 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.ErrorCode;
+import real.world.error.exception.AuthenticationErrorCodeException;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user,
                 Collections.singleton(new SimpleGrantedAuthority(
                     user.getRole().getValue()))))
-            .orElseThrow(() -> new UsernameNotFoundException(email));
+            .orElseThrow(() -> AuthenticationErrorCodeException.of(ErrorCode.USERNAME_NOT_EXIST));
     }
 
 }

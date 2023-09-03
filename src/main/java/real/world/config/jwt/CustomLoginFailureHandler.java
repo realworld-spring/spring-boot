@@ -3,14 +3,13 @@ package real.world.config.jwt;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import real.world.error.ErrorCode;
 import real.world.error.ErrorResponse;
+import real.world.error.exception.AuthenticationErrorCodeException;
 
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 
@@ -23,9 +22,10 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException exception) throws IOException, ServletException {
+        AuthenticationException exception) throws IOException {
 
-        response.getWriter().write(userMapper().writeValueAsString(ErrorResponse.of(ErrorCode.AUTHENTICATION_FAIL)));
+        AuthenticationErrorCodeException authException = (AuthenticationErrorCodeException) exception;
+        response.getWriter().write(userMapper().writeValueAsString(ErrorResponse.of(authException.getErrorCode())));
         response.flushBuffer();
     }
 }

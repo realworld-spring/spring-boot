@@ -2,12 +2,12 @@ package real.world.config.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import real.world.error.ErrorCode;
+import real.world.error.exception.AuthenticationErrorCodeException;
 
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -17,8 +17,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public Authentication authenticate(Authentication authentication)
-        throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) {
         final UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 
         final String userEmail = token.getName();
@@ -26,7 +25,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         final CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(userEmail);
         if (!passwordEncoder.matches(userPw, userDetails.getPassword())) {
-            throw new BadCredentialsException(userDetails.getUsername() + "Invalid password");
+            throw AuthenticationErrorCodeException.of(ErrorCode.WRONG_PASSWORD);
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, userPw, userDetails.getAuthorities());
