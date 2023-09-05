@@ -1,9 +1,5 @@
 package real.world.config.jwt;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,23 +17,18 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     @Value("${auth.type}")
     private String TOKEN_TYPE;
 
-    public ObjectMapper userMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
-        return mapper;
-    }
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request,
         final HttpServletResponse response,
-        final Authentication authentication) throws ServletException, IOException
+        final Authentication authentication) throws IOException
     {
         final User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
-        final String token = TokenUtils.generateJwtToken(user);
+        final String token = JwtUtils.generateJwtToken(user);
         response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + token);
 
-        response.getWriter().write(userMapper().writeValueAsString(LoginResponse.of(user)));
+        RootNameObjectMapper mapper = RootNameObjectMapper.of();
+        response.getWriter().write(mapper.writeValueAsString(LoginResponse.of(user)));
         response.flushBuffer();
     }
 }

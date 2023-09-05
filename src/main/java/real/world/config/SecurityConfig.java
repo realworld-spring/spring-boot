@@ -16,11 +16,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import real.world.config.jwt.CustomAuthenticationProvider;
+import real.world.config.jwt.CustomAuthorizationFilter;
 import real.world.config.jwt.CustomLoginFailureHandler;
 import real.world.config.jwt.CustomLoginSuccessHandler;
 import real.world.config.jwt.CustomAuthenticationFilter;
@@ -35,6 +37,7 @@ public class SecurityConfig {
     private final ObjectPostProcessor<Object> objectPostProcessor;
 
     private static final String[] AUTH_PATH = {"/api/users", "/api/users/login"};
+    private static final String[] PROFILE_PATH = {"/api/profiles"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -42,13 +45,15 @@ public class SecurityConfig {
             .httpBasic(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(
-                auth ->
-                    auth.requestMatchers(HttpMethod.POST, AUTH_PATH).permitAll()
-                        .anyRequest().authenticated())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.POST, AUTH_PATH).permitAll()
+                .requestMatchers(PROFILE_PATH).hasRole("USER")
+                .anyRequest().authenticated()
+            )
             .addFilterBefore(
                 customAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class);
+                UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new CustomAuthorizationFilter(), AuthorizationFilter.class);
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
