@@ -3,6 +3,7 @@ package real.world.domain.user.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,4 +28,11 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping("/api/profiles")
+    public ResponseEntity<RegisterResponse> profiles(
+        @RequestBody @Valid RegisterRequest registerRequest) {
+        final RegisterResponse response = userService.register(registerRequest);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 }

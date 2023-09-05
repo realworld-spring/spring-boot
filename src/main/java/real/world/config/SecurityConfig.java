@@ -107,7 +107,7 @@ public class SecurityConfig {
         customAuthenticationFilter.setFilterProcessesUrl("/api/users/login");
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
         customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
-        customAuthenticationFilter.afterPropertiesSet();
+//        customAuthenticationFilter.afterPropertiesSet();
         return customAuthenticationFilter;
     }
 

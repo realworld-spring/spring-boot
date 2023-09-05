@@ -87,15 +87,10 @@ public final class JwtUtils {
     public static boolean isValidJwt(String jwt) {
         try {
             Claims claims = getClaimsFormJwt(jwt);
-            return true;
-
-        } catch (ExpiredJwtException exception) {
-            return false;
-        } catch (JwtException exception) {
-            return false;
-        } catch (NullPointerException exception) {
+        } catch (Exception e) {
             return false;
         }
+        return true;
     }
 
     public static Authentication getAuthentication(String jwt) {
