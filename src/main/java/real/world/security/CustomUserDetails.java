@@ -1,4 +1,4 @@
-package real.world.config.jwt;
+package real.world.security;
 
 import java.util.Collection;
 import lombok.Getter;
@@ -40,4 +40,5 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

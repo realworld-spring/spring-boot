@@ -15,6 +15,7 @@ public enum ErrorCode {
     USERNAME_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "username", "invalid."),
     EMAIL_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "email", "invalid."),
     USERNAME_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "username", "already exists."),
+    USERID_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "userId", "already exists."),
 
     // Authentication
     FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),

@@ -7,17 +7,11 @@ import real.world.error.ErrorCode;
 @Getter
 public class AuthenticationErrorCodeException extends AuthenticationException {
 
-    private ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
-    public AuthenticationErrorCodeException(String msg) {
+    public AuthenticationErrorCodeException(String msg, ErrorCode errorCode) {
         super(msg);
-    }
-
-    public static AuthenticationErrorCodeException of(ErrorCode errorCode) {
-        AuthenticationErrorCodeException exception = new AuthenticationErrorCodeException(
-            errorCode.getBody() + errorCode.getMessage());
-        exception.errorCode = errorCode;
-        return exception;
+        this.errorCode = errorCode;
     }
 
 }

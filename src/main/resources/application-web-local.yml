@@ -11,8 +11,9 @@ base:
     url: image.png
 
 auth:
-  header : Authorization
-  type : BEARER
+  header: Authorization
+  type: BEARER
+  key: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ
 
 spring:
   jackson:

@@ -18,7 +18,7 @@ public class LoginResponse {
 
     private String image;
 
-    public LoginResponse(String username, String email, String bio, String image) {
+    private LoginResponse(String username, String email, String bio, String image) {
         this.username = username;
         this.email = email;
         this.bio = bio;

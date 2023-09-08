@@ -19,6 +19,7 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.UsernameAlreadyExistsException;
+import real.world.security.JwtUtil;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -27,7 +28,10 @@ public class UserServiceTest {
 
     private final PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
 
-    private final UserService userService = new UserService(userRepository, passwordEncoder);
+    private JwtUtil jwtUtil;
+
+    private final UserService userService = new UserService(userRepository, passwordEncoder,
+        jwtUtil);
 
     @Nested
     class 회원가입은 {

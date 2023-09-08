@@ -1,4 +1,4 @@
-package real.world.config.jwt;
+package real.world.domain.user.entity;
 
 public enum UserRole {
     ROLE_USER;

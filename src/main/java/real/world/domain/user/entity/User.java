@@ -1,6 +1,5 @@
 package real.world.domain.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import real.world.config.jwt.UserRole;
 import real.world.error.exception.EmailInvalidException;
 import real.world.error.exception.UsernameInvalidException;
 
@@ -43,7 +41,7 @@ public class User {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 15)
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
