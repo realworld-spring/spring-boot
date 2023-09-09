@@ -25,26 +25,19 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(key);
     }
 
-    public String generateJwtToken(String id, String role) {
+    public String generateJwtToken(String principal, String role) {
         return Jwts.builder()
-            .claim("id", id)
-            .claim("role", role) // 정보 저장
-            .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
-            .setExpiration(expiredDate()) // set Expire Time 해당 옵션 안넣으면 expire안함
+            .claim("principal", principal)
+            .claim("role", role)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(expiredDate())
             .compact();
     }
 
-    public boolean isValidJwt(String jwt) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
-            return true;
-        } catch (Exception e) { // todo Exception
-            return false;
-        }
-    }
-
     public Authentication getAuthentication(String jwt) {
-        final String id = getIdFromJwt(jwt);
+        verify(jwt);
+
+        final String id = getPrincipalFromJwt(jwt);
         final String role = getRoleFromJwt(jwt);
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -53,8 +46,12 @@ public class JwtUtil {
         return new JwtAuthenticationToken(id, authorities);
     }
 
-    public String getJwtFromHeader(String header) {
-        return header.split(" ")[1];
+    private void verify(String jwt) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
+        } catch (Exception e) { // todo Exception
+            throw e;
+        }
     }
 
     private Date expiredDate() {
@@ -66,8 +63,8 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
     }
 
-    private String getIdFromJwt(String jwt) {
-        return (String) getClaimsFromJwt(jwt).get("id");
+    private String getPrincipalFromJwt(String jwt) {
+        return (String) getClaimsFromJwt(jwt).get("principal");
     }
 
     private String getRoleFromJwt(String jwt) {

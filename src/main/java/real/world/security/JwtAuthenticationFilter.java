@@ -15,25 +15,20 @@ import real.world.error.exception.JwtInvalidException;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private final JwtUtil jwtUtil;
-
     private final String AUTH_HEADER = "Authorization";
 
     public JwtAuthenticationFilter(
-        RequestMatcher requiresAuthenticationRequestMatcher,
-        AuthenticationManager authenticationManager,
-        JwtUtil jwtUtil) {
+        RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager) {
         super(requiresAuthenticationRequestMatcher, authenticationManager);
-        this.jwtUtil = jwtUtil;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
-        HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        HttpServletResponse response) throws AuthenticationException {
         final Authentication authentication;
         try {
-            final String jwt = jwtUtil.getJwtFromHeader(request.getHeader(AUTH_HEADER));
-            authentication = (jwtUtil.isValidJwt(jwt)) ? jwtUtil.getAuthentication(jwt) : null;
+            final String jwt = request.getHeader(AUTH_HEADER).split(" ")[1];
+            authentication = new JwtAuthenticationToken(jwt);
         } catch (Exception e) {
             throw new JwtInvalidException();
         }
@@ -44,7 +39,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     protected void successfulAuthentication(HttpServletRequest request,
         HttpServletResponse response, FilterChain chain, Authentication authResult)
         throws IOException, ServletException {
-
         SecurityContextHolder.getContext().setAuthentication(authResult);
         chain.doFilter(request, response);
     }

@@ -28,10 +28,7 @@ public class UserServiceTest {
 
     private final PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
 
-    private JwtUtil jwtUtil;
-
-    private final UserService userService = new UserService(userRepository, passwordEncoder,
-        jwtUtil);
+    private final UserService userService = new UserService(userRepository, passwordEncoder);
 
     @Nested
     class 회원가입은 {

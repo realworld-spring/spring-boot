@@ -8,6 +8,11 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
 
+    public JwtAuthenticationToken(Object principal) {
+        super(null);
+        this.principal = principal;
+    }
+
     public JwtAuthenticationToken(Object principal,
         Collection<? extends GrantedAuthority> authorities) {
         super(authorities);

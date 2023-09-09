@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new AuthenticationErrorCodeException(ErrorCode.WRONG_PASSWORD.toString(), ErrorCode.WRONG_PASSWORD);
         }
 
-        return authentication;
+        return new UsernamePasswordAuthenticationToken(userDetails.getId(), password, userDetails.getAuthorities());
     }
 
     @Override

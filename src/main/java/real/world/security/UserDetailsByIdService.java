@@ -20,7 +20,6 @@ public class UserDetailsByIdService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String id) {
-
         User user = userRepository.findById(Long.parseLong(id))
             .orElseThrow(
                 () -> new AuthenticationErrorCodeException(ErrorCode.USERID_ALREADY_EXIST.toString(),

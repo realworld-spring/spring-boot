@@ -13,6 +13,7 @@ import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.JwtInvalidException;
 import real.world.error.exception.UsernameAlreadyExistsException;
 import real.world.security.JwtUtil;
 
@@ -23,25 +24,15 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final JwtUtil jwtUtil;
-
-    @Value("${auth.header}")
-    private String AUTH_HEADER;
-
-    @Value("${auth.type}")
-    private String AUTH_TYPE;
-
     @Value("${base.bio}")
     private String BASE_BIO;
 
     @Value("${base.img.url}")
     private String BASE_IMAGE_URL;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-        JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
     }
 
     public RegisterResponse register(RegisterRequest registerRequest) {
@@ -54,9 +45,8 @@ public class UserService {
     }
 
     public LoginResponse login(Authentication authentication) {
-        User user = userRepository.findById((long) authentication.getPrincipal()).orElseThrow(
-            UsernameAlreadyExistsException::new // todo
-        );
+        User user = userRepository.findById((long) authentication.getPrincipal())
+            .orElseThrow(JwtInvalidException::new); // todo
         return LoginResponse.of(user);
     }
 
@@ -68,19 +58,6 @@ public class UserService {
             BASE_BIO,
             BASE_IMAGE_URL
         );
-    }
-
-    public MultiValueMap<String, String> getAuthenticationHeader(Authentication authentication) {
-        String id = authentication.getPrincipal().toString();
-        final String authoritiesString = authentication.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining(","));
-        final String token = jwtUtil.generateJwtToken(id, authoritiesString);
-
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add(AUTH_HEADER, AUTH_TYPE + " " + token);
-
-        return headers;
     }
 
 }

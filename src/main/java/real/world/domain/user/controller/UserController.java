@@ -1,10 +1,13 @@
 package real.world.domain.user.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.MultiValueMap;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,13 +16,23 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.service.UserService;
+import real.world.security.JwtUtil;
 
 @RestController
 public class UserController {
 
+    @Value("${auth.header}")
+    private String AUTH_HEADER;
+
+    @Value("${auth.type}")
+    private String AUTH_TYPE;
+
+    private final JwtUtil jwtUtil;
+
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(JwtUtil jwtUtil, UserService userService) {
+        this.jwtUtil = jwtUtil;
         this.userService = userService;
     }
 
@@ -32,19 +45,22 @@ public class UserController {
     }
 
     @PostMapping("/api/users/login")
-    public ResponseEntity<LoginResponse> login(Authentication authentication) {
+    public ResponseEntity<LoginResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
         final LoginResponse response = userService.login(authentication);
-        final MultiValueMap<String, String> headers = userService.getAuthenticationHeader(authentication);
 
-        return new ResponseEntity<>(response, headers,HttpStatus.CREATED);
+        String email = authentication.getPrincipal().toString();
+        final String authoritiesString = authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","));
+        final String token = jwtUtil.generateJwtToken(email, authoritiesString);
+
+        httpServletResponse.addHeader(AUTH_HEADER, AUTH_TYPE + " " + token);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/profiles")
-    public ResponseEntity<RegisterResponse> profiles(
-        @RequestBody @Valid RegisterRequest registerRequest) {
-        final RegisterResponse response = userService.register(registerRequest);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<String> checkAuth() {
+        return new ResponseEntity<>("ok", HttpStatus.CREATED);
     }
 
 }
