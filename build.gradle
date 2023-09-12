@@ -2,6 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.2'
 	id 'io.spring.dependency-management' version '1.1.2'
+
+
+	// restdocs + swagger
+	id 'com.epages.restdocs-api-spec' version '0.18.2'
+	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'real'
@@ -33,8 +38,12 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
@@ -42,8 +51,36 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'io.rest-assured:rest-assured'
 	testImplementation 'com.h2database:h2'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.2'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
 }
+
+tasks.withType(GenerateSwaggerUI).configureEach {
+	dependsOn 'openapi3'
+
+	delete file('src/main/resources/static/docs/')
+	copy {
+		from "build/docs/"
+		into "src/main/resources/static/docs/"
+	}
+}
+
+bootJar{
+	dependsOn(':openapi3')
+}
+
+openapi3 {
+	server = "http://localhost:8080"
+	title = "Swagger API Docs"
+	description = "Spring REST Docs with SwaggerUI."
+	version = "0.0.1"
+	outputFileNamePrefix = 'open-api'
+	format = 'json'
+
+	outputDirectory = 'build/docs'
+}
+

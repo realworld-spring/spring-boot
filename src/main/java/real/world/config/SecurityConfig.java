@@ -32,8 +32,8 @@ import real.world.security.support.JwtUtil;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String AUTH_PATH = "/api/users";
-    private static final String LOGIN_PATH = "/api/users/login";
+    private static final String[] AUTH_PATH = {"/api/users", "/api/users/login"};
+    private static final String[] SWAGGER_PATH = {"/docs/open-api.json", "/swagger-ui/**", "/v3/**"};
 
     private final ObjectPostProcessor<Object> objectPostProcessor;
     private final CustomUserDetailsService userDetailsByEmailService;
@@ -49,6 +49,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, AUTH_PATH).permitAll()
+                .requestMatchers(HttpMethod.GET, SWAGGER_PATH).permitAll()
                 .anyRequest().hasRole("USER")
             )
             .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
