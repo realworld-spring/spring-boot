@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.service;
 
 import static real.world.error.ErrorCode.USERID_NOT_EXIST;
 
@@ -20,10 +20,10 @@ public class UserDetailsByIdService implements CustomUserDetailsService {
 
     @Override
     public UserDetails loadUserByPrincipal(String id) {
-        User user = userRepository.findById(Long.parseLong(id))
+        final User user = userRepository.findById(Long.parseLong(id))
             .orElseThrow(
                 () -> new AuthenticationErrorCodeException(USERID_NOT_EXIST));
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(
+        final Set<SimpleGrantedAuthority> authorities = Collections.singleton(
             new SimpleGrantedAuthority(user.getRole().getValue()));
         return new CustomUserDetails(user, authorities);
     }

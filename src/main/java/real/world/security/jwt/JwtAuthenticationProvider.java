@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import real.world.error.exception.AuthenticationErrorCodeException;
-import real.world.security.CustomUserDetailsService;
-import real.world.security.JwtUtil;
+import real.world.security.service.CustomUserDetailsService;
+import real.world.security.support.JwtUtil;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {

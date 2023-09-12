@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.support;
 
 import static real.world.error.ErrorCode.JWT_EXPIRED;
 import static real.world.error.ErrorCode.JWT_FORMAT_INVALID;

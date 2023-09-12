@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import real.world.domain.user.dto.request.LoginRequest;
 import real.world.error.exception.AuthenticationErrorCodeException;
-import real.world.security.RootNameObjectMapper;
+import real.world.security.support.RootNameObjectMapper;
 
 public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 

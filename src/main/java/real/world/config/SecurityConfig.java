@@ -19,14 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import real.world.security.CustomUserDetailsService;
+import real.world.security.service.CustomUserDetailsService;
 import real.world.security.authentication.CustomAuthenticationProvider;
-import real.world.security.NorRequestMatcher;
+import real.world.security.support.NorRequestMatcher;
 import real.world.security.jwt.JwtAuthenticationFilter;
 import real.world.security.jwt.JwtAuthenticationProvider;
-import real.world.security.CustomAuthenticationFailureHandler;
+import real.world.security.handler.CustomAuthenticationFailureHandler;
 import real.world.security.authentication.CustomUsernamePasswordAuthenticationFilter;
-import real.world.security.JwtUtil;
+import real.world.security.support.JwtUtil;
 
 @Configuration
 @RequiredArgsConstructor

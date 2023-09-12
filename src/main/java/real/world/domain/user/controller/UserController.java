@@ -15,7 +15,7 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.service.UserService;
-import real.world.security.JwtUtil;
+import real.world.security.support.JwtUtil;
 
 @RestController
 public class UserController {
@@ -43,9 +43,9 @@ public class UserController {
 
     @PostMapping("/api/users/login")
     public ResponseEntity<LoginResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
-        final LoginResponse response = userService.login(authentication);
-
         final String id = authentication.getPrincipal().toString();
+        final LoginResponse response = userService.login(Long.valueOf(id));
+
         final String authoritiesString = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));

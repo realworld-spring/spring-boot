@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.service;
 
 import java.util.Collection;
 import lombok.Getter;

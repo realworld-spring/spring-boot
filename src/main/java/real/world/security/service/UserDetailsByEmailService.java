@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.service;
 
 import java.util.Collections;
 import java.util.Set;
@@ -20,10 +20,10 @@ public class UserDetailsByEmailService implements CustomUserDetailsService {
 
     @Override
     public UserDetails loadUserByPrincipal(String email) throws AuthenticationException {
-        User user = userRepository.findByEmail(email)
+        final User user = userRepository.findByEmail(email)
             .orElseThrow(
                 () -> new AuthenticationErrorCodeException(ErrorCode.USERNAME_NOT_EXIST));
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()));
+        final Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()));
         return new CustomUserDetails(user, authorities);
     }
 

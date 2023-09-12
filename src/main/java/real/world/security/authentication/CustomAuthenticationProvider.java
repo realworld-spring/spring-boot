@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import real.world.error.ErrorCode;
 import real.world.error.exception.AuthenticationErrorCodeException;
-import real.world.security.CustomUserDetails;
-import real.world.security.CustomUserDetailsService;
+import real.world.security.service.CustomUserDetails;
+import real.world.security.service.CustomUserDetailsService;
 
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {

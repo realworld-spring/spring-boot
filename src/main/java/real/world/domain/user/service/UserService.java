@@ -39,9 +39,8 @@ public class UserService {
         return RegisterResponse.of(user);
     }
 
-    public LoginResponse login(Authentication authentication) {
-        User user = userRepository.findById((long) authentication.getPrincipal())
-            .orElseThrow(UserIdNotExistException::new);
+    public LoginResponse login(Long id) {
+        final User user = userRepository.findById(id).orElseThrow(UserIdNotExistException::new);
         return LoginResponse.of(user);
     }
 
