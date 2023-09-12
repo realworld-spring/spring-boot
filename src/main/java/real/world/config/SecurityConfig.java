@@ -24,9 +24,9 @@ import real.world.security.authentication.CustomAuthenticationProvider;
 import real.world.security.NorRequestMatcher;
 import real.world.security.jwt.JwtAuthenticationFilter;
 import real.world.security.jwt.JwtAuthenticationProvider;
-import real.world.security.authentication.CustomLoginFailureHandler;
+import real.world.security.CustomAuthenticationFailureHandler;
 import real.world.security.authentication.CustomUsernamePasswordAuthenticationFilter;
-import real.world.security.jwt.JwtUtil;
+import real.world.security.JwtUtil;
 
 @Configuration
 @RequiredArgsConstructor
@@ -84,21 +84,25 @@ public class SecurityConfig {
             .build();
     }
 
-    public CustomLoginFailureHandler customLoginFailureHandler() {
-        return new CustomLoginFailureHandler();
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
     public CustomUsernamePasswordAuthenticationFilter customAuthenticationFilter() throws Exception {
-        final CustomUsernamePasswordAuthenticationFilter authenticationFilter =
+        final CustomUsernamePasswordAuthenticationFilter filter =
             new CustomUsernamePasswordAuthenticationFilter(LOGIN_PATH, authenticationManager());
-        authenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
+        filter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
 
-        return authenticationFilter;
+        return filter;
     }
 
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         final String[] norPath = {AUTH_PATH, LOGIN_PATH};
-        return new JwtAuthenticationFilter(new NorRequestMatcher(norPath), authenticationManager());
+        final JwtAuthenticationFilter filter = new JwtAuthenticationFilter(
+            new NorRequestMatcher(norPath), authenticationManager());
+        filter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
+
+        return filter;
     }
 
 }

@@ -9,7 +9,7 @@ import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
-import real.world.error.exception.JwtInvalidException;
+import real.world.error.exception.UserIdNotExistException;
 import real.world.error.exception.UsernameAlreadyExistsException;
 
 @Service
@@ -41,7 +41,7 @@ public class UserService {
 
     public LoginResponse login(Authentication authentication) {
         User user = userRepository.findById((long) authentication.getPrincipal())
-            .orElseThrow(JwtInvalidException::new); // todo
+            .orElseThrow(UserIdNotExistException::new);
         return LoginResponse.of(user);
     }
 

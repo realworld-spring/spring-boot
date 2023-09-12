@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import real.world.error.ErrorCode;
 import real.world.error.exception.AuthenticationErrorCodeException;
+import real.world.security.CustomUserDetails;
 import real.world.security.CustomUserDetailsService;
 
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         final CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByPrincipal(email);
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new AuthenticationErrorCodeException(ErrorCode.WRONG_PASSWORD.toString(), ErrorCode.WRONG_PASSWORD);
+            throw new AuthenticationErrorCodeException(ErrorCode.WRONG_PASSWORD);
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails.getId(), password, userDetails.getAuthorities());

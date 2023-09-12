@@ -15,7 +15,7 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.service.UserService;
-import real.world.security.jwt.JwtUtil;
+import real.world.security.JwtUtil;
 
 @RestController
 public class UserController {

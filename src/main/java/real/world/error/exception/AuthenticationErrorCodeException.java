@@ -9,8 +9,8 @@ public class AuthenticationErrorCodeException extends AuthenticationException {
 
     private final ErrorCode errorCode;
 
-    public AuthenticationErrorCodeException(String msg, ErrorCode errorCode) {
-        super(msg);
+    public AuthenticationErrorCodeException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 

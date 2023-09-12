@@ -1,6 +1,6 @@
 package real.world.security.authentication;
 
-import static real.world.error.ErrorCode.FORMAT_INVALID;
+import static real.world.error.ErrorCode.AUTH_FORMAT_INVALID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,14 +29,14 @@ public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenti
     public Authentication attemptAuthentication(HttpServletRequest request,
         HttpServletResponse response) {
         if (!request.getMethod().equals("POST")) {
-            throw new AuthenticationErrorCodeException(FORMAT_INVALID.toString(), FORMAT_INVALID);
+            throw new AuthenticationErrorCodeException(AUTH_FORMAT_INVALID);
         }
         final UsernamePasswordAuthenticationToken authenticationToken;
         try {
             final LoginRequest loginRequest = mapper.readerFor(LoginRequest.class).withRootName("user").readValue(request.getInputStream());
             authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         } catch (IOException ioException) {
-            throw new AuthenticationErrorCodeException(FORMAT_INVALID.toString(), FORMAT_INVALID);
+            throw new AuthenticationErrorCodeException(AUTH_FORMAT_INVALID);
         }
         return this.getAuthenticationManager().authenticate(authenticationToken);
     }

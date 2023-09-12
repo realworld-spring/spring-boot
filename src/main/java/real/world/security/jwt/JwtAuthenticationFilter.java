@@ -1,5 +1,7 @@
 package real.world.security.jwt;
 
+import static real.world.error.ErrorCode.JWT_FORMAT_INVALID;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,11 +13,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import real.world.error.exception.JwtInvalidException;
+import real.world.error.exception.AuthenticationErrorCodeException;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private final String AUTH_HEADER = "Authorization";
+    private static final String AUTH_HEADER = "Authorization";
 
     public JwtAuthenticationFilter(
         RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager) {
@@ -25,13 +27,11 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
         HttpServletResponse response) throws AuthenticationException {
-        final Authentication authentication;
-        try {
-            final String jwt = request.getHeader(AUTH_HEADER).split(" ")[1];
-            authentication = new JwtAuthenticationToken(jwt);
-        } catch (Exception e) {
-            throw new JwtInvalidException();
+        final String[] jwt = request.getHeader(AUTH_HEADER).split(" ");
+        if(!jwt[0].equals("BEARER")) {
+            throw new AuthenticationErrorCodeException(JWT_FORMAT_INVALID);
         }
+        final Authentication authentication = new JwtAuthenticationToken(jwt[1]);
         return this.getAuthenticationManager().authenticate(authentication);
     }
 
@@ -42,4 +42,5 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         SecurityContextHolder.getContext().setAuthentication(authResult);
         chain.doFilter(request, response);
     }
+
 }

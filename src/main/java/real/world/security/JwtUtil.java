@@ -1,8 +1,18 @@
-package real.world.security.jwt;
+package real.world.security;
+
+import static real.world.error.ErrorCode.JWT_EXPIRED;
+import static real.world.error.ErrorCode.JWT_FORMAT_INVALID;
+import static real.world.error.ErrorCode.JWT_SIGNATURE_INVALID;
+import static real.world.error.ErrorCode.JWT_CLAIMS_EMPTY;
+import static real.world.error.ErrorCode.JWT_UNSUPPORTED;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.sql.Timestamp;
@@ -15,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import real.world.error.exception.AuthenticationErrorCodeException;
+import real.world.security.jwt.JwtAuthenticationToken;
 
 @Component
 public class JwtUtil {
@@ -46,16 +58,24 @@ public class JwtUtil {
         return new JwtAuthenticationToken(id, authorities);
     }
 
-    private void verify(String jwt) {
+    private void verify(String jwt) throws AuthenticationErrorCodeException {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
-        } catch (Exception e) { // todo Exception
-            throw e;
+        }  catch (SecurityException | MalformedJwtException e) {
+            throw new AuthenticationErrorCodeException(JWT_SIGNATURE_INVALID);
+        } catch (ExpiredJwtException e) {
+            throw new AuthenticationErrorCodeException(JWT_EXPIRED);
+        } catch (UnsupportedJwtException e) {
+            throw new AuthenticationErrorCodeException(JWT_UNSUPPORTED);
+        } catch (IllegalArgumentException e) {
+            throw new AuthenticationErrorCodeException(JWT_CLAIMS_EMPTY);
+        } catch (JwtException e) {
+            throw new AuthenticationErrorCodeException(JWT_FORMAT_INVALID);
         }
     }
 
     private Date expiredDate() {
-        LocalDateTime expiredDate = LocalDateTime.now().plusDays(30);
+        final LocalDateTime expiredDate = LocalDateTime.now().plusDays(30);
         return Timestamp.valueOf(expiredDate);
     }
 

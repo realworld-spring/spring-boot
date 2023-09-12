@@ -3,8 +3,9 @@ package real.world.security.jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
+import real.world.error.exception.AuthenticationErrorCodeException;
 import real.world.security.CustomUserDetailsService;
+import real.world.security.JwtUtil;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
@@ -15,7 +16,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication jwtAuthentication)
-        throws AuthenticationException {
+        throws AuthenticationErrorCodeException {
         final String jwt = jwtAuthentication.getPrincipal().toString();
         Authentication authentication = jwtUtil.getAuthentication(jwt);
 

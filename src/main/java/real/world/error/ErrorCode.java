@@ -15,15 +15,19 @@ public enum ErrorCode {
     USERNAME_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "username", "invalid."),
     EMAIL_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "email", "invalid."),
     USERNAME_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "username", "already exists."),
-    USERID_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "userId", "already exists."),
+    USERID_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "userId", "not exists."),
 
     // Authentication
-    FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),
+    AUTH_FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),
     USERNAME_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "user is not exist."),
     WRONG_PASSWORD(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "wrong password."),
 
-    // Authorization
-    JWT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "jwt", "invalid.");
+    // JWT
+    JWT_FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "jwt", "invalid format."),
+    JWT_SIGNATURE_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "jwt", "invalid signature."),
+    JWT_UNSUPPORTED(HttpStatus.UNPROCESSABLE_ENTITY, "jwt", "unsupported format."),
+    JWT_EXPIRED(HttpStatus.UNPROCESSABLE_ENTITY, "jwt", "expired."),
+    JWT_CLAIMS_EMPTY(HttpStatus.UNPROCESSABLE_ENTITY, "jwt", "claims empty.");
 
     private final HttpStatus code;
 
