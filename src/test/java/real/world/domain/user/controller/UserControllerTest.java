@@ -30,15 +30,24 @@ import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.service.UserService;
 import real.world.error.exception.UsernameAlreadyExistsException;
+import real.world.security.service.UserDetailsByEmailService;
+import real.world.security.service.UserDetailsByIdService;
+import real.world.security.support.JwtUtil;
 
 @WebMvcTest
-@Import({SecurityConfig.class})
+@Import({SecurityConfig.class, JwtUtil.class})
 @AutoConfigureRestDocs
 @ExtendWith({RestDocumentationExtension.class})
 public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private UserDetailsByEmailService userDetailsByEmailService;
+
+    @MockBean
+    private UserDetailsByIdService userDetailsByIdService;
 
     @Autowired
     private MockMvc mockmvc;

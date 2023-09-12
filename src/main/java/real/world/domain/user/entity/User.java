@@ -2,10 +2,11 @@ package real.world.domain.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import real.world.error.exception.EmailInvalidException;
@@ -40,6 +41,10 @@ public class User {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false, length = 15)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     protected User() {
     }
 
@@ -49,6 +54,7 @@ public class User {
         this.email = email;
         this.bio = bio;
         this.imageUrl = imageUrl;
+        this.role = UserRole.ROLE_USER;
         validate();
     }
 

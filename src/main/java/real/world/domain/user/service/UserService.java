@@ -1,12 +1,15 @@
 package real.world.domain.user.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import real.world.domain.user.dto.request.RegisterRequest;
+import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.UserIdNotExistException;
 import real.world.error.exception.UsernameAlreadyExistsException;
 
 @Service
@@ -34,6 +37,11 @@ public class UserService {
         final User user = requestToEntity(registerRequest);
         userRepository.save(user);
         return RegisterResponse.of(user);
+    }
+
+    public LoginResponse login(Long id) {
+        final User user = userRepository.findById(id).orElseThrow(UserIdNotExistException::new);
+        return LoginResponse.of(user);
     }
 
     private User requestToEntity(RegisterRequest registerRequest) {
