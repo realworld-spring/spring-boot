@@ -19,15 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import real.world.security.CustomAuthenticationProvider;
+import real.world.security.CustomUserDetailsService;
+import real.world.security.authentication.CustomAuthenticationProvider;
 import real.world.security.NorRequestMatcher;
-import real.world.security.JwtAuthenticationFilter;
-import real.world.security.JwtAuthenticationProvider;
-import real.world.security.CustomLoginFailureHandler;
-import real.world.security.CustomUsernamePasswordAuthenticationFilter;
-import real.world.security.JwtUtil;
-import real.world.security.UserDetailsByEmailService;
-import real.world.security.UserDetailsByIdService;
+import real.world.security.jwt.JwtAuthenticationFilter;
+import real.world.security.jwt.JwtAuthenticationProvider;
+import real.world.security.authentication.CustomLoginFailureHandler;
+import real.world.security.authentication.CustomUsernamePasswordAuthenticationFilter;
+import real.world.security.jwt.JwtUtil;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,8 +36,8 @@ public class SecurityConfig {
     private static final String LOGIN_PATH = "/api/users/login";
 
     private final ObjectPostProcessor<Object> objectPostProcessor;
-    private final UserDetailsByEmailService userDetailsByEmailService;
-    private final UserDetailsByIdService userDetailsByIdService;
+    private final CustomUserDetailsService userDetailsByEmailService;
+    private final CustomUserDetailsService userDetailsByIdService;
 
     private final JwtUtil jwtUtil;
 
@@ -90,15 +89,15 @@ public class SecurityConfig {
     }
 
     public CustomUsernamePasswordAuthenticationFilter customAuthenticationFilter() throws Exception {
-        CustomUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter =
+        final CustomUsernamePasswordAuthenticationFilter authenticationFilter =
             new CustomUsernamePasswordAuthenticationFilter(LOGIN_PATH, authenticationManager());
-        customUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
+        authenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());
 
-        return customUsernamePasswordAuthenticationFilter;
+        return authenticationFilter;
     }
 
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        String[] norPath = {AUTH_PATH, LOGIN_PATH};
+        final String[] norPath = {AUTH_PATH, LOGIN_PATH};
         return new JwtAuthenticationFilter(new NorRequestMatcher(norPath), authenticationManager());
     }
 

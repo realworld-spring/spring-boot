@@ -1,20 +1,17 @@
-package real.world.security;
+package real.world.security.jwt;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import real.world.security.CustomUserDetailsService;
 
+@RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
+    private final CustomUserDetailsService userDetailsService;
+
     private final JwtUtil jwtUtil;
-
-    private final UserDetailsService userDetailsService;
-
-    public JwtAuthenticationProvider(UserDetailsService userDetailsService, JwtUtil jwtUtil) {
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     public Authentication authenticate(Authentication jwtAuthentication)
@@ -23,7 +20,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         Authentication authentication = jwtUtil.getAuthentication(jwt);
 
         final String id = authentication.getPrincipal().toString();
-        userDetailsService.loadUserByUsername(id);
+        userDetailsService.loadUserByPrincipal(id);
 
         return authentication;
     }

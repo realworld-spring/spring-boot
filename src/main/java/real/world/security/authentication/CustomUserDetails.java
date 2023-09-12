@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.authentication;
 
 import java.util.Collection;
 import lombok.Getter;

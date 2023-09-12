@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.jwt;
 
 import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

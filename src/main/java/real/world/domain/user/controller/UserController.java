@@ -3,7 +3,6 @@ package real.world.domain.user.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,16 +15,14 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.service.UserService;
-import real.world.security.JwtUtil;
+import real.world.security.jwt.JwtUtil;
 
 @RestController
 public class UserController {
 
-    @Value("${auth.header}")
-    private String AUTH_HEADER;
+    private static final String AUTH_HEADER = "Authorization";
 
-    @Value("${auth.type}")
-    private String AUTH_TYPE;
+    private static final String AUTH_TYPE = "BEARER";
 
     private final JwtUtil jwtUtil;
 
@@ -48,11 +45,11 @@ public class UserController {
     public ResponseEntity<LoginResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
         final LoginResponse response = userService.login(authentication);
 
-        String email = authentication.getPrincipal().toString();
+        final String id = authentication.getPrincipal().toString();
         final String authoritiesString = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
-        final String token = jwtUtil.generateJwtToken(email, authoritiesString);
+        final String token = jwtUtil.generateJwtToken(id, authoritiesString);
 
         httpServletResponse.addHeader(AUTH_HEADER, AUTH_TYPE + " " + token);
         return new ResponseEntity<>(response, HttpStatus.CREATED);

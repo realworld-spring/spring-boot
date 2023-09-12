@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import real.world.error.ErrorResponse;
 import real.world.error.exception.AuthenticationErrorCodeException;
+import real.world.security.RootNameObjectMapper;
 
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 

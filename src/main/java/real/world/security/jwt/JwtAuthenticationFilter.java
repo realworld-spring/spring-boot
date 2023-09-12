@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

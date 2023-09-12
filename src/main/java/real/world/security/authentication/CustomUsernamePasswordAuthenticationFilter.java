@@ -1,4 +1,4 @@
-package real.world.security;
+package real.world.security.authentication;
 
 import static real.world.error.ErrorCode.FORMAT_INVALID;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import real.world.domain.user.dto.request.LoginRequest;
 import real.world.error.exception.AuthenticationErrorCodeException;
+import real.world.security.RootNameObjectMapper;
 
 public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 

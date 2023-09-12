@@ -19,7 +19,6 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.UsernameAlreadyExistsException;
-import real.world.security.JwtUtil;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
