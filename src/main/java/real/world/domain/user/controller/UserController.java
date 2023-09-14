@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.auth.annotation.Auth;
 import real.world.domain.user.dto.request.RegisterRequest;
-import real.world.domain.user.dto.response.LoginResponse;
-import real.world.domain.user.dto.response.RegisterResponse;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.service.UserService;
 import real.world.security.support.JwtUtil;
 
@@ -35,17 +34,17 @@ public class UserController {
     }
 
     @PostMapping("/api/users")
-    public ResponseEntity<RegisterResponse> register(
+    public ResponseEntity<UserResponse> register(
         @RequestBody @Valid RegisterRequest registerRequest) {
-        final RegisterResponse response = userService.register(registerRequest);
+        final UserResponse response = userService.register(registerRequest);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/api/users/login")
-    public ResponseEntity<LoginResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<UserResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
         final String id = authentication.getPrincipal().toString();
-        final LoginResponse response = userService.login(Long.valueOf(id));
+        final UserResponse response = userService.login(Long.valueOf(id));
 
         final String authoritiesString = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
@@ -53,6 +52,12 @@ public class UserController {
         final String token = jwtUtil.generateJwtToken(id, authoritiesString);
 
         httpServletResponse.addHeader(AUTH_HEADER, AUTH_TYPE + " " + token);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/api/user")
+    public ResponseEntity<UserResponse> currentUser(@Auth Long loginId) {
+        final UserResponse response = userService.getCurrentUser(loginId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

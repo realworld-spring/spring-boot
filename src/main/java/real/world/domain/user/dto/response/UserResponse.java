@@ -8,7 +8,7 @@ import real.world.domain.user.entity.User;
 @Getter
 @JsonRootName(value = "user")
 @NoArgsConstructor
-public class RegisterResponse {
+public class UserResponse {
 
     private String username;
 
@@ -18,15 +18,15 @@ public class RegisterResponse {
 
     private String image;
 
-    private RegisterResponse(String username, String email, String bio, String image) {
+    private UserResponse(String username, String email, String bio, String image) {
         this.username = username;
         this.email = email;
         this.bio = bio;
         this.image = image;
     }
 
-    public static RegisterResponse of(User user) {
-        return new RegisterResponse(user.getUsername(), user.getEmail(),
+    public static UserResponse of(User user) {
+        return new UserResponse(user.getUsername(), user.getEmail(),
             user.getBio(), user.getImageUrl());
     }
 

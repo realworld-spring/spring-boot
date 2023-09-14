@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import real.world.domain.user.dto.request.RegisterRequest;
-import real.world.domain.user.dto.response.RegisterResponse;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.UsernameAlreadyExistsException;
 
@@ -38,7 +38,7 @@ public class UserServiceTest {
             final RegisterRequest request = JOHN.회원가입을_한다();
 
             // when
-            final RegisterResponse response = userService.register(request);
+            final UserResponse response = userService.register(request);
 
             // then
             assertAll(() -> {

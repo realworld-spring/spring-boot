@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
 import real.world.domain.user.dto.request.RegisterRequest;
-import real.world.domain.user.dto.response.RegisterResponse;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.service.UserService;
 import real.world.error.exception.UsernameAlreadyExistsException;
@@ -67,7 +67,7 @@ public class UserControllerTest {
             // given
             final User user = JOHN.생성();
             final RegisterRequest request = JOHN.회원가입을_한다();
-            given(userService.register(any())).willReturn(RegisterResponse.of(user));
+            given(userService.register(any())).willReturn(UserResponse.of(user));
 
             // when
             final ResultActions resultActions = mockmvc.perform(

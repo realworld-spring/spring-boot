@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import real.world.domain.user.dto.request.RegisterRequest;
-import real.world.domain.user.dto.response.RegisterResponse;
+import real.world.domain.user.dto.response.UserResponse;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class UserE2ETest {
@@ -47,7 +47,7 @@ public class UserE2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = POST_요청을_보낸다("/api/users",
             request);
-        final RegisterResponse response = extractableResponse.as(RegisterResponse.class);
+        final UserResponse response = extractableResponse.as(UserResponse.class);
 
         // then
         assertAll(() -> {
