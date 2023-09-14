@@ -23,7 +23,7 @@ public class UserController {
 
     private static final String AUTH_HEADER = "Authorization";
 
-    private static final String AUTH_TYPE = "BEARER";
+    private static final String AUTH_TYPE = "Token";
 
     private final JwtUtil jwtUtil;
 

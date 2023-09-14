@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
             throw new AuthenticationErrorCodeException(JWT_FORMAT_INVALID);
         }
         final String[] jwt = request.getHeader(AUTH_HEADER).split(" ");
-        if(!jwt[0].equals("BEARER")) {
+        if(!jwt[0].equals("Token")) {
             throw new AuthenticationErrorCodeException(JWT_FORMAT_INVALID);
         }
         final Authentication authentication = new JwtAuthenticationToken(jwt[1]);
