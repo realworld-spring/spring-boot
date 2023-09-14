@@ -8,11 +8,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
+public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(Login.class) &&
+        return parameter.hasParameterAnnotation(Auth.class) &&
             parameter.getParameterType().equals(Long.class);
     }
 

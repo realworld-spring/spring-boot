@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import real.world.domain.auth.annotation.Login;
+import real.world.domain.auth.annotation.Auth;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.LoginResponse;
 import real.world.domain.user.dto.response.RegisterResponse;
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/api/profiles")
-    public ResponseEntity<String> checkAuth(@Login Long loginId) {
+    public ResponseEntity<String> checkAuth(@Auth Long loginId) {
         return new ResponseEntity<>("ok", HttpStatus.CREATED);
     }
 
