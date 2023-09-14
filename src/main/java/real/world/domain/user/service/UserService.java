@@ -39,8 +39,8 @@ public class UserService {
         return RegisterResponse.of(user);
     }
 
-    public LoginResponse login(Long id) {
-        final User user = userRepository.findById(id).orElseThrow(UserIdNotExistException::new);
+    public LoginResponse login(Long loginId) {
+        final User user = userRepository.findById(loginId).orElseThrow(UserIdNotExistException::new);
         return LoginResponse.of(user);
     }
 

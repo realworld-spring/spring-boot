@@ -27,6 +27,9 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
         HttpServletResponse response) throws AuthenticationException {
+        if(request.getHeader(AUTH_HEADER) == null) {
+            throw new AuthenticationErrorCodeException(JWT_FORMAT_INVALID);
+        }
         final String[] jwt = request.getHeader(AUTH_HEADER).split(" ");
         if(!jwt[0].equals("BEARER")) {
             throw new AuthenticationErrorCodeException(JWT_FORMAT_INVALID);
