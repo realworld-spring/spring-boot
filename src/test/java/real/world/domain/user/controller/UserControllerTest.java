@@ -4,6 +4,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,18 +25,19 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import real.world.config.SecurityConfig;
+import real.world.config.WebMvcConfig;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.RegisterResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.service.UserService;
 import real.world.error.exception.UsernameAlreadyExistsException;
-import real.world.security.service.UserDetailsByEmailService;
-import real.world.security.service.UserDetailsByIdService;
 import real.world.security.support.JwtUtil;
+import real.world.support.TestSecurityConfig;
+import real.world.support.WithMockUserId;
+import real.world.support.WithMockUserIdFactory;
 
-@WebMvcTest
-@Import({SecurityConfig.class, JwtUtil.class})
+@WebMvcTest(controllers = {UserController.class})
+@Import({TestSecurityConfig.class, WebMvcConfig.class, WithMockUserIdFactory.class})
 @AutoConfigureRestDocs
 @ExtendWith({RestDocumentationExtension.class})
 public class UserControllerTest {
@@ -44,10 +46,7 @@ public class UserControllerTest {
     private UserService userService;
 
     @MockBean
-    private UserDetailsByEmailService userDetailsByEmailService;
-
-    @MockBean
-    private UserDetailsByIdService userDetailsByIdService;
+    private JwtUtil jwtUtil;
 
     @Autowired
     private MockMvc mockmvc;
@@ -99,4 +98,24 @@ public class UserControllerTest {
             verify(userService).register(any());
         }
     }
+
+    @Nested
+    class 프로필조회 {
+
+        // TODO 일단 테스트 API로 작성하였으니 추후에 구현후 수정할 것
+        @Test
+        @WithMockUserId(user = JOHN)
+        void 상태코드_200으로_성공() throws Exception {
+            // given & when
+            final ResultActions resultActions = mockmvc.perform(
+                get("/api/profiles"));
+
+            // then
+            resultActions.andExpect(status().isCreated())
+                .andDo(document("profile"))
+                .andDo(print());
+        }
+
+    }
+
 }
