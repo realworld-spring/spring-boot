@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.regex.Pattern;
 import lombok.Getter;
+import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.error.exception.EmailInvalidException;
 import real.world.error.exception.UsernameInvalidException;
 
@@ -58,6 +59,14 @@ public class User {
         validate();
     }
 
+    public void update(UpdateRequest request) {
+        if(request.getUsername() != null) { updateUsername(request.getUsername()); }
+        if(request.getPassword() != null) { updatePassword(request.getPassword()); }
+        if(request.getEmail() != null) { updateEmail(request.getEmail()); }
+        if(request.getBio() != null) { updateBio(request.getBio()); }
+        if(request.getImage() != null) { updateImageUrl(request.getImage()); }
+    }
+
     private void validate() {
         validateUsername();
         validateEmail();
@@ -73,6 +82,26 @@ public class User {
         if(this.email.length() > MAX_EMAIL_LENGTH || !EMAIL_PATTERN.matcher(email).matches()) {
             throw new EmailInvalidException();
         }
+    }
+
+    private void updateUsername(String username) {
+        this.username = username;
+    }
+
+    private void updatePassword(String password) {
+        this.password = password;
+    }
+
+    private void updateEmail(String email) {
+        this.email = email;
+    }
+
+    private void updateBio(String bio) {
+        this.bio = bio;
+    }
+
+    private void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }

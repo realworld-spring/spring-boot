@@ -9,10 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.auth.annotation.Auth;
 import real.world.domain.user.dto.request.RegisterRequest;
+import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.service.UserService;
 import real.world.security.support.JwtUtil;
@@ -58,6 +60,13 @@ public class UserController {
     @GetMapping("/api/user")
     public ResponseEntity<UserResponse> currentUser(@Auth Long loginId) {
         final UserResponse response = userService.getCurrentUser(loginId);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/api/user")
+    public ResponseEntity<UserResponse> update(@Auth Long loginId,
+        @RequestBody UpdateRequest updateRequest) {
+        final UserResponse response = userService.update(loginId, updateRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

@@ -3,7 +3,9 @@ package real.world.domain.user.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import real.world.domain.user.dto.request.RegisterRequest;
+import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
@@ -43,7 +45,16 @@ public class UserService {
     }
 
     public UserResponse getCurrentUser(Long loginId) {
-        final User user = userRepository.findById(loginId).orElseThrow(UserIdNotExistException::new);
+        final User user = userRepository.findById(loginId)
+            .orElseThrow(UserIdNotExistException::new);
+        return UserResponse.of(user);
+    }
+
+    @Transactional
+    public UserResponse update(Long loginId, UpdateRequest request) {
+        final User user = userRepository.findById(loginId)
+            .orElseThrow(UserIdNotExistException::new);
+        user.update(request);
         return UserResponse.of(user);
     }
 
