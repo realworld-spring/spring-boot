@@ -59,7 +59,7 @@ public class UserController {
 
     @GetMapping("/api/user")
     public ResponseEntity<UserResponse> currentUser(@Auth Long loginId) {
-        final UserResponse response = userService.getCurrentUser(loginId);
+        final UserResponse response = userService.getUser(loginId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

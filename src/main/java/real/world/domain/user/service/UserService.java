@@ -44,15 +44,15 @@ public class UserService {
         return UserResponse.of(user);
     }
 
-    public UserResponse getCurrentUser(Long loginId) {
-        final User user = userRepository.findById(loginId)
+    public UserResponse getUser(Long id) {
+        final User user = userRepository.findById(id)
             .orElseThrow(UserIdNotExistException::new);
         return UserResponse.of(user);
     }
 
     @Transactional
-    public UserResponse update(Long loginId, UpdateRequest request) {
-        final User user = userRepository.findById(loginId)
+    public UserResponse update(Long id, UpdateRequest request) {
+        final User user = userRepository.findById(id)
             .orElseThrow(UserIdNotExistException::new);
         user.update(request);
         return UserResponse.of(user);

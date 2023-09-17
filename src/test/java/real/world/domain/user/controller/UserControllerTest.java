@@ -3,6 +3,7 @@ package real.world.domain.user.controller;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -30,6 +31,7 @@ import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.service.UserService;
+import real.world.error.exception.UserIdNotExistException;
 import real.world.error.exception.UsernameAlreadyExistsException;
 import real.world.security.support.JwtUtil;
 import real.world.support.TestSecurityConfig;
@@ -97,6 +99,55 @@ public class UserControllerTest {
                 .andDo(print());
             verify(userService).register(any());
         }
+    }
+
+    @Nested
+    class 유저조회 {
+
+        @Test
+        @WithMockUserId(user = JOHN)
+        void 상태코드_201로_성공() throws Exception {
+            // given
+            final User user = JOHN.생성();
+            final Long id = JOHN.getId();
+            given(userService.getUser(id)).willReturn(UserResponse.of(user));
+
+            // when
+            final ResultActions resultActions = mockmvc.perform(get("/api/user"));
+
+            // then
+            resultActions.andExpect(status().isCreated())
+                .andDo(document("getUser"))
+                .andDo(print());
+            verify(userService).getUser(any());
+        }
+
+        @Test
+        @WithMockUserId(user = JOHN)
+        void 유저ID가_존재하지_않는다면_상태코드_422로_실패() throws Exception {
+            // given
+            given(userService.getUser(any())).willThrow(new UserIdNotExistException());
+
+            // when
+            final ResultActions resultActions = mockmvc.perform(get("/api/user"));
+
+            // then
+            resultActions.andExpect(status().isUnprocessableEntity())
+                .andDo(print());
+            verify(userService).getUser(any());
+        }
+
+        @Test
+        void 인가실패시_상태코드_403로_실패() throws Exception {
+            // given & when
+            final ResultActions resultActions = mockmvc.perform(get("/api/user"));
+
+            // then
+            resultActions.andExpect(status().isForbidden())
+                .andDo(print());
+            verify(userService, never()).getUser(any());
+        }
+
     }
 
     @Nested
