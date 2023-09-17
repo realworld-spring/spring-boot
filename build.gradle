@@ -81,7 +81,7 @@ openapi3 {
 	description = "Spring REST Docs with SwaggerUI."
 	version = "0.0.1"
 	outputFileNamePrefix = 'open-api'
-	format = 'json'
+	format = 'yaml'
 
 	outputDirectory = 'build/docs'
 }
