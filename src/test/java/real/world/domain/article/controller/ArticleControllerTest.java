@@ -72,7 +72,7 @@ public class ArticleControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/articles").contentType(MediaType.APPLICATION_JSON)
+                post("/api/articles").contentType(MediaType.APPLICATION_JSON)
                     .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                     .content(objectMapper.writeValueAsString(request)));
 
