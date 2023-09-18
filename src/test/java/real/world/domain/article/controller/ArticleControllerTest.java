@@ -3,8 +3,6 @@ package real.world.domain.article.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,7 +21,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -73,14 +70,11 @@ public class ArticleControllerTest {
             // when
             final ResultActions resultActions = mockmvc.perform(
                 post("/api/articles").contentType(MediaType.APPLICATION_JSON)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                     .content(objectMapper.writeValueAsString(request)));
 
             // then
             resultActions.andExpect(status().isCreated())
-                .andDo(document("upload",
-                    requestHeaders(headerWithName("Authorization").description(
-                        "Bearer token"))))
+                .andDo(document("upload"))
                 .andDo(print());
             verify(articleService).upload(any(), any());
         }

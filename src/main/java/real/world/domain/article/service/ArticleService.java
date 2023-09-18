@@ -17,7 +17,6 @@ import real.world.error.exception.UserIdNotExistException;
 @Service
 public class ArticleService {
 
-
     private final UserRepository userRepository;
 
     private final ArticleRepository articleRepository;
