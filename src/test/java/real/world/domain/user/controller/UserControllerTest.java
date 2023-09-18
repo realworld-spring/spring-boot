@@ -1,14 +1,12 @@
 package real.world.domain.user.controller;
 
-import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static real.world.fixture.UserFixtures.JOHN;
@@ -18,14 +16,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
@@ -43,8 +38,6 @@ import real.world.support.WithMockUserIdFactory;
 
 @WebMvcTest(controllers = {UserController.class})
 @Import({TestSecurityConfig.class, WebMvcConfig.class, WithMockUserIdFactory.class})
-@AutoConfigureRestDocs
-@ExtendWith({RestDocumentationExtension.class})
 public class UserControllerTest {
 
     @MockBean
@@ -81,7 +74,6 @@ public class UserControllerTest {
 
             // then
             resultActions.andExpect(status().isCreated())
-                .andDo(document("register"))
                 .andDo(print());
             verify(userService).register(any());
         }
@@ -120,7 +112,6 @@ public class UserControllerTest {
 
             // then
             resultActions.andExpect(status().isCreated())
-                .andDo(document("getUser"))
                 .andDo(print());
             verify(userService).getUser(any());
         }
@@ -149,7 +140,8 @@ public class UserControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드_200으로_성공() throws Exception {
             // given
-            given(userService.update(anyLong(), any(UpdateRequest.class))).willReturn(new UserResponse());
+            given(userService.update(anyLong(), any(UpdateRequest.class))).willReturn(
+                new UserResponse());
 
             // when
             final ResultActions resultActions = mockmvc.perform(put("/user")
@@ -158,7 +150,6 @@ public class UserControllerTest {
 
             // then
             resultActions.andExpect(status().isCreated())
-                .andDo(document("update"))
                 .andDo(print());
             verify(userService).update(anyLong(), any(UpdateRequest.class));
         }
@@ -167,7 +158,8 @@ public class UserControllerTest {
         @WithMockUserId(user = JOHN)
         void UserID가_존재하지_않는다면_상태_422로_실패() throws Exception {
             // given
-            given(userService.update(anyLong(), any(UpdateRequest.class))).willThrow(new UserIdNotExistException());
+            given(userService.update(anyLong(), any(UpdateRequest.class))).willThrow(
+                new UserIdNotExistException());
 
             // when
             final ResultActions resultActions = mockmvc.perform(put("/user")
@@ -195,7 +187,6 @@ public class UserControllerTest {
 
             // then
             resultActions.andExpect(status().isCreated())
-                .andDo(document("profile"))
                 .andDo(print());
         }
 
