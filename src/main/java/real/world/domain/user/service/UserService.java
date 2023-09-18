@@ -13,6 +13,7 @@ import real.world.error.exception.UserIdNotExistException;
 import real.world.error.exception.UsernameAlreadyExistsException;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -39,21 +40,14 @@ public class UserService {
         return UserResponse.of(user);
     }
 
-    public UserResponse login(Long loginId) {
-        final User user = userRepository.findById(loginId).orElseThrow(UserIdNotExistException::new);
-        return UserResponse.of(user);
-    }
-
     public UserResponse getUser(Long id) {
-        final User user = userRepository.findById(id)
-            .orElseThrow(UserIdNotExistException::new);
+        final User user = findUserById(id);
         return UserResponse.of(user);
     }
 
     @Transactional
     public UserResponse update(Long id, UpdateRequest request) {
-        final User user = userRepository.findById(id)
-            .orElseThrow(UserIdNotExistException::new);
+        final User user = findUserById(id);
         user.update(request);
         return UserResponse.of(user);
     }
@@ -66,6 +60,11 @@ public class UserService {
             BASE_BIO,
             BASE_IMAGE_URL
         );
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(UserIdNotExistException::new);
     }
 
 }

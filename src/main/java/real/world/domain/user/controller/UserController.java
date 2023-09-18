@@ -46,7 +46,7 @@ public class UserController {
     @PostMapping("/api/users/login")
     public ResponseEntity<UserResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
         final String id = authentication.getPrincipal().toString();
-        final UserResponse response = userService.login(Long.valueOf(id));
+        final UserResponse response = userService.getUser(Long.valueOf(id));
 
         final String authoritiesString = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
