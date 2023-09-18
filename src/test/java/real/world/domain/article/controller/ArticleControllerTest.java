@@ -69,7 +69,7 @@ public class ArticleControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/api/articles").contentType(MediaType.APPLICATION_JSON)
+                post("/articles").contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
             // then

@@ -20,7 +20,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/api/articles")
+    @PostMapping("/articles")
     public ResponseEntity<UploadResponse> uploadArticle(@Auth Long loginId,
         @RequestBody @Valid UploadRequest request) {
         final UploadResponse response = articleService.upload(loginId, request);

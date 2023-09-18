@@ -76,7 +76,7 @@ public class UserControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/api/users").contentType(MediaType.APPLICATION_JSON)
+                post("/users").contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
             // then
@@ -94,7 +94,7 @@ public class UserControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/api/users").contentType(MediaType.APPLICATION_JSON)
+                post("/users").contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
             // then
@@ -116,7 +116,7 @@ public class UserControllerTest {
             given(userService.getUser(id)).willReturn(UserResponse.of(user));
 
             // when
-            final ResultActions resultActions = mockmvc.perform(get("/api/user"));
+            final ResultActions resultActions = mockmvc.perform(get("/user"));
 
             // then
             resultActions.andExpect(status().isCreated())
@@ -132,7 +132,7 @@ public class UserControllerTest {
             given(userService.getUser(any())).willThrow(new UserIdNotExistException());
 
             // when
-            final ResultActions resultActions = mockmvc.perform(get("/api/user"));
+            final ResultActions resultActions = mockmvc.perform(get("/user"));
 
             // then
             resultActions.andExpect(status().isUnprocessableEntity())
@@ -152,7 +152,7 @@ public class UserControllerTest {
             given(userService.update(anyLong(), any(UpdateRequest.class))).willReturn(new UserResponse());
 
             // when
-            final ResultActions resultActions = mockmvc.perform(put("/api/user")
+            final ResultActions resultActions = mockmvc.perform(put("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new UpdateRequest())));
 
@@ -170,7 +170,7 @@ public class UserControllerTest {
             given(userService.update(anyLong(), any(UpdateRequest.class))).willThrow(new UserIdNotExistException());
 
             // when
-            final ResultActions resultActions = mockmvc.perform(put("/api/user")
+            final ResultActions resultActions = mockmvc.perform(put("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new UpdateRequest())));
 
@@ -191,7 +191,7 @@ public class UserControllerTest {
         void 상태코드_200으로_성공() throws Exception {
             // given & when
             final ResultActions resultActions = mockmvc.perform(
-                get("/api/profiles"));
+                get("/profiles"));
 
             // then
             resultActions.andExpect(status().isCreated())
