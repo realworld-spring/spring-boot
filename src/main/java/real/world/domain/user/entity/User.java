@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.error.exception.EmailInvalidException;
 import real.world.error.exception.UsernameInvalidException;
 
@@ -19,7 +18,7 @@ public class User {
 
     private static final int MAX_USERNAME_LENGTH = 15;
 
-    private static final int MAX_EMAIL_LENGTH = 15;
+    private static final int MAX_EMAIL_LENGTH = 30;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
 
@@ -28,13 +27,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 15)
+    @Column(nullable = false, unique = true, length = MAX_USERNAME_LENGTH)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = MAX_EMAIL_LENGTH)
     private String email;
 
     private String bio;
@@ -59,12 +58,13 @@ public class User {
         validate();
     }
 
-    public void update(UpdateRequest request) {
-        if(request.getUsername() != null) { updateUsername(request.getUsername()); }
-        if(request.getPassword() != null) { updatePassword(request.getPassword()); }
-        if(request.getEmail() != null) { updateEmail(request.getEmail()); }
-        if(request.getBio() != null) { updateBio(request.getBio()); }
-        if(request.getImage() != null) { updateImageUrl(request.getImage()); }
+    public void update(String username, String password, String email, String bio, String imageUrl) {
+        updateUsername(username);
+        updatePassword(password);
+        updateEmail(email);
+        updateBio(bio);
+        updateImageUrl(imageUrl);
+        validate();
     }
 
     private void validate() {
@@ -85,23 +85,23 @@ public class User {
     }
 
     private void updateUsername(String username) {
-        this.username = username;
+        if(username != null) { this.username = username; }
     }
 
     private void updatePassword(String password) {
-        this.password = password;
+        if(password != null) { this.password = password; }
     }
 
     private void updateEmail(String email) {
-        this.email = email;
+        if(email != null) { this.email = email; }
     }
 
     private void updateBio(String bio) {
-        this.bio = bio;
+        if(bio != null) { this.bio = bio; }
     }
 
     private void updateImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        if(imageUrl != null) { this.imageUrl = imageUrl; }
     }
 
 }

@@ -48,7 +48,14 @@ public class UserService {
     @Transactional
     public UserResponse update(Long id, UpdateRequest request) {
         final User user = findUserById(id);
-        user.update(request);
+        final String password = passwordEncode(request.getPassword());
+        user.update(
+            request.getUsername(),
+            password,
+            request.getEmail(),
+            request.getBio(),
+            request.getImage()
+        );
         return UserResponse.of(user);
     }
 
@@ -60,6 +67,13 @@ public class UserService {
             BASE_BIO,
             BASE_IMAGE_URL
         );
+    }
+
+    private String passwordEncode(String password) {
+        if(password != null) {
+            return passwordEncoder.encode(password);
+        }
+        return null;
     }
 
     private User findUserById(Long id) {

@@ -58,11 +58,11 @@ public enum UserFixtures {
 
     public UpdateRequest 유저수정_요청() {
         final UpdateRequest request = new UpdateRequest();
-        ReflectionTestUtils.setField(request, "username", "updated " + this.username);
-        ReflectionTestUtils.setField(request, "password", "updated " + this.password);
-        ReflectionTestUtils.setField(request, "email", "updated " + this.email);
-        ReflectionTestUtils.setField(request, "bio", "updated " + this.bio);
-        ReflectionTestUtils.setField(request, "image", "updated " + this.imageUrl);
+        ReflectionTestUtils.setField(request, "username", "updated_" + this.username);
+        ReflectionTestUtils.setField(request, "password", "updated_" + this.password);
+        ReflectionTestUtils.setField(request, "email", "updated_" + this.email);
+        ReflectionTestUtils.setField(request, "bio", "updated_" + this.bio);
+        ReflectionTestUtils.setField(request, "image", "updated_" + this.imageUrl);
         return request;
     }
 

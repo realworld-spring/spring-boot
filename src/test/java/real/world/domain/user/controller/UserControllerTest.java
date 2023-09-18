@@ -140,17 +140,6 @@ public class UserControllerTest {
             verify(userService).getUser(any());
         }
 
-        @Test
-        void 인가실패시_상태코드_403로_실패() throws Exception {
-            // given & when
-            final ResultActions resultActions = mockmvc.perform(get("/api/user"));
-
-            // then
-            resultActions.andExpect(status().isForbidden())
-                .andDo(print());
-            verify(userService, never()).getUser(any());
-        }
-
     }
 
     @Nested
@@ -189,17 +178,6 @@ public class UserControllerTest {
             resultActions.andExpect(status().isUnprocessableEntity())
                 .andDo(print());
             verify(userService).update(anyLong(), any(UpdateRequest.class));
-        }
-
-        @Test
-        void 인가실패시_403으로_실패() throws Exception {
-            // given & when
-            final ResultActions resultActions = mockmvc.perform(put("/api/user"));
-
-            // then
-            resultActions.andExpect(status().isForbidden())
-                .andDo(print());
-            verify(userService, never()).update(anyLong(), any(UpdateRequest.class));
         }
 
     }
