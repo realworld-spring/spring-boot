@@ -1,8 +1,9 @@
 package real.world.domain.article.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ public class UploadRequest {
     @NotBlank
     private String body;
 
-    private List<String> tagList;
+    @JsonProperty("tagList")
+    private Set<String> tags;
 
 }

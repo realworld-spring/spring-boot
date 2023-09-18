@@ -43,6 +43,10 @@ Content-Type: application/json
   "article": {
     "title": "title",
     "description": "desc",
-    "body": "body"
+    "body": "body",
+    "tagList": [
+      "tag1",
+      "tag2"
+    ]
   }
 }

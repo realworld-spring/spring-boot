@@ -1,6 +1,5 @@
 package real.world.domain.article.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,8 +43,9 @@ public class UploadResponse {
     public static UploadResponse of(Article article) {
         return new UploadResponse(
             article.getSlug(), article.getTitle(), article.getDescription(),
-            article.getBody(), null, article.getCreatedAt(), article.getUpdatedAt(),
-            false, article.getFavoritesCount(), ProfileDto.of(article.getUser(), false)
+            article.getBody(), article.getTagNames(), article.getCreatedAt(),
+            article.getUpdatedAt(), false, article.getFavoritesCount(),
+            ProfileDto.of(article.getUser(), false)
         );
     }
 

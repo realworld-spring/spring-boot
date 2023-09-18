@@ -6,7 +6,9 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity(name = "tag_articles")
@@ -31,11 +33,12 @@ public class TagArticle {
         this.tag = tag;
     }
 
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     static class TagArticleId implements Serializable {
 
-        private final Long article;
+        private Long article;
 
-        private final Long tag;
+        private Long tag;
 
         public TagArticleId(Long article, Long tag) {
             this.article = article;
