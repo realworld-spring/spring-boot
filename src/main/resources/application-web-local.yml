@@ -20,9 +20,8 @@ spring:
     serialization:
       wrap-root-value: true
 
-
 springdoc:
-  default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
+  default-consumes-media-type: application/yaml;charset=UTF-8
+  default-produces-media-type: application/yaml;charset=UTF-8
   swagger-ui:
-    url: /docs/open-api.json
+    url: /docs/open-api.yaml

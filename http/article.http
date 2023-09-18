@@ -1,0 +1,52 @@
+### 회원가입
+POST {{domain}}/api/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "username",
+    "email": "eee@email.com",
+    "password": "1234"
+  }
+}
+
+### 로그인
+POST {{domain}}/api/users/login
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "eee@email.com",
+    "password": "1234"
+  }
+}
+
+> {%
+  const token = response.headers.valueOf("Authorization");
+
+  client.test("Validate", function() {
+    client.assert(response.status === 201, "Response status invalid");
+    client.assert(response.contentType.mimeType === "application/json", "Content-type invalid");
+    client.assert(response.headers.valueOf("Authorization").startsWith("BEARER") === true, "Authorization invalid");
+  });
+
+  client.log(token);
+  client.global.set("access_token", token);
+%}
+
+### 업로드
+POST {{domain}}/api/articles
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "article": {
+    "title": "title",
+    "description": "desc",
+    "body": "body",
+    "tagList": [
+      "tag1",
+      "tag2"
+    ]
+  }
+}

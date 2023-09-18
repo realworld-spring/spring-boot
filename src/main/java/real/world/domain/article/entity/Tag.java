@@ -12,7 +12,6 @@ import lombok.Getter;
 @Entity(name = "tags")
 public class Tag {
 
-
     @Id
     @Column(name = "tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
