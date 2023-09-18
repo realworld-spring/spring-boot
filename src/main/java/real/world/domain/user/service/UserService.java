@@ -1,18 +1,19 @@
 package real.world.domain.user.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import real.world.domain.user.dto.request.RegisterRequest;
-import real.world.domain.user.dto.response.LoginResponse;
-import real.world.domain.user.dto.response.RegisterResponse;
+import real.world.domain.user.dto.request.UpdateRequest;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.UserIdNotExistException;
 import real.world.error.exception.UsernameAlreadyExistsException;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -30,18 +31,32 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public RegisterResponse register(RegisterRequest registerRequest) {
+    public UserResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
         final User user = requestToEntity(registerRequest);
         userRepository.save(user);
-        return RegisterResponse.of(user);
+        return UserResponse.of(user);
     }
 
-    public LoginResponse login(Long loginId) {
-        final User user = userRepository.findById(loginId).orElseThrow(UserIdNotExistException::new);
-        return LoginResponse.of(user);
+    public UserResponse getUser(Long id) {
+        final User user = findUserById(id);
+        return UserResponse.of(user);
+    }
+
+    @Transactional
+    public UserResponse update(Long id, UpdateRequest request) {
+        final User user = findUserById(id);
+        final String password = passwordEncode(request.getPassword());
+        user.update(
+            request.getUsername(),
+            password,
+            request.getEmail(),
+            request.getBio(),
+            request.getImage()
+        );
+        return UserResponse.of(user);
     }
 
     private User requestToEntity(RegisterRequest registerRequest) {
@@ -52,6 +67,18 @@ public class UserService {
             BASE_BIO,
             BASE_IMAGE_URL
         );
+    }
+
+    private String passwordEncode(String password) {
+        if(password != null) {
+            return passwordEncoder.encode(password);
+        }
+        return null;
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(UserIdNotExistException::new);
     }
 
 }

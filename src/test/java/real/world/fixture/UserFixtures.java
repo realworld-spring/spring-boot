@@ -1,11 +1,11 @@
 package real.world.fixture;
 
 import java.util.Collections;
-import java.util.Set;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 import real.world.domain.user.dto.request.RegisterRequest;
+import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.entity.User;
 import real.world.security.service.CustomUserDetails;
 
@@ -53,6 +53,16 @@ public enum UserFixtures {
         ReflectionTestUtils.setField(request, "username", this.username);
         ReflectionTestUtils.setField(request, "password", this.password);
         ReflectionTestUtils.setField(request, "email", this.email);
+        return request;
+    }
+
+    public UpdateRequest 유저수정_요청() {
+        final UpdateRequest request = new UpdateRequest();
+        ReflectionTestUtils.setField(request, "username", "updated_" + this.username);
+        ReflectionTestUtils.setField(request, "password", "updated_" + this.password);
+        ReflectionTestUtils.setField(request, "email", "updated_" + this.email);
+        ReflectionTestUtils.setField(request, "bio", "updated_" + this.bio);
+        ReflectionTestUtils.setField(request, "image", "updated_" + this.imageUrl);
         return request;
     }
 
