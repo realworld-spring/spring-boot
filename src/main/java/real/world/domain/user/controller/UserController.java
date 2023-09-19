@@ -35,7 +35,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/users")
+    @PostMapping("/users")
     public ResponseEntity<UserResponse> register(
         @RequestBody @Valid RegisterRequest registerRequest) {
         final UserResponse response = userService.register(registerRequest);
@@ -43,7 +43,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/api/users/login")
+    @PostMapping("/users/login")
     public ResponseEntity<UserResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
         final String id = authentication.getPrincipal().toString();
         final UserResponse response = userService.getUser(Long.valueOf(id));
@@ -57,20 +57,20 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/user")
+    @GetMapping("/user")
     public ResponseEntity<UserResponse> currentUser(@Auth Long loginId) {
         final UserResponse response = userService.getUser(loginId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/user")
+    @PutMapping("/user")
     public ResponseEntity<UserResponse> update(@Auth Long loginId,
         @RequestBody UpdateRequest updateRequest) {
         final UserResponse response = userService.update(loginId, updateRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/profiles")
+    @GetMapping("/profiles")
     public ResponseEntity<String> checkAuth(@Auth Long loginId) {
         return new ResponseEntity<>("ok", HttpStatus.CREATED);
     }

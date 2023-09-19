@@ -45,7 +45,7 @@ public class UserE2ETest {
         final RegisterRequest request = JOHN.회원가입을_한다();
 
         // when
-        final ExtractableResponse<Response> extractableResponse = POST_요청을_보낸다("/api/users",
+        final ExtractableResponse<Response> extractableResponse = POST_요청을_보낸다("/users",
             request);
         final UserResponse response = extractableResponse.as(UserResponse.class);
 
