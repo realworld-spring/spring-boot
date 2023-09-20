@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static real.world.fixture.ArticleFixtures.태그_없는_게시물;
+import static real.world.fixture.ArticleFixtures.게시물;
 import static real.world.fixture.UserFixtures.JOHN;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,8 +57,8 @@ public class ArticleControllerTest {
         void 상태코드200_으로_성공() throws Exception {
             // given
             final User user = JOHN.생성();
-            final Article article = 태그_없는_게시물.생성(user);
-            final UploadRequest request = 태그_없는_게시물.업로드를_한다();
+            final Article article = 게시물.생성(user);
+            final UploadRequest request = 게시물.업로드를_한다();
             given(articleService.upload(any(), any())).willReturn(UploadResponse.of(article));
 
             // when

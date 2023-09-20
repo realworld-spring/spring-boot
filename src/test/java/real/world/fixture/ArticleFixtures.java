@@ -12,7 +12,7 @@ import real.world.domain.user.entity.User;
 @Getter
 public enum ArticleFixtures {
 
-    태그_없는_게시물("title", "slug", "desc", "body", Collections.emptyList());
+    게시물("title", "slug", "desc", "body", Collections.emptyList());
 
     private final String title;
 
@@ -49,6 +49,15 @@ public enum ArticleFixtures {
         ReflectionTestUtils.setField(request, "description", this.description);
         ReflectionTestUtils.setField(request, "body", this.body);
         ReflectionTestUtils.setField(request, "tags", Set.copyOf(this.tags));
+        return request;
+    }
+
+    public UploadRequest 태그와_함께_업로드를_한다(Set<String> tags) {
+        final UploadRequest request = new UploadRequest();
+        ReflectionTestUtils.setField(request, "title", this.title);
+        ReflectionTestUtils.setField(request, "description", this.description);
+        ReflectionTestUtils.setField(request, "body", this.body);
+        ReflectionTestUtils.setField(request, "tags", tags);
         return request;
     }
 
