@@ -1,22 +1,36 @@
 package real.world.domain.user.service;
 
+import java.util.Collection;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import real.world.domain.follow.entity.Follow;
+import real.world.domain.follow.repository.FollowRepository;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
+import real.world.domain.user.dto.response.ProfileResponse;
 import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
+import real.world.domain.user.entity.UserRole;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.AlreadyFollowedException;
+import real.world.error.exception.RecursiveFollowException;
 import real.world.error.exception.UserIdNotExistException;
 import real.world.error.exception.UsernameAlreadyExistsException;
+import real.world.error.exception.UsernameNotExistException;
 
 @Service
 @Transactional
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final FollowRepository followRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -26,8 +40,10 @@ public class UserService {
     @Value("${base.img.url}")
     private String BASE_IMAGE_URL;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, FollowRepository followRepository,
+        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.followRepository = followRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,6 +60,7 @@ public class UserService {
         final User user = findUserById(id);
         return UserResponse.of(user);
     }
+
     public ProfileResponse follow(Long followerId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
@@ -58,6 +75,28 @@ public class UserService {
         final Follow follow = new Follow(user, follower);
         followRepository.save(follow);
         return ProfileResponse.of(user, true);
+    }
+
+    public ProfileResponse getProfile(String username) {
+        final User user = userRepository.findByUsername(username)
+            .orElseThrow(UsernameNotExistException::new);
+        final boolean following = isFollowing(user.getId());
+        return ProfileResponse.of(user, following);
+    }
+
+    private boolean isFollowing(Long userId) {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(hasAuthority(authentication)) {
+            final Long followerId = Long.valueOf((String) authentication.getPrincipal());
+            return followRepository.existsByUserIdAndFollowerId(userId, followerId);
+        }
+        return false;
+    }
+
+    private boolean hasAuthority(Authentication authentication) {
+        final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        final GrantedAuthority requiredAuthority = new SimpleGrantedAuthority(UserRole.ROLE_USER.toString());
+        return authorities.contains(requiredAuthority);
     }
 
     @Transactional

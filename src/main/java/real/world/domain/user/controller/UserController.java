@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.auth.annotation.Auth;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
+import real.world.domain.user.dto.response.ProfileResponse;
 import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.service.UserService;
 import real.world.security.support.JwtUtil;
@@ -73,6 +75,12 @@ public class UserController {
     @PostMapping("/profiles/{username}/follow")
     public ResponseEntity<ProfileResponse> follow(@Auth Long loginId, @PathVariable("username") String username) {
         final ProfileResponse response = userService.follow(loginId, username);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/profiles/{username}")
+    public ResponseEntity<ProfileResponse> getProfile(@PathVariable("username") String username) {
+        final ProfileResponse response = userService.getProfile(username);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
