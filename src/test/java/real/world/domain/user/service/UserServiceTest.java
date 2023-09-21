@@ -31,11 +31,9 @@ public class UserServiceTest {
 
     private final UserRepository userRepository = BDDMockito.mock(UserRepository.class);
 
-    private final FollowRepository followRepository = BDDMockito.mock(FollowRepository.class);
-
     private final PasswordEncoder passwordEncoder = NoOpPasswordEncoder.getInstance();
 
-    private final UserService userService = new UserService(userRepository, followRepository, passwordEncoder);
+    private final UserService userService = new UserService(userRepository, passwordEncoder);
 
     @Nested
     class 회원가입은 {

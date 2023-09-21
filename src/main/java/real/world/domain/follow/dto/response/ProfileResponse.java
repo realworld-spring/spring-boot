@@ -1,4 +1,4 @@
-package real.world.domain.user.dto.response;
+package real.world.domain.follow.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
