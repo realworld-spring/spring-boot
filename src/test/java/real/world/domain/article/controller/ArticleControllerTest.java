@@ -24,7 +24,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.dto.response.UploadResponse;
-import real.world.domain.article.entity.Article;
+import real.world.domain.article.query.ArticleView;
+import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
 import real.world.domain.user.entity.User;
 import real.world.support.TestSecurityConfig;
@@ -37,6 +38,9 @@ public class ArticleControllerTest {
 
     @MockBean
     private ArticleService articleService;
+
+    @MockBean
+    private ArticleQueryService articleQueryService;
 
     @Autowired
     private MockMvc mockmvc;
@@ -57,9 +61,13 @@ public class ArticleControllerTest {
         void 상태코드200_으로_성공() throws Exception {
             // given
             final User user = JOHN.생성();
-            final Article article = 게시물.생성(user);
+            final ArticleView article = 게시물.뷰_생성(user);
             final UploadRequest request = 게시물.업로드를_한다();
-            given(articleService.upload(any(), any())).willReturn(UploadResponse.of(article));
+            final long 게시물_ID = 1L;
+
+            given(articleService.upload(any(), any())).willReturn(게시물_ID);
+            given(articleQueryService.getArticle(JOHN.getId(), 게시물_ID))
+                .willReturn(UploadResponse.of(article));
 
             // when
             final ResultActions resultActions = mockmvc.perform(

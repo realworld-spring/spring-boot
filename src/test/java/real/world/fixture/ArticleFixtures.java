@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.springframework.test.util.ReflectionTestUtils;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
+import real.world.domain.article.query.ArticleView;
 import real.world.domain.user.entity.User;
 
 @Getter
@@ -40,6 +41,25 @@ public enum ArticleFixtures {
             this.description,
             this.body,
             this.tags
+        );
+    }
+
+    public Article 태그와_함께_생성(User user, Set<String> tags) {
+        return new Article(
+            user,
+            this.title,
+            this.slug,
+            this.description,
+            this.body,
+            tags
+        );
+    }
+
+    public ArticleView 뷰_생성(User user) {
+        return new ArticleView(
+            생성(user),
+            false,
+            0
         );
     }
 
