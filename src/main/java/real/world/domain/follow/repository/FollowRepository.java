@@ -11,6 +11,6 @@ public interface FollowRepository extends Repository<Follow, FollowId> {
 
     boolean existsByUserIdAndFollowerId(Long userId, Long followerId);
 
-    Optional<Follow> findByUserIdAndFollowerId(Long userId, Long followerId);
+    void delete(Follow follow);
 
 }

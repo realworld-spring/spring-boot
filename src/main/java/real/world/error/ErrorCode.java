@@ -21,6 +21,7 @@ public enum ErrorCode {
     // Follow
     RECURSIVE_FOLLOW(HttpStatus.UNPROCESSABLE_ENTITY, "recursive follow", "cannot follow self"),
     ALREADY_FOLLOWED(HttpStatus.UNPROCESSABLE_ENTITY, "follow", "already follow."),
+    FOLLOW_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "follow", "not exists."),
 
     // Authentication
     AUTH_FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),

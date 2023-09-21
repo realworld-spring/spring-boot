@@ -84,6 +84,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/profiles/{username}/unfollow")
+    public ResponseEntity<ProfileResponse> unfollow(@Auth Long loginId, @PathVariable("username") String username) {
+        final ProfileResponse response = userService.unfollow(loginId, username);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
     @GetMapping("/profiles")
     public ResponseEntity<String> checkAuth(@Auth Long loginId) {
         return new ResponseEntity<>("ok", HttpStatus.CREATED);
