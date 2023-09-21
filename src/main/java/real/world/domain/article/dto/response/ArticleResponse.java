@@ -11,7 +11,7 @@ import real.world.domain.user.dto.ProfileDto;
 @Getter
 @JsonRootName(value = "article")
 @NoArgsConstructor
-public class UploadResponse {
+public class ArticleResponse {
 
     private String slug;
     private String title;
@@ -25,7 +25,7 @@ public class UploadResponse {
 
     private ProfileDto author;
 
-    private UploadResponse(String slug, String title, String description, String body,
+    private ArticleResponse(String slug, String title, String description, String body,
         List<String> tagList, LocalDateTime createdAt, LocalDateTime updatedAt, boolean favorited,
         long favoritesCount, ProfileDto author) {
         this.slug = slug;
@@ -40,8 +40,8 @@ public class UploadResponse {
         this.author = author;
     }
 
-    public static UploadResponse of(ArticleView article) {
-        return new UploadResponse(
+    public static ArticleResponse of(ArticleView article) {
+        return new ArticleResponse(
             article.getSlug(), article.getTitle(), article.getDescription(),
             article.getBody(), article.getTagList(), article.getCreatedAt(),
             article.getUpdatedAt(), article.isFavorited(), article.getFavoritesCount(),

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import real.world.domain.article.dto.request.UploadRequest;
-import real.world.domain.article.dto.response.UploadResponse;
+import real.world.domain.article.dto.response.ArticleResponse;
 import real.world.e2e.util.DBInitializer;
 
 public class ArticleE2ETest extends E2ETest {
@@ -29,7 +29,7 @@ public class ArticleE2ETest extends E2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = 로그인_상태로_POST_요청을_보낸다(
             JOHN, "/articles", request);
-        final UploadResponse response = extractableResponse.as(UploadResponse.class);
+        final ArticleResponse response = extractableResponse.as(ArticleResponse.class);
 
         // then
         assertAll(() -> {

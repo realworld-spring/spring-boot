@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
 import real.world.domain.article.dto.request.UploadRequest;
-import real.world.domain.article.dto.response.UploadResponse;
+import real.world.domain.article.dto.response.ArticleResponse;
 import real.world.domain.article.query.ArticleView;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
@@ -67,7 +67,7 @@ public class ArticleControllerTest {
 
             given(articleService.upload(any(), any())).willReturn(게시물_ID);
             given(articleQueryService.getArticle(JOHN.getId(), 게시물_ID))
-                .willReturn(UploadResponse.of(article));
+                .willReturn(ArticleResponse.of(article));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
