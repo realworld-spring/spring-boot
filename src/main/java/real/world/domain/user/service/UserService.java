@@ -44,6 +44,21 @@ public class UserService {
         final User user = findUserById(id);
         return UserResponse.of(user);
     }
+    public ProfileResponse follow(Long followerId, String username) {
+        final User user = userRepository.findByUsername(username)
+            .orElseThrow(UsernameNotExistException::new);
+        final User follower = userRepository.findById(followerId)
+            .orElseThrow(UserIdNotExistException::new);
+
+        if(user.getId().equals(followerId)) { throw new RecursiveFollowException(); }
+        if(followRepository.existsByUserIdAndFollowerId(user.getId(), followerId)) {
+            throw new AlreadyFollowedException();
+        }
+
+        final Follow follow = new Follow(user, follower);
+        followRepository.save(follow);
+        return ProfileResponse.of(user, true);
+    }
 
     @Transactional
     public UserResponse update(Long id, UpdateRequest request) {

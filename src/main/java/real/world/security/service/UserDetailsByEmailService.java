@@ -22,7 +22,7 @@ public class UserDetailsByEmailService implements CustomUserDetailsService {
     public UserDetails loadUserByPrincipal(String email) throws AuthenticationException {
         final User user = userRepository.findByEmail(email)
             .orElseThrow(
-                () -> new AuthenticationErrorCodeException(ErrorCode.USERNAME_NOT_EXIST));
+                () -> new AuthenticationErrorCodeException(ErrorCode.AUTH_USERNAME_NOT_EXIST));
         final Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()));
         return new CustomUserDetails(user, authorities);
     }

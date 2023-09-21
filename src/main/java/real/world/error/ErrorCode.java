@@ -16,10 +16,15 @@ public enum ErrorCode {
     EMAIL_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "email", "invalid."),
     USERNAME_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "username", "already exists."),
     USERID_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "userId", "not exists."),
+    USERNAME_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "userId", "not exists."),
+
+    // Follow
+    RECURSIVE_FOLLOW(HttpStatus.UNPROCESSABLE_ENTITY, "recursive follow", "cannot follow self"),
+    ALREADY_FOLLOWED(HttpStatus.UNPROCESSABLE_ENTITY, "follow", "already follow."),
 
     // Authentication
     AUTH_FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),
-    USERNAME_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "user is not exist."),
+    AUTH_USERNAME_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "user is not exist."),
     WRONG_PASSWORD(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "wrong password."),
 
     // JWT

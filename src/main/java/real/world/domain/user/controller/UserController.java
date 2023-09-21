@@ -70,6 +70,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/profiles/{username}/follow")
+    public ResponseEntity<ProfileResponse> follow(@Auth Long loginId, @PathVariable("username") String username) {
+        final ProfileResponse response = userService.follow(loginId, username);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
     @GetMapping("/profiles")
     public ResponseEntity<String> checkAuth(@Auth Long loginId) {
         return new ResponseEntity<>("ok", HttpStatus.CREATED);
