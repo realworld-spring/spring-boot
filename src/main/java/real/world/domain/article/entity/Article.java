@@ -61,8 +61,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Favorite> favorites;
 
-    @ElementCollection
-    @CollectionTable(name = "article_tags", joinColumns = @JoinColumn(name = "tag_name"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "article_tags", joinColumns = @JoinColumn(name = "article_id"))
+    @Column(name = "name")
     private List<String> tags;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)

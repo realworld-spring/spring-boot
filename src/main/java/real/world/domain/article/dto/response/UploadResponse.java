@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import real.world.domain.article.entity.Article;
+import real.world.domain.article.query.ArticleView;
 import real.world.domain.user.dto.ProfileDto;
 
 @Getter
@@ -21,13 +21,13 @@ public class UploadResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean favorited;
-    private int favoritesCount;
+    private long favoritesCount;
 
     private ProfileDto author;
 
     private UploadResponse(String slug, String title, String description, String body,
         List<String> tagList, LocalDateTime createdAt, LocalDateTime updatedAt, boolean favorited,
-        int favoritesCount, ProfileDto author) {
+        long favoritesCount, ProfileDto author) {
         this.slug = slug;
         this.title = title;
         this.description = description;
@@ -40,12 +40,12 @@ public class UploadResponse {
         this.author = author;
     }
 
-    public static UploadResponse of(Article article) {
+    public static UploadResponse of(ArticleView article) {
         return new UploadResponse(
             article.getSlug(), article.getTitle(), article.getDescription(),
-            article.getBody(), article.getTags(), article.getCreatedAt(),
-            article.getUpdatedAt(), false, article.getFavoritesCount(),
-            ProfileDto.of(article.getUser(), false)
+            article.getBody(), article.getTagList(), article.getCreatedAt(),
+            article.getUpdatedAt(), article.isFavorited(), article.getFavoritesCount(),
+            null // TODO
         );
     }
 

@@ -3,7 +3,6 @@ package real.world.domain.article.service;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import real.world.domain.article.dto.request.UploadRequest;
-import real.world.domain.article.dto.response.UploadResponse;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.repository.ArticleRepository;
 import real.world.domain.user.entity.User;
@@ -27,12 +26,12 @@ public class ArticleService {
     }
 
     @Transactional
-    public UploadResponse upload(Long loginId, UploadRequest request) {
+    public Long upload(Long loginId, UploadRequest request) {
         final User user = userRepository.findById(loginId)
             .orElseThrow(UserIdNotExistException::new);
         final Article article = requestToEntity(user, request);
         articleRepository.save(article);
-        return UploadResponse.of(article);
+        return article.getId();
     }
 
     private Article requestToEntity(User user, UploadRequest request) {
