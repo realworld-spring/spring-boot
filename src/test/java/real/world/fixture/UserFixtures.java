@@ -3,7 +3,10 @@ package real.world.fixture;
 import java.util.Collections;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import real.world.domain.user.dto.request.LoginRequest;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.entity.User;
@@ -15,6 +18,8 @@ public enum UserFixtures {
     JOHN(1L, "John", "1234", "john@email.com", "im john", "john.png"),
     ALICE(2L, "Alice", "1234", "alice@email.com", "im alice", "alice.png"),
     BOB(3L, "Bob", "1234", "bob@email.com", "im bob", "bob.png");
+
+    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
     private final Long id;
     private final String username;
@@ -39,7 +44,7 @@ public enum UserFixtures {
     public User 지정된_ID로_생성(Long id) {
         final User user = new User(
             this.username,
-            this.password,
+            ENCODER.encode(this.password),
             this.email,
             this.bio,
             this.imageUrl
@@ -53,6 +58,13 @@ public enum UserFixtures {
         ReflectionTestUtils.setField(request, "username", this.username);
         ReflectionTestUtils.setField(request, "password", this.password);
         ReflectionTestUtils.setField(request, "email", this.email);
+        return request;
+    }
+    
+    public LoginRequest 로그인을_한다() {
+        final LoginRequest request = new LoginRequest();
+        ReflectionTestUtils.setField(request, "email", this.email);
+        ReflectionTestUtils.setField(request, "password", this.password);
         return request;
     }
 
