@@ -38,6 +38,8 @@ class FollowControllerTest {
     @Autowired
     private MockMvc mockmvc;
 
+    private User user = JOHN.생성();
+
     @Nested
     class 팔로우_요청 {
 
@@ -45,7 +47,6 @@ class FollowControllerTest {
         @WithMockUserId(user = ALICE)
         void 상태코드_201로_성공() throws Exception {
             // given
-            final User user = JOHN.생성();
             given(followService.follow(anyLong(), anyString())).willReturn(ProfileResponse.of(user, true));
 
             // when
@@ -67,7 +68,6 @@ class FollowControllerTest {
         @WithMockUserId(user = ALICE)
         void 상태코드_201로_성공() throws Exception {
             // given
-            final User user = JOHN.생성();
             given(followService.unfollow(anyLong(), anyString())).willReturn(ProfileResponse.of(user, false));
 
             // when
@@ -89,7 +89,6 @@ class FollowControllerTest {
         @WithMockUserId(user = ALICE)
         void 로그인시_상태코드_201로_성공() throws Exception {
             // given
-            final User user = JOHN.생성();
             final boolean isFollowing = true;
             given(followService.getProfile(anyString(), anyLong())).willReturn(ProfileResponse.of(user, isFollowing));
 
@@ -106,7 +105,6 @@ class FollowControllerTest {
         @Test
         void 로그인_되어있지_않을_시_상태코드_201로_성공() throws Exception {
             // given
-            final User user = JOHN.생성();
             given(followService.getProfile(anyString(), anyLong())).willReturn(ProfileResponse.of(user, false));
 
             // when

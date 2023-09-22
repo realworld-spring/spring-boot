@@ -174,22 +174,4 @@ public class UserControllerTest {
 
     }
 
-    @Nested
-    class 프로필조회 {
-
-        // TODO 일단 테스트 API로 작성하였으니 추후에 구현후 수정할 것
-        @Test
-        @WithMockUserId(user = JOHN)
-        void 상태코드_200으로_성공() throws Exception {
-            // given & when
-            final ResultActions resultActions = mockmvc.perform(
-                get("/profiles"));
-
-            // then
-            resultActions.andExpect(status().isCreated())
-                .andDo(print());
-        }
-
-    }
-
 }
