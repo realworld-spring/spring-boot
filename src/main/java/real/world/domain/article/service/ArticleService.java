@@ -2,11 +2,13 @@ package real.world.domain.article.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.repository.ArticleRepository;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.ArticleNotFoundException;
 import real.world.error.exception.UserIdNotExistException;
 
 @Service
@@ -34,14 +36,40 @@ public class ArticleService {
         return article.getId();
     }
 
+    @Transactional
+    public Long update(Long loginId, String slug, ArticleUpdateRequest request) {
+        final Article updateArticle = requestToEntity(request);
+        final Article article = articleRepository.findBySlug(slug)
+            .orElseThrow(ArticleNotFoundException::new);
+        article.update(loginId, updateArticle);
+        return article.getId();
+    }
+
+    @Transactional
+    public void delete(Long loginId, String slug) {
+        final Article article = articleRepository.findBySlug(slug)
+            .orElseThrow(ArticleNotFoundException::new);
+        article.verifyUserId(loginId);
+        articleRepository.delete(article);
+    }
+
     private Article requestToEntity(User user, UploadRequest request) {
         return new Article(
             user,
             request.getTitle(),
-            slugTranslator.translate(request.getTitle()),
+            slugTranslator,
             request.getDescription(),
             request.getBody(),
             request.getTags()
+        );
+    }
+
+    private Article requestToEntity(ArticleUpdateRequest request) {
+        return new Article(
+            request.getTitle(),
+            slugTranslator,
+            request.getDescription(),
+            request.getBody()
         );
     }
 

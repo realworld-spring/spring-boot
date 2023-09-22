@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     // Article
     ARTICLE_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "article", "not found."),
+    ARTICLE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "article", "you have no authority"),
 
     // Authentication
     AUTH_FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),

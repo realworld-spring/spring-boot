@@ -52,11 +52,32 @@ Content-Type: application/json
 }
 
 > {%
-  client.log(response.body.article.slug);
   client.global.set("slug", response.body.article.slug);
 %}
 
 ### 아티클 조회
 GET {{domain}}/api/articles/{{slug}}
+Authorization: {{access_token}}
+Content-Type: application/json
+
+### 아티클 수정
+PUT {{domain}}/api/articles/{{slug}}
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "article": {
+    "title": "Updated Title",
+    "description": "updated desc",
+    "body": "updated body"
+  }
+}
+
+> {%
+  client.global.set("slug", response.body.article.slug);
+%}
+
+### 아티클 삭제
+DELETE {{domain}}/api/articles/{{slug}}
 Authorization: {{access_token}}
 Content-Type: application/json
