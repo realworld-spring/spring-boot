@@ -50,3 +50,13 @@ Content-Type: application/json
     ]
   }
 }
+
+> {%
+  client.log(response.body.article.slug);
+  client.global.set("slug", response.body.article.slug);
+%}
+
+### 아티클 조회
+GET {{domain}}/api/articles/{{slug}}
+Authorization: {{access_token}}
+Content-Type: application/json

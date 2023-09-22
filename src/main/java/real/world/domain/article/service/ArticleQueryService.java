@@ -23,4 +23,10 @@ public class ArticleQueryService {
         return ArticleResponse.of(articleView);
     }
 
+    public ArticleResponse getArticle(Long loginId, String slug) {
+        final ArticleView articleView = articleQueryRepository.findBySlug(loginId, slug)
+            .orElseThrow(ArticleNotFoundException::new);
+        return ArticleResponse.of(articleView);
+    }
+
 }
