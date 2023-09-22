@@ -3,7 +3,6 @@ package real.world.domain.article.query;
 import static real.world.domain.article.entity.QArticle.article;
 import static real.world.domain.article.entity.QFavorite.favorite;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.Optional;
