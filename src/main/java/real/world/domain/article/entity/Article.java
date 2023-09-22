@@ -22,7 +22,9 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import real.world.domain.article.service.SlugTranslator;
 import real.world.domain.user.entity.User;
+import real.world.error.exception.ArticleUnauthorizedException;
 
 @Getter
 @Entity(name = "articles")
@@ -72,19 +74,37 @@ public class Article {
     protected Article() {
     }
 
-    public Article(User user, String title, String slug, String description, String body,
-        Collection<String> tags) {
+    public Article(User user, String title, SlugTranslator translator, String description,
+        String body, Collection<String> tags) {
         this.user = user;
         this.title = title;
-        this.slug = slug;
         this.description = description;
         this.body = body;
         this.favorites = Collections.emptyList();
         this.tags = tags.stream().toList();
+        setSlug(translator);
     }
 
-    public int getFavoritesCount() {
-        return this.favorites.size();
+    public Article(String title, SlugTranslator translator, String description, String body) {
+        this(null, title, translator, description, body, Collections.emptyList());
+    }
+
+    public void update(Long userId, Article article) {
+        verifyUserId(userId);
+        this.title = article.title;
+        this.description = article.description;
+        this.body = article.body;
+        this.slug = article.slug;
+    }
+
+    public void verifyUserId(Long userId) {
+        if (!userId.equals(this.user.getId())) {
+            throw new ArticleUnauthorizedException();
+        }
+    }
+
+    private void setSlug(SlugTranslator translator) {
+        this.slug = translator.translate(title);
     }
 
 }

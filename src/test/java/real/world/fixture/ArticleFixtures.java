@@ -8,12 +8,16 @@ import org.springframework.test.util.ReflectionTestUtils;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.query.ArticleView;
+import real.world.domain.article.service.SlugTranslator;
 import real.world.domain.user.entity.User;
+import real.world.support.StubSlugTranslator;
 
 @Getter
 public enum ArticleFixtures {
 
-    게시물("title", "slug", "desc", "body", Collections.emptyList());
+    게시물("title", "title", "desc", "body", Collections.emptyList());
+
+    private static final SlugTranslator TRANSLATOR = new StubSlugTranslator();
 
     private final String title;
 
@@ -37,7 +41,7 @@ public enum ArticleFixtures {
         return new Article(
             user,
             this.title,
-            this.slug,
+            TRANSLATOR,
             this.description,
             this.body,
             this.tags
@@ -48,7 +52,7 @@ public enum ArticleFixtures {
         return new Article(
             user,
             this.title,
-            this.slug,
+            TRANSLATOR,
             this.description,
             this.body,
             tags
