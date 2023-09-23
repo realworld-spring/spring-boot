@@ -16,7 +16,8 @@ import real.world.support.StubSlugTranslator;
 public enum ArticleFixtures {
 
     게시물("title", "title", "desc", "body", Collections.emptyList()),
-    게시물_2("title2", "title2", "desc2", "body2", Collections.emptyList());
+    게시물_2("title2", "title2", "desc2", "body2", Collections.emptyList()),
+    게시물_3("title3", "title3", "desc3", "body3", Collections.emptyList());
 
     private static final SlugTranslator TRANSLATOR = new StubSlugTranslator();
 

@@ -60,12 +60,10 @@ public class RestAssuredUtils {
             .extract();
     }
 
-    public static ExtractableResponse<Response> 로그인_상태로_DELETE_요청을_보낸다(UserFixtures user, String url,
-        Object body) {
+    public static ExtractableResponse<Response> 로그인_상태로_DELETE_요청을_보낸다(UserFixtures user, String url) {
         final String token = 로그인_요청을_보낸다(user);
         return RestAssured
             .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE).body(body)
             .header("Authorization", token)
             .when().delete(url)
             .then().log().all()

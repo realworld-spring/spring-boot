@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import real.world.fixture.ArticleFixtures;
 
 @Component
 public class DBInitializer {
@@ -20,6 +21,20 @@ public class DBInitializer {
         entityManager.persist(JOHN.지정된_ID로_생성(null));
         entityManager.persist(BOB.지정된_ID로_생성(null));
         entityManager.persist(ALICE.지정된_ID로_생성(null));
+    }
+
+    @Transactional
+    public void 게시물이_하나_업로드_돼있다() {
+        유저들이_회원가입_돼있다();
+        entityManager.persist(ArticleFixtures.게시물.생성(JOHN.getId()));
+    }
+    
+    @Transactional
+    public void 게시물이_업로드_돼있다() {
+        유저들이_회원가입_돼있다();
+        entityManager.persist(ArticleFixtures.게시물.생성(JOHN.getId()));
+        entityManager.persist(ArticleFixtures.게시물_2.생성(JOHN.getId()));
+        entityManager.persist(ArticleFixtures.게시물_3.생성(JOHN.getId()));
     }
 
 }
