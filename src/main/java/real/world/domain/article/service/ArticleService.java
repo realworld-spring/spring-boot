@@ -6,10 +6,8 @@ import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.repository.ArticleRepository;
-import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.ArticleNotFoundException;
-import real.world.error.exception.UserIdNotExistException;
 
 @Service
 public class ArticleService {
@@ -29,9 +27,7 @@ public class ArticleService {
 
     @Transactional
     public Long upload(Long loginId, UploadRequest request) {
-        final User user = userRepository.findById(loginId)
-            .orElseThrow(UserIdNotExistException::new);
-        final Article article = requestToEntity(user, request);
+        final Article article = requestToEntity(loginId, request);
         articleRepository.save(article);
         return article.getId();
     }
@@ -53,9 +49,9 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    private Article requestToEntity(User user, UploadRequest request) {
+    private Article requestToEntity(Long loginId, UploadRequest request) {
         return new Article(
-            user,
+            loginId,
             request.getTitle(),
             slugTranslator,
             request.getDescription(),

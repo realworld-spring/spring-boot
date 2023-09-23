@@ -9,7 +9,6 @@ import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.query.ArticleView;
 import real.world.domain.article.service.SlugTranslator;
-import real.world.domain.user.entity.User;
 import real.world.support.StubSlugTranslator;
 
 @Getter
@@ -37,9 +36,9 @@ public enum ArticleFixtures {
         this.tags = tags;
     }
 
-    public Article 생성(User user) {
+    public Article 생성(Long userId) {
         return new Article(
-            user,
+            userId,
             this.title,
             TRANSLATOR,
             this.description,
@@ -48,9 +47,9 @@ public enum ArticleFixtures {
         );
     }
 
-    public Article 태그와_함께_생성(User user, Set<String> tags) {
+    public Article 태그와_함께_생성(Long userId, Set<String> tags) {
         return new Article(
-            user,
+            userId,
             this.title,
             TRANSLATOR,
             this.description,
@@ -59,9 +58,9 @@ public enum ArticleFixtures {
         );
     }
 
-    public ArticleView 뷰_생성(User user) {
+    public ArticleView 뷰_생성(Long userId) {
         return new ArticleView(
-            생성(user),
+            생성(userId),
             false,
             0
         );

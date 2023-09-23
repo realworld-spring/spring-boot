@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +20,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import real.world.domain.article.service.SlugTranslator;
-import real.world.domain.user.entity.User;
 import real.world.error.exception.ArticleUnauthorizedException;
 
 @Getter
@@ -34,9 +32,8 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -66,9 +63,9 @@ public class Article {
     protected Article() {
     }
 
-    public Article(User user, String title, SlugTranslator translator, String description,
+    public Article(Long userId, String title, SlugTranslator translator, String description,
         String body, Collection<String> tags) {
-        this.user = user;
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.body = body;
@@ -89,7 +86,7 @@ public class Article {
     }
 
     public void verifyUserId(Long userId) {
-        if (!userId.equals(this.user.getId())) {
+        if (!userId.equals(this.userId)) {
             throw new ArticleUnauthorizedException();
         }
     }

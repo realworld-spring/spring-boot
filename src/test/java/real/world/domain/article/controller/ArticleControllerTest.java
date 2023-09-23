@@ -27,7 +27,6 @@ import real.world.domain.article.dto.response.ArticleResponse;
 import real.world.domain.article.query.ArticleView;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
-import real.world.domain.user.entity.User;
 import real.world.support.TestSecurityConfig;
 import real.world.support.WithMockUserId;
 import real.world.support.WithMockUserIdFactory;
@@ -60,8 +59,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드200_으로_성공() throws Exception {
             // given
-            final User user = JOHN.생성();
-            final ArticleView article = 게시물.뷰_생성(user);
+            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
             final UploadRequest request = 게시물.업로드를_한다();
             final long 게시물_ID = 1L;
 

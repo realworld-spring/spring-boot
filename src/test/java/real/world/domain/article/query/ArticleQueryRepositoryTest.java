@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.Optional;
 import java.util.Set;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -39,7 +38,7 @@ public class ArticleQueryRepositoryTest {
         final User user = UserFixtures.JOHN.생성();
         userRepository.save(user);
         final Set<String> tags = Set.of("tag1", "tag2");
-        final Article article = ArticleFixtures.게시물.태그와_함께_생성(user, tags);
+        final Article article = ArticleFixtures.게시물.태그와_함께_생성(user.getId(), tags);
         articleRepository.save(article);
 
         // when
