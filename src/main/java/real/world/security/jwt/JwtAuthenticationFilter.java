@@ -10,17 +10,22 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import real.world.domain.user.entity.UserRole;
 import real.world.error.exception.AuthenticationErrorCodeException;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -61,6 +66,8 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         HttpServletResponse response, FilterChain chain, AuthenticationException failed)
         throws IOException, ServletException {
         if(isOptionalPath(request)) {
+            final Authentication authResult = createAnonymousAuth();
+            SecurityContextHolder.getContext().setAuthentication(authResult);
             chain.doFilter(request, response);
             return;
         }
@@ -107,6 +114,12 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     private boolean isOptionalPath(HttpServletRequest request) {
         return optionalRequestMatcher.matches(request);
+    }
+
+    private Authentication createAnonymousAuth() {
+        final Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_ANONYMOUS.getValue()));
+        return new JwtAuthenticationToken("0", authorities);
     }
 
 }

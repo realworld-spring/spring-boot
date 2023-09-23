@@ -64,7 +64,7 @@ public class FollowService {
     }
 
     private boolean isFollowing(Long userId, Long followerId) {
-        return followerId != null && followRepository.existsByUserIdAndFollowerId(userId, followerId);
+        return followerId != 0L && followRepository.existsByUserIdAndFollowerId(userId, followerId);
     }
 
 }

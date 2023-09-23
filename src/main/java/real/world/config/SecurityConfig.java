@@ -57,7 +57,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, AUTH_PATH).permitAll()
                 .requestMatchers(HttpMethod.GET, SWAGGER_PATH).permitAll()
-                .requestMatchers(HttpMethod.GET, OPTIONAL_PATH).permitAll()
+                .requestMatchers(HttpMethod.GET, OPTIONAL_PATH).hasAnyRole("USER", "ANONYMOUS")
                 .anyRequest().hasRole("USER")
             )
             .addFilterBefore(customAuthenticationFilter(),
