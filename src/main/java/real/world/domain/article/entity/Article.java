@@ -1,7 +1,6 @@
 package real.world.domain.article.entity;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -60,16 +58,10 @@ public class Article {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Favorite> favorites;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "article_tags", joinColumns = @JoinColumn(name = "article_id"))
     @Column(name = "name")
     private List<String> tags;
-
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
 
     protected Article() {
     }
@@ -80,7 +72,6 @@ public class Article {
         this.title = title;
         this.description = description;
         this.body = body;
-        this.favorites = Collections.emptyList();
         this.tags = tags.stream().toList();
         setSlug(translator);
     }

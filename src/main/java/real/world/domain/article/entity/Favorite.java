@@ -1,14 +1,12 @@
 package real.world.domain.article.entity;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import lombok.Getter;
-import real.world.domain.user.entity.User;
 
 @Getter
 @Entity(name = "favorites")
@@ -16,32 +14,30 @@ import real.world.domain.user.entity.User;
 public class Favorite {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @Column(name = "article_id")
+    private Long articleId;
 
     protected Favorite() {
     }
 
-    public Favorite(User user, Article article) {
-        this.user = user;
-        this.article = article;
+    public Favorite(Long userId, Long articleId) {
+        this.userId = userId;
+        this.articleId = articleId;
     }
 
-    static class FavoriteId implements Serializable {
+    public static class FavoriteId implements Serializable {
 
-        private final Long user;
+        private final Long userId;
 
-        private final Long article;
+        private final Long articleId;
 
-        public FavoriteId(Long user, Long article) {
-            this.user = user;
-            this.article = article;
+        public FavoriteId(Long userId, Long articleId) {
+            this.userId = userId;
+            this.articleId = articleId;
         }
     }
 

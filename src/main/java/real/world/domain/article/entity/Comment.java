@@ -14,7 +14,6 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import real.world.domain.user.entity.User;
 
 @Getter
 @Entity(name = "comments")
@@ -26,13 +25,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @Column(name = "article_id")
+    private Long articleId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(nullable = false)
     private String body;
@@ -48,9 +45,10 @@ public class Comment {
     protected Comment() {
     }
 
-    public Comment(Article article, User user, String body) {
-        this.article = article;
-        this.user = user;
+    public Comment(Long articleId, Long userId, String body) {
+        this.articleId = articleId;
+        this.userId = userId;
         this.body = body;
     }
+
 }
