@@ -32,7 +32,7 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(nullable = false, length = 50)
@@ -73,12 +73,12 @@ public class Article {
         setSlug(translator);
     }
 
-    public Article(String title, SlugTranslator translator, String description, String body) {
-        this(null, title, translator, description, body, Collections.emptyList());
+    public Article(Long userId, String title, SlugTranslator translator, String description, String body) {
+        this(userId, title, translator, description, body, Collections.emptyList());
     }
 
-    public void update(Long userId, Article article) {
-        verifyUserId(userId);
+    public void update(Article article) {
+        verifyUserId(article.userId);
         this.title = article.title;
         this.description = article.description;
         this.body = article.body;

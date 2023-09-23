@@ -6,21 +6,16 @@ import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.repository.ArticleRepository;
-import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.ArticleNotFoundException;
 
 @Service
 public class ArticleService {
 
-    private final UserRepository userRepository;
-
     private final ArticleRepository articleRepository;
 
     private final SlugTranslator slugTranslator;
 
-    public ArticleService(UserRepository userRepository, ArticleRepository articleRepository,
-        SlugTranslator slugTranslator) {
-        this.userRepository = userRepository;
+    public ArticleService(ArticleRepository articleRepository, SlugTranslator slugTranslator) {
         this.articleRepository = articleRepository;
         this.slugTranslator = slugTranslator;
     }
@@ -34,10 +29,10 @@ public class ArticleService {
 
     @Transactional
     public Long update(Long loginId, String slug, ArticleUpdateRequest request) {
-        final Article updateArticle = requestToEntity(request);
+        final Article updateArticle = requestToEntity(loginId, request);
         final Article article = articleRepository.findBySlug(slug)
             .orElseThrow(ArticleNotFoundException::new);
-        article.update(loginId, updateArticle);
+        article.update(updateArticle);
         return article.getId();
     }
 
@@ -60,8 +55,9 @@ public class ArticleService {
         );
     }
 
-    private Article requestToEntity(ArticleUpdateRequest request) {
+    private Article requestToEntity(Long loginId, ArticleUpdateRequest request) {
         return new Article(
+            loginId,
             request.getTitle(),
             slugTranslator,
             request.getDescription(),

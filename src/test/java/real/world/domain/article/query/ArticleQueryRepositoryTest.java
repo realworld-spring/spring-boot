@@ -33,7 +33,7 @@ public class ArticleQueryRepositoryTest {
     private ArticleQueryRepository articleQueryRepository;
 
     @Test
-    void 아티클뷰를_단건_조회한다() {
+    void 아티클뷰를_ID로_단건_조회한다() {
         // given
         final User user = UserFixtures.JOHN.생성();
         userRepository.save(user);
@@ -44,6 +44,31 @@ public class ArticleQueryRepositoryTest {
         // when
         final Optional<ArticleView> articleView = articleQueryRepository.findById(user.getId(),
             article.getId());
+
+        // then
+        assertAll(() -> {
+            assertThat(articleView.isPresent()).isTrue();
+            final ArticleView result = articleView.get();
+            assertThat(result.getTitle()).isEqualTo(article.getTitle());
+            assertThat(result.getDescription()).isEqualTo(article.getDescription());
+            assertThat(result.getSlug()).isEqualTo(article.getSlug());
+            assertThat(result.getBody()).isEqualTo(article.getBody());
+            assertThat(result.getTagList()).containsExactlyInAnyOrderElementsOf(tags);
+        });
+    }
+    
+    @Test
+    void 아티클뷰를_슬럭으로_단건_조회한다() {
+        // given
+        final User user = UserFixtures.JOHN.생성();
+        userRepository.save(user);
+        final Set<String> tags = Set.of("tag1", "tag2");
+        final Article article = ArticleFixtures.게시물.태그와_함께_생성(user.getId(), tags);
+        articleRepository.save(article);
+
+        // when
+        final Optional<ArticleView> articleView = articleQueryRepository.findBySlug(user.getId(),
+            article.getSlug());
 
         // then
         assertAll(() -> {

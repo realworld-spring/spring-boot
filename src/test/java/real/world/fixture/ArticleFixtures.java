@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import org.springframework.test.util.ReflectionTestUtils;
+import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.query.ArticleView;
@@ -14,7 +15,8 @@ import real.world.support.StubSlugTranslator;
 @Getter
 public enum ArticleFixtures {
 
-    게시물("title", "title", "desc", "body", Collections.emptyList());
+    게시물("title", "title", "desc", "body", Collections.emptyList()),
+    게시물_2("title2", "title2", "desc2", "body2", Collections.emptyList());
 
     private static final SlugTranslator TRANSLATOR = new StubSlugTranslator();
 
@@ -81,6 +83,14 @@ public enum ArticleFixtures {
         ReflectionTestUtils.setField(request, "description", this.description);
         ReflectionTestUtils.setField(request, "body", this.body);
         ReflectionTestUtils.setField(request, "tags", tags);
+        return request;
+    }
+
+    public ArticleUpdateRequest 수정을_한다() {
+        final ArticleUpdateRequest request = new ArticleUpdateRequest();
+        ReflectionTestUtils.setField(request, "title", this.title);
+        ReflectionTestUtils.setField(request, "description", this.description);
+        ReflectionTestUtils.setField(request, "body", this.body);
         return request;
     }
 
