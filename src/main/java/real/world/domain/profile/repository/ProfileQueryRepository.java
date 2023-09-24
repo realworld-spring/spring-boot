@@ -5,6 +5,6 @@ import real.world.domain.user.dto.ProfileDto;
 
 public interface ProfileQueryRepository {
 
-    Optional<ProfileDto> findByIdAndUsername(Long loginId, String username);
+    Optional<ProfileDto> findByLoginIdAndUsername(Long loginId, String username);
 
 }

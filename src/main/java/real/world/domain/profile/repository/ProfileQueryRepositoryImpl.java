@@ -20,7 +20,7 @@ public class ProfileQueryRepositoryImpl implements ProfileQueryRepository {
     }
 
     @Override
-    public Optional<ProfileDto> findByIdAndUsername(Long loginId, String username) {
+    public Optional<ProfileDto> findByLoginIdAndUsername(Long loginId, String username) {
         return Optional.ofNullable(
             factory
                 .select(

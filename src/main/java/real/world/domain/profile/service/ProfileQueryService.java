@@ -16,8 +16,8 @@ public class ProfileQueryService {
     }
 
     public ProfileResponse getProfile(Long loginId, String username) {
-        final ProfileDto profile = profileQueryRepository.findByIdAndUsername(loginId, username)
-            .orElseThrow(UsernameNotExistException::new); // TODO
+        final ProfileDto profile = profileQueryRepository.findByLoginIdAndUsername(loginId, username)
+            .orElseThrow(UsernameNotExistException::new);
         return ProfileResponse.of(profile);
     }
 

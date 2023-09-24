@@ -34,7 +34,7 @@ class ProfileQueryServiceTest {
             final User user = JOHN.생성();
             final Long followerId = ALICE.생성().getId();
             final ProfileDto profile = ProfileDto.of(user, true);
-            given(profileQueryRepository.findByIdAndUsername(eq(followerId), eq(user.getUsername()))).willReturn(
+            given(profileQueryRepository.findByLoginIdAndUsername(eq(followerId), eq(user.getUsername()))).willReturn(
                 Optional.of(profile));
 
             // when
@@ -42,7 +42,7 @@ class ProfileQueryServiceTest {
 
             // then
             assertAll(() -> {
-                verify(profileQueryRepository).findByIdAndUsername(anyLong(), anyString());
+                verify(profileQueryRepository).findByLoginIdAndUsername(anyLong(), anyString());
                 assertThat(response.getUsername()).isEqualTo(user.getUsername());
                 assertThat(response.getBio()).isEqualTo(user.getBio());
                 assertThat(response.getImage()).isEqualTo(user.getImageUrl());
@@ -56,7 +56,7 @@ class ProfileQueryServiceTest {
             final User user = JOHN.생성();
             final Long notExistId = 0L;
             final ProfileDto profile = ProfileDto.of(user, false);
-            given(profileQueryRepository.findByIdAndUsername(eq(notExistId), eq(user.getUsername()))).willReturn(
+            given(profileQueryRepository.findByLoginIdAndUsername(eq(notExistId), eq(user.getUsername()))).willReturn(
                 Optional.of(profile));
 
             // when
@@ -64,7 +64,7 @@ class ProfileQueryServiceTest {
 
             // then
             assertAll(() -> {
-                verify(profileQueryRepository).findByIdAndUsername(anyLong(), anyString());
+                verify(profileQueryRepository).findByLoginIdAndUsername(anyLong(), anyString());
                 assertThat(response.getUsername()).isEqualTo(user.getUsername());
                 assertThat(response.getBio()).isEqualTo(user.getBio());
                 assertThat(response.getImage()).isEqualTo(user.getImageUrl());
