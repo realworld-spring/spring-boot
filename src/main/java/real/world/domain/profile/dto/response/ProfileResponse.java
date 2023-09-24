@@ -3,7 +3,7 @@ package real.world.domain.profile.dto.response;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import real.world.domain.user.dto.ProfileDto;
+import real.world.domain.profile.query.Profile;
 import real.world.domain.user.entity.User;
 
 @Getter
@@ -30,7 +30,7 @@ public class ProfileResponse {
         return new ProfileResponse(user.getUsername(), user.getBio(), user.getImageUrl(), following);
     }
 
-    public static ProfileResponse of(ProfileDto profile) {
+    public static ProfileResponse of(Profile profile) {
         return new ProfileResponse(
             profile.getUsername(),
             profile.getBio(),

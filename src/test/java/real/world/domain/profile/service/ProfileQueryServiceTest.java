@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import real.world.domain.profile.dto.response.ProfileResponse;
-import real.world.domain.profile.repository.ProfileQueryRepository;
-import real.world.domain.user.dto.ProfileDto;
+import real.world.domain.profile.query.Profile;
+import real.world.domain.profile.query.ProfileQueryRepository;
 import real.world.domain.user.entity.User;
 
 class ProfileQueryServiceTest {
@@ -33,7 +33,7 @@ class ProfileQueryServiceTest {
             // given
             final User user = JOHN.생성();
             final Long followerId = ALICE.생성().getId();
-            final ProfileDto profile = ProfileDto.of(user, true);
+            final Profile profile = Profile.of(user, true);
             given(profileQueryRepository.findByLoginIdAndUsername(eq(followerId), eq(user.getUsername()))).willReturn(
                 Optional.of(profile));
 
@@ -55,7 +55,7 @@ class ProfileQueryServiceTest {
             // given
             final User user = JOHN.생성();
             final Long notExistId = 0L;
-            final ProfileDto profile = ProfileDto.of(user, false);
+            final Profile profile = Profile.of(user, false);
             given(profileQueryRepository.findByLoginIdAndUsername(eq(notExistId), eq(user.getUsername()))).willReturn(
                 Optional.of(profile));
 

@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import real.world.domain.article.query.ArticleView;
-import real.world.domain.user.dto.ProfileDto;
+import real.world.domain.profile.query.Profile;
 
 @Getter
 @JsonRootName(value = "article")
@@ -23,11 +23,11 @@ public class ArticleResponse {
     private boolean favorited;
     private long favoritesCount;
 
-    private ProfileDto author;
+    private Profile author;
 
     private ArticleResponse(String slug, String title, String description, String body,
         List<String> tagList, LocalDateTime createdAt, LocalDateTime updatedAt, boolean favorited,
-        long favoritesCount, ProfileDto author) {
+        long favoritesCount, Profile author) {
         this.slug = slug;
         this.title = title;
         this.description = description;
