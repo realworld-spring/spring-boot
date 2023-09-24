@@ -27,21 +27,21 @@ public class ProfileController {
     public ResponseEntity<ProfileResponse> getProfile(@Auth Long loginId, @PathVariable("username") String username) {
         final ProfileResponse response = profileQueryService.getProfile(username, loginId);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/profiles/{username}/follow")
     public ResponseEntity<ProfileResponse> follow(@Auth Long loginId, @PathVariable("username") String username) {
         final ProfileResponse response = followService.follow(loginId, username);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/profiles/{username}/unfollow")
     public ResponseEntity<ProfileResponse> unfollow(@Auth Long loginId, @PathVariable("username") String username) {
         final ProfileResponse response = followService.unfollow(loginId, username);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

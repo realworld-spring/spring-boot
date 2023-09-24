@@ -54,13 +54,13 @@ public class UserController {
         final String token = jwtUtil.generateJwtToken(id, authoritiesString);
 
         httpServletResponse.addHeader(AUTH_HEADER, AUTH_TYPE + " " + token);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/user")
     public ResponseEntity<UserResponse> currentUser(@Auth Long loginId) {
         final UserResponse response = userService.getUser(loginId);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/user")
