@@ -6,4 +6,6 @@ public interface ArticleQueryRepository{
 
     Optional<ArticleView> findById(Long loginId, Long id);
 
+    Optional<ArticleView> findBySlug(Long loginId, String slug);
+
 }

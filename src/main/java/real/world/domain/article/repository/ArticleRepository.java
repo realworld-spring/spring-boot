@@ -10,4 +10,8 @@ public interface ArticleRepository extends Repository<Article, Long> {
 
     Optional<Article> findById(Long id);
 
+    Optional<Article> findBySlug(String slug);
+
+    void delete(Article article);
+
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 public class SlugUUIDTranslator implements SlugTranslator {
 
     public String translate(String title) {
-        final String suffix =  UUID.randomUUID().toString().substring(0, 6);
-        return title.toLowerCase().replace("\\s+", "-") + "-" + suffix;
+        final String suffix = UUID.randomUUID().toString().substring(0, 6);
+        return title.toLowerCase().replaceAll("\\s+", "-") + "-" + suffix;
     }
 
 }

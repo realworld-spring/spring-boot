@@ -2,46 +2,67 @@ package real.world.domain.article.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.repository.ArticleRepository;
-import real.world.domain.user.entity.User;
-import real.world.domain.user.repository.UserRepository;
-import real.world.error.exception.UserIdNotExistException;
+import real.world.error.exception.ArticleNotFoundException;
 
 @Service
 public class ArticleService {
-
-    private final UserRepository userRepository;
 
     private final ArticleRepository articleRepository;
 
     private final SlugTranslator slugTranslator;
 
-    public ArticleService(UserRepository userRepository, ArticleRepository articleRepository,
-        SlugTranslator slugTranslator) {
-        this.userRepository = userRepository;
+    public ArticleService(ArticleRepository articleRepository, SlugTranslator slugTranslator) {
         this.articleRepository = articleRepository;
         this.slugTranslator = slugTranslator;
     }
 
     @Transactional
     public Long upload(Long loginId, UploadRequest request) {
-        final User user = userRepository.findById(loginId)
-            .orElseThrow(UserIdNotExistException::new);
-        final Article article = requestToEntity(user, request);
+        final Article article = requestToEntity(loginId, request);
         articleRepository.save(article);
         return article.getId();
     }
 
-    private Article requestToEntity(User user, UploadRequest request) {
+    @Transactional
+    public Long update(Long loginId, String slug, ArticleUpdateRequest request) {
+        final Article updateArticle = requestToEntity(loginId, request);
+        final Article article = articleRepository.findBySlug(slug)
+            .orElseThrow(ArticleNotFoundException::new);
+        article.verifyUserId(loginId);
+        article.update(updateArticle);
+        return article.getId();
+    }
+
+    @Transactional
+    public void delete(Long loginId, String slug) {
+        final Article article = articleRepository.findBySlug(slug)
+            .orElseThrow(ArticleNotFoundException::new);
+        article.verifyUserId(loginId);
+        articleRepository.delete(article);
+    }
+
+    private Article requestToEntity(Long loginId, UploadRequest request) {
         return new Article(
-            user,
+            loginId,
             request.getTitle(),
-            slugTranslator.translate(request.getTitle()),
+            slugTranslator,
             request.getDescription(),
             request.getBody(),
             request.getTags()
+        );
+    }
+
+    private Article requestToEntity(Long loginId, ArticleUpdateRequest request) {
+        return new Article(
+            loginId,
+            request.getTitle(),
+            slugTranslator,
+            request.getDescription(),
+            request.getBody()
         );
     }
 

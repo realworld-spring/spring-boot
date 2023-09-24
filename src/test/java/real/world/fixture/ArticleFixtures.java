@@ -5,15 +5,21 @@ import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import org.springframework.test.util.ReflectionTestUtils;
+import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.query.ArticleView;
-import real.world.domain.user.entity.User;
+import real.world.domain.article.service.SlugTranslator;
+import real.world.support.StubSlugTranslator;
 
 @Getter
 public enum ArticleFixtures {
 
-    게시물("title", "slug", "desc", "body", Collections.emptyList());
+    게시물("title", "title", "desc", "body", Collections.emptyList()),
+    게시물_2("title2", "title2", "desc2", "body2", Collections.emptyList()),
+    게시물_3("title3", "title3", "desc3", "body3", Collections.emptyList());
+
+    private static final SlugTranslator TRANSLATOR = new StubSlugTranslator();
 
     private final String title;
 
@@ -33,31 +39,31 @@ public enum ArticleFixtures {
         this.tags = tags;
     }
 
-    public Article 생성(User user) {
+    public Article 생성(Long userId) {
         return new Article(
-            user,
+            userId,
             this.title,
-            this.slug,
+            TRANSLATOR,
             this.description,
             this.body,
             this.tags
         );
     }
 
-    public Article 태그와_함께_생성(User user, Set<String> tags) {
+    public Article 태그와_함께_생성(Long userId, Set<String> tags) {
         return new Article(
-            user,
+            userId,
             this.title,
-            this.slug,
+            TRANSLATOR,
             this.description,
             this.body,
             tags
         );
     }
 
-    public ArticleView 뷰_생성(User user) {
+    public ArticleView 뷰_생성(Long userId) {
         return new ArticleView(
-            생성(user),
+            생성(userId),
             false,
             0
         );
@@ -78,6 +84,14 @@ public enum ArticleFixtures {
         ReflectionTestUtils.setField(request, "description", this.description);
         ReflectionTestUtils.setField(request, "body", this.body);
         ReflectionTestUtils.setField(request, "tags", tags);
+        return request;
+    }
+
+    public ArticleUpdateRequest 수정을_한다() {
+        final ArticleUpdateRequest request = new ArticleUpdateRequest();
+        ReflectionTestUtils.setField(request, "title", this.title);
+        ReflectionTestUtils.setField(request, "description", this.description);
+        ReflectionTestUtils.setField(request, "body", this.body);
         return request;
     }
 

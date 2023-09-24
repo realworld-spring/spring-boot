@@ -22,12 +22,21 @@ public class ArticleQueryRepositoryImpl implements ArticleQueryRepository {
         return Optional.ofNullable(factory.select(new QArticleView(
             article,
             JPAExpressions.selectFrom(favorite)
-                .where(favorite.user.id.eq(loginId).and(favorite.article.id.eq(id)))
+                .where(favorite.userId.eq(loginId).and(favorite.articleId.eq(id)))
                 .exists(),
             JPAExpressions.select(favorite.count())
                 .from(favorite)
-                .where(favorite.article.id.eq(id))
+                .where(favorite.articleId.eq(id))
         )).from(article).where(article.id.eq(id)).fetchOne());
+    }
+
+    @Override
+    public Optional<ArticleView> findBySlug(Long loginId, String slug) {
+        final Long id = factory.select(article.id)
+            .from(article)
+            .where(article.slug.eq(slug))
+            .fetchOne();
+        return findById(loginId, id);
     }
 
 }
