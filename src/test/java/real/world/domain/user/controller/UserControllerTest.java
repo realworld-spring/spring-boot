@@ -101,7 +101,7 @@ public class UserControllerTest {
 
         @Test
         @WithMockUserId(user = JOHN)
-        void 상태코드_201로_성공() throws Exception {
+        void 상태코드_200로_성공() throws Exception {
             // given
             final User user = JOHN.생성();
             final Long id = JOHN.getId();
@@ -111,7 +111,7 @@ public class UserControllerTest {
             final ResultActions resultActions = mockmvc.perform(get("/user"));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
             verify(userService).getUser(any());
         }
@@ -149,7 +149,7 @@ public class UserControllerTest {
                 .content(objectMapper.writeValueAsString(new UpdateRequest())));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
             verify(userService).update(anyLong(), any(UpdateRequest.class));
         }

@@ -67,7 +67,7 @@ public class UserController {
     public ResponseEntity<UserResponse> update(@Auth Long loginId,
         @RequestBody UpdateRequest updateRequest) {
         final UserResponse response = userService.update(loginId, updateRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

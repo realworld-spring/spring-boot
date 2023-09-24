@@ -1,8 +1,8 @@
-package real.world.domain.follow.controller;
+package real.world.domain.profile.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,40 +21,44 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
-import real.world.domain.follow.dto.response.ProfileResponse;
 import real.world.domain.follow.service.FollowService;
+import real.world.domain.profile.dto.response.ProfileResponse;
+import real.world.domain.profile.service.ProfileQueryService;
 import real.world.domain.user.entity.User;
 import real.world.support.TestSecurityConfig;
 import real.world.support.WithMockUserId;
 import real.world.support.WithMockUserIdFactory;
 
-@WebMvcTest(controllers = {FollowController.class})
+@WebMvcTest(controllers = {ProfileController.class})
 @Import({TestSecurityConfig.class, WebMvcConfig.class, WithMockUserIdFactory.class})
-class FollowControllerTest {
+class ProfileControllerTest {
 
     @MockBean
     private FollowService followService;
 
+    @MockBean
+    private ProfileQueryService profileQueryService;
+
     @Autowired
     private MockMvc mockmvc;
-
-    private User user = JOHN.생성();
 
     @Nested
     class 팔로우_요청 {
 
         @Test
         @WithMockUserId(user = ALICE)
-        void 상태코드_201로_성공() throws Exception {
+        void 상태코드_200로_성공() throws Exception {
             // given
-            given(followService.follow(anyLong(), anyString())).willReturn(ProfileResponse.of(user, true));
+            final User user = JOHN.생성();
+            given(followService.follow(anyLong(), anyString())).willReturn(
+                ProfileResponse.of(user, true));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
                 post("/profiles/"+ user.getUsername() +"/follow"));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
             verify(followService).follow(anyLong(), anyString());
         }
@@ -66,8 +70,9 @@ class FollowControllerTest {
 
         @Test
         @WithMockUserId(user = ALICE)
-        void 상태코드_201로_성공() throws Exception {
+        void 상태코드_200로_성공() throws Exception {
             // given
+            final User user = JOHN.생성();
             given(followService.unfollow(anyLong(), anyString())).willReturn(ProfileResponse.of(user, false));
 
             // when
@@ -75,7 +80,7 @@ class FollowControllerTest {
                 post("/profiles/"+ user.getUsername() +"/unfollow"));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
             verify(followService).unfollow(anyLong(), anyString());
         }
@@ -87,35 +92,21 @@ class FollowControllerTest {
 
         @Test
         @WithMockUserId(user = ALICE)
-        void 로그인시_상태코드_201로_성공() throws Exception {
+        void 상태코드_200로_성공() throws Exception {
             // given
-            final boolean isFollowing = true;
-            given(followService.getProfile(anyString(), anyLong())).willReturn(ProfileResponse.of(user, isFollowing));
+            final User user = JOHN.생성();
+            given(profileQueryService.getProfile(anyLong(), anyString())).willReturn(new ProfileResponse());
 
             // when
             final ResultActions resultActions = mockmvc.perform(
                 get("/profiles/"+ user.getUsername()));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
-            verify(followService).getProfile(anyString(), any());
+            verify(profileQueryService).getProfile(anyLong(), anyString());
         }
 
-        @Test
-        void 로그인_되어있지_않을_시_상태코드_201로_성공() throws Exception {
-            // given
-            given(followService.getProfile(anyString(), anyLong())).willReturn(ProfileResponse.of(user, false));
-
-            // when
-            final ResultActions resultActions = mockmvc.perform(
-                get("/profiles/"+ user.getUsername()));
-
-            // then
-            resultActions.andExpect(status().isCreated())
-                .andDo(print());
-            verify(followService).getProfile(anyString(), any());
-        }
     }
 
 }

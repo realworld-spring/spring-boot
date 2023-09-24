@@ -13,7 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import real.world.domain.follow.dto.response.ProfileResponse;
+import real.world.domain.profile.dto.response.ProfileResponse;
 import real.world.domain.follow.entity.Follow;
 import real.world.domain.follow.repository.FollowRepository;
 import real.world.domain.user.entity.User;
@@ -86,51 +86,6 @@ class FollowServiceTest {
             // then
             assertAll(() -> {
                 verify(followRepository).delete(any(Follow.class));
-                assertThat(response.getUsername()).isEqualTo(user.getUsername());
-                assertThat(response.getBio()).isEqualTo(user.getBio());
-                assertThat(response.getImage()).isEqualTo(user.getImageUrl());
-                assertThat(response.isFollowing()).isEqualTo(false);
-            });
-        }
-
-    }
-
-    @Nested
-    class 프로필_요청은 {
-
-        @Test
-        void 로그인이_되어있고_정상_호출시_프로필을_반환한다() {
-            // given
-            final User user = JOHN.생성();
-            final Long followerId = ALICE.getId();
-            final boolean isFollowing = true;
-            given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
-            given(followRepository.existsByUserIdAndFollowerId(user.getId(), followerId)).willReturn(isFollowing);
-
-            // when
-            final ProfileResponse response = followService.getProfile(user.getUsername(), followerId);
-
-            // then
-            assertAll(() -> {
-                assertThat(response.getUsername()).isEqualTo(user.getUsername());
-                assertThat(response.getBio()).isEqualTo(user.getBio());
-                assertThat(response.getImage()).isEqualTo(user.getImageUrl());
-                assertThat(response.isFollowing()).isEqualTo(isFollowing);
-            });
-        }
-
-        @Test
-        void 로그인이_되어있지_않고_정상_호출시_프로필을_반환한다() {
-            // given
-            final User user = JOHN.생성();
-            final Long followerId = null;
-            given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
-
-            // when
-            final ProfileResponse response = followService.getProfile(user.getUsername(), followerId);
-
-            // then
-            assertAll(() -> {
                 assertThat(response.getUsername()).isEqualTo(user.getUsername());
                 assertThat(response.getBio()).isEqualTo(user.getBio());
                 assertThat(response.getImage()).isEqualTo(user.getImageUrl());
