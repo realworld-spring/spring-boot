@@ -1,5 +1,6 @@
 package real.world.domain.user.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import real.world.domain.user.entity.User;
@@ -20,6 +21,14 @@ public class ProfileDto {
         this.username = username;
         this.bio = bio;
         this.image = image;
+        this.following = following;
+    }
+
+    @QueryProjection
+    public ProfileDto(User user, boolean following) {
+        this.username = user.getUsername();
+        this.bio = user.getBio();
+        this.image = user.getImageUrl();
         this.following = following;
     }
 

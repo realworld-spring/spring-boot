@@ -101,7 +101,7 @@ public class UserControllerTest {
 
         @Test
         @WithMockUserId(user = JOHN)
-        void 상태코드_201로_성공() throws Exception {
+        void 상태코드_200로_성공() throws Exception {
             // given
             final User user = JOHN.생성();
             final Long id = JOHN.getId();
@@ -111,7 +111,7 @@ public class UserControllerTest {
             final ResultActions resultActions = mockmvc.perform(get("/user"));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
             verify(userService).getUser(any());
         }
@@ -149,7 +149,7 @@ public class UserControllerTest {
                 .content(objectMapper.writeValueAsString(new UpdateRequest())));
 
             // then
-            resultActions.andExpect(status().isCreated())
+            resultActions.andExpect(status().isOk())
                 .andDo(print());
             verify(userService).update(anyLong(), any(UpdateRequest.class));
         }
@@ -170,24 +170,6 @@ public class UserControllerTest {
             resultActions.andExpect(status().isUnprocessableEntity())
                 .andDo(print());
             verify(userService).update(anyLong(), any(UpdateRequest.class));
-        }
-
-    }
-
-    @Nested
-    class 프로필조회 {
-
-        // TODO 일단 테스트 API로 작성하였으니 추후에 구현후 수정할 것
-        @Test
-        @WithMockUserId(user = JOHN)
-        void 상태코드_200으로_성공() throws Exception {
-            // given & when
-            final ResultActions resultActions = mockmvc.perform(
-                get("/profiles"));
-
-            // then
-            resultActions.andExpect(status().isCreated())
-                .andDo(print());
         }
 
     }
