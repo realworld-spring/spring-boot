@@ -1,5 +1,7 @@
 package real.world.domain.article.service;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -9,7 +11,6 @@ import static real.world.fixture.ArticleFixtures.게시물_2;
 import static real.world.fixture.UserFixtures.JOHN;
 
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +54,7 @@ public class ArticleServiceTest {
     class 게시물_수정은 {
 
         @Test
-        void 정상_호출시_포스트를_수정한다() {
+        void 정상_호출시_userId를_검증하고_포스트를_수정한다() {
             // given
             final Long userId = JOHN.getId();
             final String slug = 게시물.getSlug();
@@ -65,7 +66,10 @@ public class ArticleServiceTest {
             articleService.update(userId, slug, request);
 
             // then
-            verify(article).update(any());
+            assertAll(() -> {
+                verify(article).verifyUserId(anyLong());
+                verify(article).update(any());
+            });
         }
 
         @Test
@@ -76,7 +80,7 @@ public class ArticleServiceTest {
             final ArticleUpdateRequest request = 게시물_2.수정을_한다();
 
             // when & then
-            Assertions.assertThatThrownBy(() -> articleService.update(userId, slug, request))
+            assertThatThrownBy(() -> articleService.update(userId, slug, request))
                 .isInstanceOf(ArticleNotFoundException.class);
         }
 
@@ -97,8 +101,10 @@ public class ArticleServiceTest {
             articleService.delete(userId, slug);
 
             // then
-            verify(article).verifyUserId(anyLong());
-            verify(articleRepository).delete(any());
+            assertAll(() -> {
+                verify(article).verifyUserId(anyLong());
+                verify(articleRepository).delete(any());
+            });
         }
 
         @Test
@@ -108,7 +114,7 @@ public class ArticleServiceTest {
             final String slug = 게시물.getSlug();
 
             // when & then
-            Assertions.assertThatThrownBy(() -> articleService.delete(userId, slug))
+            assertThatThrownBy(() -> articleService.delete(userId, slug))
                 .isInstanceOf(ArticleNotFoundException.class);
         }
 

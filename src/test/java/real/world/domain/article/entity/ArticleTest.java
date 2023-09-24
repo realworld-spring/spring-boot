@@ -49,16 +49,4 @@ public class ArticleTest {
         assertThat(article.getSlug()).isEqualTo(slugTranslator.translate(게시물_2.getTitle()));
     }
 
-    @Test
-    void 수정_시_유저ID가_일치하지_않는다면_예외를_던진다() {
-        // given & when
-        final Article article = new Article(JOHN.getId(), 게시물.getTitle(), slugTranslator,
-            게시물.getDescription(), 게시물.getBody(), 게시물.getTags());
-        final Article updateArticle = 게시물_2.생성(ALICE.getId());
-
-        // then
-        assertThatThrownBy(() -> article.update(updateArticle)).isInstanceOf(
-            ArticleUnauthorizedException.class);
-    }
-
 }

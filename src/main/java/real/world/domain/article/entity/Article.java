@@ -78,7 +78,6 @@ public class Article {
     }
 
     public void update(Article article) {
-        verifyUserId(article.userId);
         this.title = article.title;
         this.description = article.description;
         this.body = article.body;

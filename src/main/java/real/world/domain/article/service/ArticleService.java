@@ -32,6 +32,7 @@ public class ArticleService {
         final Article updateArticle = requestToEntity(loginId, request);
         final Article article = articleRepository.findBySlug(slug)
             .orElseThrow(ArticleNotFoundException::new);
+        article.verifyUserId(loginId);
         article.update(updateArticle);
         return article.getId();
     }
