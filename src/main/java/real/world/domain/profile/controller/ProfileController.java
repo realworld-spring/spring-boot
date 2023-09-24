@@ -1,4 +1,4 @@
-package real.world.domain.follow.controller;
+package real.world.domain.profile.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,27 +8,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.auth.annotation.Auth;
 import real.world.domain.follow.service.FollowService;
-import real.world.domain.follow.dto.response.ProfileResponse;
+import real.world.domain.profile.dto.response.ProfileResponse;
+import real.world.domain.profile.service.ProfileQueryService;
 
 @RestController
-public class FollowController {
+public class ProfileController {
 
     private final FollowService followService;
 
-    public FollowController(FollowService followService) {
+    private final ProfileQueryService profileQueryService;
+
+    public ProfileController(FollowService followService, ProfileQueryService profileQueryService) {
         this.followService = followService;
+        this.profileQueryService = profileQueryService;
+    }
+
+    @GetMapping("/profiles/{username}")
+    public ResponseEntity<ProfileResponse> getProfile(@Auth Long loginId, @PathVariable("username") String username) {
+        final ProfileResponse response = profileQueryService.getProfile(username, loginId);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/profiles/{username}/follow")
     public ResponseEntity<ProfileResponse> follow(@Auth Long loginId, @PathVariable("username") String username) {
         final ProfileResponse response = followService.follow(loginId, username);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/profiles/{username}")
-    public ResponseEntity<ProfileResponse> getProfile(@Auth Long loginId, @PathVariable("username") String username) {
-        final ProfileResponse response = followService.getProfile(username, loginId);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

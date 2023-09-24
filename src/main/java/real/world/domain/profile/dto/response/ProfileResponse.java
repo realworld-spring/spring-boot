@@ -1,8 +1,9 @@
-package real.world.domain.follow.dto.response;
+package real.world.domain.profile.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import real.world.domain.user.dto.ProfileDto;
 import real.world.domain.user.entity.User;
 
 @Getter
@@ -27,6 +28,15 @@ public class ProfileResponse {
 
     public static ProfileResponse of(User user, boolean following) {
         return new ProfileResponse(user.getUsername(), user.getBio(), user.getImageUrl(), following);
+    }
+
+    public static ProfileResponse of(ProfileDto profile) {
+        return new ProfileResponse(
+            profile.getUsername(),
+            profile.getBio(),
+            profile.getImage(),
+            profile.isFollowing()
+        );
     }
 
 }
