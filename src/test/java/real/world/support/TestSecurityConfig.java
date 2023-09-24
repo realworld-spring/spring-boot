@@ -21,6 +21,8 @@ public class TestSecurityConfig {
 
     private static final String[] AUTH_PATH = {"/users", LOGIN_PATH};
 
+    private static final String[]  OPTIONAL_PATH = {"/profiles/*"};
+
     private static final String[] SWAGGER_PATH = {"/docs/open-api.json", "/swagger-ui/**",
         "/v3/**"};
 
@@ -33,6 +35,7 @@ public class TestSecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, AUTH_PATH).permitAll()
                 .requestMatchers(HttpMethod.GET, SWAGGER_PATH).permitAll()
+                .requestMatchers(HttpMethod.GET, OPTIONAL_PATH).permitAll()
                 .anyRequest().hasRole("USER")
             )
             .sessionManagement(

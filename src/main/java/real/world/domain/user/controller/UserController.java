@@ -54,25 +54,20 @@ public class UserController {
         final String token = jwtUtil.generateJwtToken(id, authoritiesString);
 
         httpServletResponse.addHeader(AUTH_HEADER, AUTH_TYPE + " " + token);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/user")
     public ResponseEntity<UserResponse> currentUser(@Auth Long loginId) {
         final UserResponse response = userService.getUser(loginId);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/user")
     public ResponseEntity<UserResponse> update(@Auth Long loginId,
         @RequestBody UpdateRequest updateRequest) {
         final UserResponse response = userService.update(loginId, updateRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/profiles")
-    public ResponseEntity<String> checkAuth(@Auth Long loginId) {
-        return new ResponseEntity<>("ok", HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

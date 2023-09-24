@@ -32,15 +32,10 @@ public class Follow {
         this.follower = follower;
     }
 
-    static class FollowId implements Serializable {
+    static public class FollowId implements Serializable {
+        Long user;
+        Long follower;
 
-        private final Long user;
-        private final Long follower;
-
-        public FollowId(Long user, Long follower) {
-            this.user = user;
-            this.follower = follower;
-        }
     }
 
 }
