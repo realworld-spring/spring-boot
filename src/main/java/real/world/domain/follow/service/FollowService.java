@@ -6,7 +6,7 @@ import real.world.domain.follow.repository.FollowRepository;
 import real.world.domain.profile.dto.response.ProfileResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
-import real.world.error.exception.AlreadyFollowedException;
+import real.world.error.exception.AlreadyFollowingException;
 import real.world.error.exception.FollowNotExistException;
 import real.world.error.exception.RecursiveFollowException;
 import real.world.error.exception.UserIdNotExistException;
@@ -24,34 +24,34 @@ public class FollowService {
         this.followRepository = followRepository;
     }
 
-    public ProfileResponse follow(Long followerId, String username) {
+    public ProfileResponse follow(Long loginId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
-        final User follower = userRepository.findById(followerId)
+        final User loginUser = userRepository.findById(loginId)
             .orElseThrow(UserIdNotExistException::new);
 
-        if(user.getId().equals(followerId)) { throw new RecursiveFollowException(); }
-        if(followRepository.existsByUserIdAndFollowerId(user.getId(), followerId)) {
-            throw new AlreadyFollowedException();
+        if(user.getId().equals(loginId)) { throw new RecursiveFollowException(); }
+        if(followRepository.existsByUserIdAndFollowerId(user.getId(), loginId)) {
+            throw new AlreadyFollowingException();
         }
 
-        final Follow follow = new Follow(user, follower);
+        final Follow follow = new Follow(user, loginUser);
         followRepository.save(follow);
         return ProfileResponse.of(user, true);
     }
 
-    public ProfileResponse unfollow(Long followerId, String username) {
+    public ProfileResponse unfollow(Long loginId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
-        final User follower = userRepository.findById(followerId)
+        final User loginUser = userRepository.findById(loginId)
             .orElseThrow(UserIdNotExistException::new);
 
-        if(user.getId().equals(followerId)) { throw new RecursiveFollowException(); }
-        if(!followRepository.existsByUserIdAndFollowerId(user.getId(), followerId)) {
+        if(user.getId().equals(loginId)) { throw new RecursiveFollowException(); }
+        if(!followRepository.existsByUserIdAndFollowerId(user.getId(), loginId)) {
             throw new FollowNotExistException();
         }
 
-        final Follow follow = new Follow(user, follower);
+        final Follow follow = new Follow(user, loginUser);
         followRepository.delete(follow);
         return ProfileResponse.of(user, false);
     }

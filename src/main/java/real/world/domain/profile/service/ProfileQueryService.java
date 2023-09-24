@@ -15,8 +15,8 @@ public class ProfileQueryService {
         this.profileQueryRepository = profileQueryRepository;
     }
 
-    public ProfileResponse getProfile(String username, Long followerId) {
-        final ProfileDto profile = profileQueryRepository.findByIdAndUsername(followerId, username)
+    public ProfileResponse getProfile(Long loginId, String username) {
+        final ProfileDto profile = profileQueryRepository.findByIdAndUsername(loginId, username)
             .orElseThrow(UsernameNotExistException::new); // TODO
         return ProfileResponse.of(profile);
     }

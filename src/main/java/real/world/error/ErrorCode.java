@@ -20,7 +20,7 @@ public enum ErrorCode {
 
     // Follow
     RECURSIVE_FOLLOW(HttpStatus.UNPROCESSABLE_ENTITY, "recursive follow", "cannot follow self"),
-    ALREADY_FOLLOWED(HttpStatus.UNPROCESSABLE_ENTITY, "follow", "already follow."),
+    ALREADY_FOLLOWING(HttpStatus.UNPROCESSABLE_ENTITY, "follow", "already follow."),
     FOLLOW_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "follow", "not exists."),
 
     // Authentication

@@ -25,7 +25,7 @@ public class ProfileController {
 
     @GetMapping("/profiles/{username}")
     public ResponseEntity<ProfileResponse> getProfile(@Auth Long loginId, @PathVariable("username") String username) {
-        final ProfileResponse response = profileQueryService.getProfile(username, loginId);
+        final ProfileResponse response = profileQueryService.getProfile(loginId, username);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
