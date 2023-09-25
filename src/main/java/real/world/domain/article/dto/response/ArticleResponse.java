@@ -9,7 +9,6 @@ import real.world.domain.article.query.ArticleView;
 import real.world.domain.profile.query.Profile;
 
 @Getter
-@JsonRootName(value = "article")
 @NoArgsConstructor
 public class ArticleResponse {
 
