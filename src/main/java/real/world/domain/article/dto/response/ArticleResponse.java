@@ -1,6 +1,5 @@
 package real.world.domain.article.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import real.world.domain.article.query.ArticleView;
 import real.world.domain.profile.query.Profile;
 
 @Getter
-@JsonRootName(value = "article")
 @NoArgsConstructor
 public class ArticleResponse {
 
