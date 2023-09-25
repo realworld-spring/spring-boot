@@ -13,7 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import real.world.domain.profile.dto.response.ProfileResponse;
+import real.world.domain.profile.dto.response.ProfileDto;
 import real.world.domain.follow.entity.Follow;
 import real.world.domain.follow.repository.FollowRepository;
 import real.world.domain.user.entity.User;
@@ -41,7 +41,7 @@ class FollowServiceTest {
             given(followRepository.existsByUserIdAndFollowerId(user.getId(), follower.getId())).willReturn(false);
 
             // when
-            final ProfileResponse response = followService.follow(follower.getId(), user.getUsername());
+            final ProfileDto response = followService.follow(follower.getId(), user.getUsername());
 
             // then
             assertAll(() -> {
@@ -81,7 +81,7 @@ class FollowServiceTest {
             given(followRepository.existsByUserIdAndFollowerId(user.getId(), follower.getId())).willReturn(true);
 
             // when
-            final ProfileResponse response = followService.unfollow(follower.getId(), user.getUsername());
+            final ProfileDto response = followService.unfollow(follower.getId(), user.getUsername());
 
             // then
             assertAll(() -> {

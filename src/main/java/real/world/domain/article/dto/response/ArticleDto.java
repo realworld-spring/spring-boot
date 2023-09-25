@@ -1,6 +1,5 @@
 package real.world.domain.article.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -10,7 +9,7 @@ import real.world.domain.profile.query.Profile;
 
 @Getter
 @NoArgsConstructor
-public class ArticleResponse {
+public class ArticleDto {
 
     private String slug;
     private String title;
@@ -24,7 +23,7 @@ public class ArticleResponse {
 
     private Profile author;
 
-    private ArticleResponse(String slug, String title, String description, String body,
+    private ArticleDto(String slug, String title, String description, String body,
         List<String> tagList, LocalDateTime createdAt, LocalDateTime updatedAt, boolean favorited,
         long favoritesCount, Profile author) {
         this.slug = slug;
@@ -39,8 +38,8 @@ public class ArticleResponse {
         this.author = author;
     }
 
-    public static ArticleResponse of(ArticleView article) {
-        return new ArticleResponse(
+    public static ArticleDto of(ArticleView article) {
+        return new ArticleDto(
             article.getSlug(), article.getTitle(), article.getDescription(),
             article.getBody(), article.getTagList(), article.getCreatedAt(),
             article.getUpdatedAt(), article.isFavorited(), article.getFavoritesCount(),

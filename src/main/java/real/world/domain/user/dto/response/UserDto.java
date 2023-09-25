@@ -6,7 +6,7 @@ import real.world.domain.user.entity.User;
 
 @Getter
 @NoArgsConstructor
-public class UserResponse {
+public class UserDto {
 
     private String username;
 
@@ -16,15 +16,15 @@ public class UserResponse {
 
     private String image;
 
-    private UserResponse(String username, String email, String bio, String image) {
+    private UserDto(String username, String email, String bio, String image) {
         this.username = username;
         this.email = email;
         this.bio = bio;
         this.image = image;
     }
 
-    public static UserResponse of(User user) {
-        return new UserResponse(user.getUsername(), user.getEmail(),
+    public static UserDto of(User user) {
+        return new UserDto(user.getUsername(), user.getEmail(),
             user.getBio(), user.getImageUrl());
     }
 

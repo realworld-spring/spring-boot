@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,7 +30,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
 import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
-import real.world.domain.article.dto.response.ArticleResponse;
+import real.world.domain.article.dto.response.ArticleDto;
 import real.world.domain.article.query.ArticleView;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
@@ -75,7 +74,7 @@ public class ArticleControllerTest {
 
             given(articleService.upload(eq(JOHN.getId()), any())).willReturn(게시물_ID);
             given(articleQueryService.getArticle(JOHN.getId(), 게시물_ID))
-                .willReturn(ArticleResponse.of(article));
+                .willReturn(ArticleDto.of(article));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
@@ -102,7 +101,7 @@ public class ArticleControllerTest {
             final long 게시물_ID = 1L;
 
             given(articleQueryService.getArticle(JOHN.getId(), 게시물_ID))
-                .willReturn(ArticleResponse.of(article));
+                .willReturn(ArticleDto.of(article));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
@@ -148,7 +147,7 @@ public class ArticleControllerTest {
 
             given(articleService.update(eq(JOHN.getId()), eq(slug), any())).willReturn(게시물_ID);
             given(articleQueryService.getArticle(JOHN.getId(), 게시물_ID))
-                .willReturn(ArticleResponse.of(article));
+                .willReturn(ArticleDto.of(article));
 
             // when
             final ResultActions resultActions = mockmvc.perform(

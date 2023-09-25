@@ -16,7 +16,7 @@ import real.world.domain.auth.annotation.Auth;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.dto.response.UserApiResponse;
-import real.world.domain.user.dto.response.UserResponse;
+import real.world.domain.user.dto.response.UserDto;
 import real.world.domain.user.service.UserService;
 import real.world.security.support.JwtUtil;
 
@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<UserApiResponse> register(
         @RequestBody @Valid RegisterRequest registerRequest) {
-        final UserResponse response = userService.register(registerRequest);
+        final UserDto response = userService.register(registerRequest);
 
         return new ResponseEntity<>(new UserApiResponse(response), HttpStatus.CREATED);
     }
@@ -47,7 +47,7 @@ public class UserController {
     @PostMapping("/users/login")
     public ResponseEntity<UserApiResponse> login(Authentication authentication, HttpServletResponse httpServletResponse) {
         final String id = authentication.getPrincipal().toString();
-        final UserResponse response = userService.getUser(Long.valueOf(id));
+        final UserDto response = userService.getUser(Long.valueOf(id));
 
         final String authoritiesString = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
@@ -60,14 +60,14 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity<UserApiResponse> currentUser(@Auth Long loginId) {
-        final UserResponse response = userService.getUser(loginId);
+        final UserDto response = userService.getUser(loginId);
         return new ResponseEntity<>(new UserApiResponse(response), HttpStatus.OK);
     }
 
     @PutMapping("/user")
     public ResponseEntity<UserApiResponse> update(@Auth Long loginId,
         @RequestBody UpdateRequest updateRequest) {
-        final UserResponse response = userService.update(loginId, updateRequest);
+        final UserDto response = userService.update(loginId, updateRequest);
         return new ResponseEntity<>(new UserApiResponse(response), HttpStatus.OK);
     }
 

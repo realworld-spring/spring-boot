@@ -3,7 +3,7 @@ package real.world.domain.follow.service;
 import org.springframework.stereotype.Service;
 import real.world.domain.follow.entity.Follow;
 import real.world.domain.follow.repository.FollowRepository;
-import real.world.domain.profile.dto.response.ProfileResponse;
+import real.world.domain.profile.dto.response.ProfileDto;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.AlreadyFollowingException;
@@ -24,7 +24,7 @@ public class FollowService {
         this.followRepository = followRepository;
     }
 
-    public ProfileResponse follow(Long loginId, String username) {
+    public ProfileDto follow(Long loginId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
         final User loginUser = userRepository.findById(loginId)
@@ -37,10 +37,10 @@ public class FollowService {
 
         final Follow follow = new Follow(user, loginUser);
         followRepository.save(follow);
-        return ProfileResponse.of(user, true);
+        return ProfileDto.of(user, true);
     }
 
-    public ProfileResponse unfollow(Long loginId, String username) {
+    public ProfileDto unfollow(Long loginId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
         final User loginUser = userRepository.findById(loginId)
@@ -53,7 +53,7 @@ public class FollowService {
 
         final Follow follow = new Follow(user, loginUser);
         followRepository.delete(follow);
-        return ProfileResponse.of(user, false);
+        return ProfileDto.of(user, false);
     }
 
 }

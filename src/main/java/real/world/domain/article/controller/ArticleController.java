@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.dto.response.ArticleApiResponse;
-import real.world.domain.article.dto.response.ArticleResponse;
+import real.world.domain.article.dto.response.ArticleDto;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
 import real.world.domain.auth.annotation.Auth;
@@ -35,14 +35,14 @@ public class ArticleController {
     public ResponseEntity<ArticleApiResponse> uploadArticle(@Auth Long loginId,
         @RequestBody @Valid UploadRequest request) {
         final Long articleId = articleService.upload(loginId, request);
-        final ArticleResponse response = articleQueryService.getArticle(loginId, articleId);
+        final ArticleDto response = articleQueryService.getArticle(loginId, articleId);
         return new ResponseEntity<>(new ArticleApiResponse(response), HttpStatus.CREATED);
     }
 
     @GetMapping("/articles/{slug}")
     public ResponseEntity<ArticleApiResponse> getArticle(@Auth Long loginId,
         @PathVariable("slug") String slug) {
-        final ArticleResponse response = articleQueryService.getArticle(loginId, slug);
+        final ArticleDto response = articleQueryService.getArticle(loginId, slug);
         return ResponseEntity.ok(new ArticleApiResponse(response));
     }
 
@@ -50,7 +50,7 @@ public class ArticleController {
     public ResponseEntity<ArticleApiResponse> updateArticle(@Auth Long loginId,
         @PathVariable("slug") String slug, @RequestBody @Valid ArticleUpdateRequest request) {
         final Long articleId = articleService.update(loginId, slug, request);
-        final ArticleResponse response = articleQueryService.getArticle(loginId, articleId);
+        final ArticleDto response = articleQueryService.getArticle(loginId, articleId);
         return ResponseEntity.ok(new ArticleApiResponse(response));
     }
 
