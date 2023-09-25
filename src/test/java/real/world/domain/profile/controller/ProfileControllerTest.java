@@ -73,7 +73,8 @@ class ProfileControllerTest {
         void 상태코드_200로_성공() throws Exception {
             // given
             final User user = JOHN.생성();
-            given(followService.unfollow(anyLong(), anyString())).willReturn(ProfileResponse.of(user, false));
+            given(followService.unfollow(anyLong(), anyString())).willReturn(
+                ProfileResponse.of(user, false));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
@@ -95,7 +96,8 @@ class ProfileControllerTest {
         void 상태코드_200로_성공() throws Exception {
             // given
             final User user = JOHN.생성();
-            given(profileQueryService.getProfile(anyLong(), anyString())).willReturn(new ProfileResponse());
+            given(profileQueryService.getProfile(anyLong(), anyString())).willReturn(
+                ProfileResponse.of(user, false));
 
             // when
             final ResultActions resultActions = mockmvc.perform(

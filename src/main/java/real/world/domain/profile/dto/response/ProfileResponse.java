@@ -1,13 +1,11 @@
 package real.world.domain.profile.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import real.world.domain.profile.query.Profile;
 import real.world.domain.user.entity.User;
 
 @Getter
-@JsonRootName(value = "profile")
 @NoArgsConstructor
 public class ProfileResponse {
 

@@ -10,7 +10,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import real.world.domain.user.dto.request.RegisterRequest;
-import real.world.domain.user.dto.response.UserResponse;
+import real.world.domain.user.dto.response.UserApiResponse;
 
 public class UserE2ETest extends E2ETest {
 
@@ -22,13 +22,13 @@ public class UserE2ETest extends E2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = POST_요청을_보낸다("/users",
             request);
-        final UserResponse response = extractableResponse.as(UserResponse.class);
+        final UserApiResponse response = extractableResponse.as(UserApiResponse.class);
 
         // then
         assertAll(() -> {
             assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-            assertThat(response.getUsername()).isEqualTo(JOHN.getUsername());
-            assertThat(response.getEmail()).isEqualTo(JOHN.getEmail());
+            assertThat(response.getUser().getUsername()).isEqualTo(JOHN.getUsername());
+            assertThat(response.getUser().getEmail()).isEqualTo(JOHN.getEmail());
         });
     }
 
