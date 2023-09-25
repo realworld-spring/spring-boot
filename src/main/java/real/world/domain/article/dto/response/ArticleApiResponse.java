@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArticleApiResponse {
 
-    private ArticleDto article;
+    private ArticleResponse article;
 
-    public ArticleApiResponse(ArticleDto article) {
+    public ArticleApiResponse(ArticleResponse article) {
         this.article = article;
     }
 

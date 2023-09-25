@@ -9,7 +9,7 @@ import real.world.domain.profile.query.Profile;
 
 @Getter
 @NoArgsConstructor
-public class ArticleDto {
+public class ArticleResponse {
 
     private String slug;
     private String title;
@@ -23,7 +23,7 @@ public class ArticleDto {
 
     private Profile author;
 
-    private ArticleDto(String slug, String title, String description, String body,
+    private ArticleResponse(String slug, String title, String description, String body,
         List<String> tagList, LocalDateTime createdAt, LocalDateTime updatedAt, boolean favorited,
         long favoritesCount, Profile author) {
         this.slug = slug;
@@ -38,8 +38,8 @@ public class ArticleDto {
         this.author = author;
     }
 
-    public static ArticleDto of(ArticleView article) {
-        return new ArticleDto(
+    public static ArticleResponse of(ArticleView article) {
+        return new ArticleResponse(
             article.getSlug(), article.getTitle(), article.getDescription(),
             article.getBody(), article.getTagList(), article.getCreatedAt(),
             article.getUpdatedAt(), article.isFavorited(), article.getFavoritesCount(),

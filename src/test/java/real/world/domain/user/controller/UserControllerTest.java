@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
-import real.world.domain.user.dto.response.UserDto;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.service.UserService;
 import real.world.error.exception.UserIdNotExistException;
@@ -65,7 +65,7 @@ public class UserControllerTest {
             // given
             final User user = JOHN.생성();
             final RegisterRequest request = JOHN.회원가입을_한다();
-            given(userService.register(any())).willReturn(UserDto.of(user));
+            given(userService.register(any())).willReturn(UserResponse.of(user));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
@@ -105,7 +105,7 @@ public class UserControllerTest {
             // given
             final User user = JOHN.생성();
             final Long id = JOHN.getId();
-            given(userService.getUser(id)).willReturn(UserDto.of(user));
+            given(userService.getUser(id)).willReturn(UserResponse.of(user));
 
             // when
             final ResultActions resultActions = mockmvc.perform(get("/user"));
@@ -142,7 +142,7 @@ public class UserControllerTest {
             // given
             final User user = JOHN.생성();
             given(userService.update(anyLong(), any(UpdateRequest.class))).willReturn(
-                UserDto.of(user));
+                UserResponse.of(user));
 
             // when
             final ResultActions resultActions = mockmvc.perform(put("/user")

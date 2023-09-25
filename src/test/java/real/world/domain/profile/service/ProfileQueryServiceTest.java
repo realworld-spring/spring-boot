@@ -14,7 +14,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import real.world.domain.profile.dto.response.ProfileDto;
+import real.world.domain.profile.dto.response.ProfileResponse;
 import real.world.domain.profile.query.Profile;
 import real.world.domain.profile.query.ProfileQueryRepository;
 import real.world.domain.user.entity.User;
@@ -38,7 +38,7 @@ class ProfileQueryServiceTest {
                 Optional.of(profile));
 
             // when
-            final ProfileDto response = profileQueryService.getProfile(followerId, user.getUsername());
+            final ProfileResponse response = profileQueryService.getProfile(followerId, user.getUsername());
 
             // then
             assertAll(() -> {
@@ -60,7 +60,7 @@ class ProfileQueryServiceTest {
                 Optional.of(profile));
 
             // when
-            final ProfileDto response = profileQueryService.getProfile(notExistId, user.getUsername());
+            final ProfileResponse response = profileQueryService.getProfile(notExistId, user.getUsername());
 
             // then
             assertAll(() -> {

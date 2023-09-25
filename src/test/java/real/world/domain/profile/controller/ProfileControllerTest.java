@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
 import real.world.domain.follow.service.FollowService;
-import real.world.domain.profile.dto.response.ProfileDto;
+import real.world.domain.profile.dto.response.ProfileResponse;
 import real.world.domain.profile.service.ProfileQueryService;
 import real.world.domain.user.entity.User;
 import real.world.support.TestSecurityConfig;
@@ -51,7 +51,7 @@ class ProfileControllerTest {
             // given
             final User user = JOHN.생성();
             given(followService.follow(anyLong(), anyString())).willReturn(
-                ProfileDto.of(user, true));
+                ProfileResponse.of(user, true));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
@@ -74,7 +74,7 @@ class ProfileControllerTest {
             // given
             final User user = JOHN.생성();
             given(followService.unfollow(anyLong(), anyString())).willReturn(
-                ProfileDto.of(user, false));
+                ProfileResponse.of(user, false));
 
             // when
             final ResultActions resultActions = mockmvc.perform(
@@ -97,7 +97,7 @@ class ProfileControllerTest {
             // given
             final User user = JOHN.생성();
             given(profileQueryService.getProfile(anyLong(), anyString())).willReturn(
-                ProfileDto.of(user, false));
+                ProfileResponse.of(user, false));
 
             // when
             final ResultActions resultActions = mockmvc.perform(

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfileApiResponse {
 
-    private ProfileDto profile;
+    private ProfileResponse profile;
 
-    public ProfileApiResponse(ProfileDto profile) {
+    public ProfileApiResponse(ProfileResponse profile) {
         this.profile = profile;
     }
 

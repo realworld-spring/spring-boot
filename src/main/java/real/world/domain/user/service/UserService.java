@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
-import real.world.domain.user.dto.response.UserDto;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.UserIdNotExistException;
@@ -31,22 +31,22 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto register(RegisterRequest registerRequest) {
+    public UserResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new UsernameAlreadyExistsException();
         }
         final User user = requestToEntity(registerRequest);
         userRepository.save(user);
-        return UserDto.of(user);
+        return UserResponse.of(user);
     }
 
-    public UserDto getUser(Long id) {
+    public UserResponse getUser(Long id) {
         final User user = findUserById(id);
-        return UserDto.of(user);
+        return UserResponse.of(user);
     }
 
     @Transactional
-    public UserDto update(Long id, UpdateRequest request) {
+    public UserResponse update(Long id, UpdateRequest request) {
         final User user = findUserById(id);
         final String password = passwordEncode(request.getPassword());
         user.update(
@@ -56,7 +56,7 @@ public class UserService {
             request.getBio(),
             request.getImage()
         );
-        return UserDto.of(user);
+        return UserResponse.of(user);
     }
 
     private User requestToEntity(RegisterRequest registerRequest) {

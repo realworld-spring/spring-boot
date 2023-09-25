@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.auth.annotation.Auth;
 import real.world.domain.follow.service.FollowService;
 import real.world.domain.profile.dto.response.ProfileApiResponse;
-import real.world.domain.profile.dto.response.ProfileDto;
+import real.world.domain.profile.dto.response.ProfileResponse;
 import real.world.domain.profile.service.ProfileQueryService;
 
 @RestController
@@ -26,21 +26,21 @@ public class ProfileController {
 
     @GetMapping("/profiles/{username}")
     public ResponseEntity<ProfileApiResponse> getProfile(@Auth Long loginId, @PathVariable("username") String username) {
-        final ProfileDto response = profileQueryService.getProfile(loginId, username);
+        final ProfileResponse response = profileQueryService.getProfile(loginId, username);
 
         return new ResponseEntity<>(new ProfileApiResponse(response), HttpStatus.OK);
     }
 
     @PostMapping("/profiles/{username}/follow")
     public ResponseEntity<ProfileApiResponse> follow(@Auth Long loginId, @PathVariable("username") String username) {
-        final ProfileDto response = followService.follow(loginId, username);
+        final ProfileResponse response = followService.follow(loginId, username);
 
         return new ResponseEntity<>(new ProfileApiResponse(response), HttpStatus.OK);
     }
 
     @PostMapping("/profiles/{username}/unfollow")
     public ResponseEntity<ProfileApiResponse> unfollow(@Auth Long loginId, @PathVariable("username") String username) {
-        final ProfileDto response = followService.unfollow(loginId, username);
+        final ProfileResponse response = followService.unfollow(loginId, username);
 
         return new ResponseEntity<>(new ProfileApiResponse(response), HttpStatus.OK);
     }

@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserApiResponse {
 
-    private UserDto user;
+    private UserResponse user;
 
-    public UserApiResponse(UserDto userDto) {
-        this.user = userDto;
+    public UserApiResponse(UserResponse userResponse) {
+        this.user = userResponse;
     }
 
 }

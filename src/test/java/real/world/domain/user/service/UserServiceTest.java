@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
-import real.world.domain.user.dto.response.UserDto;
+import real.world.domain.user.dto.response.UserResponse;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
 import real.world.error.exception.UserIdNotExistException;
@@ -43,7 +43,7 @@ public class UserServiceTest {
             final RegisterRequest request = JOHN.회원가입을_한다();
 
             // when
-            final UserDto response = userService.register(request);
+            final UserResponse response = userService.register(request);
 
             // then
             assertAll(() -> {
@@ -79,7 +79,7 @@ public class UserServiceTest {
             given(userRepository.findById(id)).willReturn(Optional.of(user));
 
             // when
-            final UserDto response = userService.getUser(id);
+            final UserResponse response = userService.getUser(id);
 
             // then
             assertAll(() -> {
@@ -117,7 +117,7 @@ public class UserServiceTest {
             given(userRepository.findById(id)).willReturn(Optional.of(user));
 
             // when
-            final UserDto response = userService.update(id, request);
+            final UserResponse response = userService.update(id, request);
 
             // then
             assertAll(() -> {
