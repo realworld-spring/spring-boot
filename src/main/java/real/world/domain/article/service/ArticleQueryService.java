@@ -1,10 +1,12 @@
 package real.world.domain.article.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import real.world.domain.article.dto.response.ArticleResponse;
 import real.world.domain.article.query.ArticleQueryRepository;
 import real.world.domain.article.query.ArticleView;
+import real.world.domain.global.Page;
 import real.world.error.exception.ArticleNotFoundException;
 
 @Service
@@ -27,6 +29,11 @@ public class ArticleQueryService {
         final ArticleView articleView = articleQueryRepository.findBySlug(loginId, slug)
             .orElseThrow(ArticleNotFoundException::new);
         return ArticleResponse.of(articleView);
+    }
+
+    public List<ArticleResponse> getArticles(Long loginId, Page page) {
+        final List<ArticleView> articleView = articleQueryRepository.findByLoginId(loginId, page);
+        return articleView.stream().map(ArticleResponse::of).toList();
     }
 
 }

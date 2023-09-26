@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "user": {
-    "username": "username",
-    "email": "eee@email.com",
+    "username": {{username}},
+    "email": {{email}},
     "password": "1234"
   }
 }
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "user": {
-    "email": "eee@email.com",
+    "email": {{email}},
     "password": "1234"
   }
 }
@@ -81,3 +81,11 @@ Content-Type: application/json
 DELETE {{domain}}/api/articles/{{slug}}
 Authorization: {{access_token}}
 Content-Type: application/json
+
+### 팔로우
+POST {{domain}}/api/profiles/{{target}}/follow
+Authorization: {{access_token}}
+
+### 아티클 피드 조회
+GET {{domain}}/api/articles/feed?offset=0&limit=10
+Authorization: {{access_token}}
