@@ -36,4 +36,11 @@ public class ArticleQueryService {
         return articleView.stream().map(ArticleResponse::of).toList();
     }
 
+    public List<ArticleResponse> getRecent(Long loginId, Page page, String tag, String author,
+        String favorited) {
+        final List<ArticleView> articleView = articleQueryRepository.findRecent(loginId, page, tag,
+            author, favorited);
+        return articleView.stream().map(ArticleResponse::of).toList();
+    }
+
 }

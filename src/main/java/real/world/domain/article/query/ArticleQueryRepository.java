@@ -10,6 +10,8 @@ public interface ArticleQueryRepository {
 
     List<ArticleView> findByLoginId(Long loginId, Page page);
 
+    List<ArticleView> findRecent(Long loginId, Page page, String tag, String author, String favorited);
+
     Optional<ArticleView> findBySlug(Long loginId, String slug);
 
 }
