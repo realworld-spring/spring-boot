@@ -28,7 +28,7 @@ public class ArticleQueryRepositoryImpl implements ArticleQueryRepository {
 
     @Override
     public Optional<ArticleView> findById(Long loginId, Long id) {
-        return Optional.ofNullable(factory.select(new QArticleView(
+        return Optional.ofNullable(factory.select(Projections.constructor(ArticleView.class,
                 article,
                 JPAExpressions.selectFrom(favorite)
                     .where(favorite.userId.eq(loginId).and(favorite.articleId.eq(id)))

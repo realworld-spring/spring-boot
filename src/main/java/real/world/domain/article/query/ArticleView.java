@@ -31,7 +31,6 @@ public class ArticleView {
 
     // TODO profile
 
-    @QueryProjection
     public ArticleView(Article article, boolean favorited, long favoritesCount) {
         this.title = article.getTitle();
         this.slug = article.getSlug();
