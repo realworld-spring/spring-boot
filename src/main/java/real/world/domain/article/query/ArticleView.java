@@ -1,11 +1,11 @@
 package real.world.domain.article.query;
 
-import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import real.world.domain.article.entity.Article;
+import real.world.domain.profile.query.Profile;
 
 @Getter
 @NoArgsConstructor
@@ -29,7 +29,9 @@ public class ArticleView {
 
     private long favoritesCount;
 
-    // TODO profile
+    private Long userId;
+
+    private Profile profile;
 
     public ArticleView(Article article, boolean favorited, long favoritesCount) {
         this.title = article.getTitle();
@@ -41,6 +43,11 @@ public class ArticleView {
         this.updatedAt = article.getUpdatedAt();
         this.favorited = favorited;
         this.favoritesCount = favoritesCount;
+        this.userId = article.getUserId();
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
 }
