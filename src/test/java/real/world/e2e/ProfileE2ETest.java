@@ -63,7 +63,7 @@ public class ProfileE2ETest extends E2ETest {
     @Test
     void 팔로우를_한다() {
         // given
-        dbInitializer.JOHN이_ALICE를_팔로우한다();
+        dbInitializer.유저들이_회원가입_돼있다();
 
         // when
         final ExtractableResponse<Response> extractableResponse = 로그인_상태로_POST_요청을_보낸다(
