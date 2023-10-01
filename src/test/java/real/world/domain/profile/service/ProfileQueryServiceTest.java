@@ -32,7 +32,7 @@ class ProfileQueryServiceTest {
         void 로그인이_되어있고_정상_호출시_프로필을_반환한다() {
             // given
             final User user = JOHN.생성();
-            final Long loginId = ALICE.생성().getId();
+            final Long loginId = ALICE.getId();
             final Profile profile = Profile.of(user, true);
             given(profileQueryRepository.findByLoginIdAndUsername(eq(loginId), eq(user.getUsername()))).willReturn(
                 Optional.of(profile));

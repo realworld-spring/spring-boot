@@ -1,9 +1,9 @@
 package real.world.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.dto.response.UserResponse;
