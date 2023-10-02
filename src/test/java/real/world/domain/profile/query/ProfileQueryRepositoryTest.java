@@ -8,6 +8,7 @@ import static real.world.fixture.UserFixtures.JOHN;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +30,7 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     private DBInitializer dbInitializer;
 
     @Test
-    void 유저네임을_이용해_팔로우중인_유저의_프로필_가져오기() {
+    void 유저네임을_이용해_팔로우중인_유저의_프로필_가져온다() {
         // given
         dbInitializer.JOHN이_ALICE를_팔로우한다();
 
@@ -47,7 +48,7 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     }
 
     @Test
-    void 유저네임을_이용해_팔로우중이_아닌_유저의_프로필_가져오기() {
+    void 유저네임을_이용해_팔로우중이_아닌_유저의_프로필_가져온다() {
         // given
         dbInitializer.유저들이_회원가입_돼있다();
 
@@ -66,7 +67,7 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     }
 
     @Test
-    void 유저id를_이용해_팔로우중인_유저의_프로필_가져오기() {
+    void 유저id를_이용해_팔로우중인_유저의_프로필_가져온다() {
         // given
         dbInitializer.JOHN이_ALICE를_팔로우한다();
 
@@ -84,7 +85,7 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     }
 
     @Test
-    void 유저id를_이용해_팔로우중이_아닌_유저의_프로필_가져오기() {
+    void 유저id를_이용해_팔로우중이_아닌_유저의_프로필_가져온다() {
         // given
         dbInitializer.유저들이_회원가입_돼있다();
 
@@ -103,12 +104,12 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     }
 
     @Test
-    void 타겟_유저들의_프로필_가져오기() {
+    void 타겟_유저들의_프로필_가져온다() {
         // given
         dbInitializer.JOHN이_ALICE와_BOB을_팔로우한다();
 
         Long loginId = JOHN.getId();
-        ArrayList<UserFixtures> userFixtures = new ArrayList<>(Arrays.asList(ALICE, BOB));
+        List<UserFixtures> userFixtures = List.of(ALICE, BOB);
         Set<Long> ids = userFixtures.stream().map(UserFixtures::getId)
             .collect(Collectors.toSet());
 
