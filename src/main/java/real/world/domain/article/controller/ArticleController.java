@@ -1,6 +1,7 @@
 package real.world.domain.article.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,14 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.dto.response.ArticleApiResponse;
 import real.world.domain.article.dto.response.ArticleResponse;
+import real.world.domain.article.dto.response.ArticlesApiResponse;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
 import real.world.domain.auth.annotation.Auth;
+import real.world.domain.global.Page;
 
 @RestController
 public class ArticleController {
@@ -29,6 +33,21 @@ public class ArticleController {
         ArticleQueryService articleQueryService) {
         this.articleService = articleService;
         this.articleQueryService = articleQueryService;
+    }
+
+    @GetMapping("/articles/feed")
+    public ResponseEntity<ArticlesApiResponse> getArticleFeed(@Auth Long loginId, Page page) {
+        List<ArticleResponse> responses = articleQueryService.getArticles(loginId, page);
+        return new ResponseEntity<>(new ArticlesApiResponse(responses), HttpStatus.OK);
+    }
+
+    @GetMapping("/articles")
+    public ResponseEntity<ArticlesApiResponse> getRecentArticles(@Auth Long loginId, Page page,
+        @RequestParam(required = false) String tag,
+        @RequestParam(required = false) String author,
+        @RequestParam(required = false) String favorited) {
+        List<ArticleResponse> responses = articleQueryService.getRecent(loginId, page, tag, author, favorited);
+        return new ResponseEntity<>(new ArticlesApiResponse(responses), HttpStatus.OK);
     }
 
     @PostMapping("/articles")

@@ -9,6 +9,8 @@ import real.world.domain.user.entity.User;
 @NoArgsConstructor
 public class Profile {
 
+    private Long id;
+
     private String username;
 
     private String bio;
@@ -17,7 +19,8 @@ public class Profile {
 
     private boolean following;
 
-    private Profile(String username, String bio, String image, boolean following) {
+    private Profile(Long id, String username, String bio, String image, boolean following) {
+        this.id = id;
         this.username = username;
         this.bio = bio;
         this.image = image;
@@ -26,11 +29,12 @@ public class Profile {
 
     @QueryProjection
     public Profile(User user, boolean following) {
-        this(user.getUsername(), user.getBio(), user.getImageUrl(), following);
+        this(user.getId(), user.getUsername(), user.getBio(), user.getImageUrl(), following);
     }
 
     public static Profile of(User user, boolean following) {
-        return new Profile(user.getUsername(), user.getBio(), user.getImageUrl(), following);
+        return new Profile(user.getId(), user.getUsername(), user.getBio(), user.getImageUrl(),
+            following);
     }
 
 }
