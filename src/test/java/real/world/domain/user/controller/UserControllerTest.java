@@ -140,8 +140,9 @@ public class UserControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드_200으로_성공() throws Exception {
             // given
+            final User user = JOHN.생성();
             given(userService.update(anyLong(), any(UpdateRequest.class))).willReturn(
-                new UserResponse());
+                UserResponse.of(user));
 
             // when
             final ResultActions resultActions = mockmvc.perform(put("/user")

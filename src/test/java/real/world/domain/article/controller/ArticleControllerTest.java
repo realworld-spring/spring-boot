@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -69,7 +68,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드200_으로_성공() throws Exception {
             // given
-            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
             final UploadRequest request = 게시물.업로드를_한다();
             final long 게시물_ID = 1L;
 
@@ -97,7 +96,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드200_으로_성공() throws Exception {
             // given
-            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
             final String slug = article.getSlug();
             final long 게시물_ID = 1L;
 
@@ -141,7 +140,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드200_으로_성공() throws Exception {
             // given
-            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
             final ArticleUpdateRequest request = 게시물.수정을_한다();
             final String slug = article.getSlug();
             final long 게시물_ID = 1L;
@@ -165,7 +164,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 슬럭에_해당하는_아티클이_없다면_상태코드422로_실패() throws Exception {
             // given
-            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
             final ArticleUpdateRequest request = 게시물.수정을_한다();
             final String slug = article.getSlug();
 
@@ -192,7 +191,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 상태코드200_으로_성공() throws Exception {
             // given
-            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
             final String slug = article.getSlug();
 
             // when
@@ -209,7 +208,7 @@ public class ArticleControllerTest {
         @WithMockUserId(user = JOHN)
         void 슬럭에_해당하는_아티클이_없다면_상태코드422로_실패() throws Exception {
             // given
-            final ArticleView article = 게시물.뷰_생성(JOHN.getId());
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
             final String slug = article.getSlug();
 
             willThrow(new ArticleNotFoundException()).given(articleService)

@@ -1,12 +1,10 @@
 package real.world.domain.user.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import real.world.domain.user.entity.User;
 
 @Getter
-@JsonRootName(value = "user")
 @NoArgsConstructor
 public class UserResponse {
 
