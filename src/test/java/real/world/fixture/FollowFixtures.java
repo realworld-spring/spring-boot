@@ -1,6 +1,7 @@
 package real.world.fixture;
 
 import static real.world.fixture.UserFixtures.ALICE;
+import static real.world.fixture.UserFixtures.BOB;
 import static real.world.fixture.UserFixtures.JOHN;
 
 import lombok.Getter;
@@ -9,7 +10,8 @@ import real.world.domain.follow.entity.Follow;
 @Getter
 public enum FollowFixtures {
 
-    JOHN이_ALICE를_팔로우(JOHN, ALICE);
+    JOHN이_ALICE를_팔로우(JOHN, ALICE),
+    JOHN이_BOB를_팔로우(JOHN, BOB);
 
     private final UserFixtures follower;
 
