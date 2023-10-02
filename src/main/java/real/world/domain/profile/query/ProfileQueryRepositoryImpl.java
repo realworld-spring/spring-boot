@@ -26,8 +26,7 @@ public class ProfileQueryRepositoryImpl implements ProfileQueryRepository {
     public Optional<Profile> findByLoginIdAndUsername(Long loginId, String username) {
         return Optional.ofNullable(
             factory
-                .select(
-                    new QProfile(
+                .select(Projections.constructor(Profile.class,
                         user,
                         JPAExpressions.
                             selectFrom(follow)
@@ -43,8 +42,7 @@ public class ProfileQueryRepositoryImpl implements ProfileQueryRepository {
     public Optional<Profile> findByLoginIdAndUserId(Long loginId, Long userId) {
         return Optional.ofNullable(
             factory
-                .select(
-                    new QProfile(
+                .select(Projections.constructor(Profile.class,
                         user,
                         JPAExpressions.
                             selectFrom(follow)
