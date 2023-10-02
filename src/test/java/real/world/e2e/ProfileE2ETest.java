@@ -12,6 +12,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import real.world.domain.profile.dto.response.ProfileApiResponse;
 import real.world.domain.profile.dto.response.ProfileResponse;
 import real.world.e2e.util.DBInitializer;
 
@@ -28,15 +29,15 @@ public class ProfileE2ETest extends E2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = 로그인_상태로_GET_요청을_보낸다(
             JOHN, "/profiles/" + ALICE.getUsername());
-        final ProfileResponse response = extractableResponse.as(ProfileResponse.class);
+        final ProfileApiResponse response = extractableResponse.as(ProfileApiResponse.class);
 
         // then
         assertAll(() -> {
             assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-            assertThat(response.getUsername()).isEqualTo(ALICE.getUsername());
-            assertThat(response.getBio()).isEqualTo(ALICE.getBio());
-            assertThat(response.getImage()).isEqualTo(ALICE.getImageUrl());
-            assertThat(response.isFollowing()).isEqualTo(true);
+            assertThat(response.getProfile().getUsername()).isEqualTo(ALICE.getUsername());
+            assertThat(response.getProfile().getBio()).isEqualTo(ALICE.getBio());
+            assertThat(response.getProfile().getImage()).isEqualTo(ALICE.getImageUrl());
+            assertThat(response.getProfile().isFollowing()).isEqualTo(true);
         });
     }
 
@@ -48,15 +49,15 @@ public class ProfileE2ETest extends E2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = 로그인_상태로_GET_요청을_보낸다(
             JOHN, "/profiles/" + ALICE.getUsername());
-        final ProfileResponse response = extractableResponse.as(ProfileResponse.class);
+        final ProfileApiResponse response = extractableResponse.as(ProfileApiResponse.class);
 
         // then
         assertAll(() -> {
             assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-            assertThat(response.getUsername()).isEqualTo(ALICE.getUsername());
-            assertThat(response.getBio()).isEqualTo(ALICE.getBio());
-            assertThat(response.getImage()).isEqualTo(ALICE.getImageUrl());
-            assertThat(response.isFollowing()).isEqualTo(false);
+            assertThat(response.getProfile().getUsername()).isEqualTo(ALICE.getUsername());
+            assertThat(response.getProfile().getBio()).isEqualTo(ALICE.getBio());
+            assertThat(response.getProfile().getImage()).isEqualTo(ALICE.getImageUrl());
+            assertThat(response.getProfile().isFollowing()).isEqualTo(false);
         });
     }
 
@@ -68,15 +69,15 @@ public class ProfileE2ETest extends E2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = 로그인_상태로_POST_요청을_보낸다(
             JOHN, "/profiles/" + ALICE.getUsername() + "/follow", "");
-        final ProfileResponse response = extractableResponse.as(ProfileResponse.class);
+        final ProfileApiResponse response = extractableResponse.as(ProfileApiResponse.class);
 
         // then
         assertAll(() -> {
             assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-            assertThat(response.getUsername()).isEqualTo(ALICE.getUsername());
-            assertThat(response.getBio()).isEqualTo(ALICE.getBio());
-            assertThat(response.getImage()).isEqualTo(ALICE.getImageUrl());
-            assertThat(response.isFollowing()).isEqualTo(true);
+            assertThat(response.getProfile().getUsername()).isEqualTo(ALICE.getUsername());
+            assertThat(response.getProfile().getBio()).isEqualTo(ALICE.getBio());
+            assertThat(response.getProfile().getImage()).isEqualTo(ALICE.getImageUrl());
+            assertThat(response.getProfile().isFollowing()).isEqualTo(true);
         });
 
     }
@@ -89,15 +90,15 @@ public class ProfileE2ETest extends E2ETest {
         // when
         final ExtractableResponse<Response> extractableResponse = 로그인_상태로_POST_요청을_보낸다(
             JOHN, "/profiles/" + ALICE.getUsername() + "/unfollow", "");
-        final ProfileResponse response = extractableResponse.as(ProfileResponse.class);
+        final ProfileApiResponse response = extractableResponse.as(ProfileApiResponse.class);
 
         // then
         assertAll(() -> {
             assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
-            assertThat(response.getUsername()).isEqualTo(ALICE.getUsername());
-            assertThat(response.getBio()).isEqualTo(ALICE.getBio());
-            assertThat(response.getImage()).isEqualTo(ALICE.getImageUrl());
-            assertThat(response.isFollowing()).isEqualTo(false);
+            assertThat(response.getProfile().getUsername()).isEqualTo(ALICE.getUsername());
+            assertThat(response.getProfile().getBio()).isEqualTo(ALICE.getBio());
+            assertThat(response.getProfile().getImage()).isEqualTo(ALICE.getImageUrl());
+            assertThat(response.getProfile().isFollowing()).isEqualTo(false);
         });
 
     }
