@@ -10,6 +10,8 @@ import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.entity.Article;
 import real.world.domain.article.query.ArticleView;
 import real.world.domain.article.service.SlugTranslator;
+import real.world.domain.profile.query.Profile;
+import real.world.domain.user.entity.User;
 import real.world.support.StubSlugTranslator;
 
 @Getter
@@ -61,12 +63,14 @@ public enum ArticleFixtures {
         );
     }
 
-    public ArticleView 뷰_생성(Long userId) {
-        return new ArticleView(
-            생성(userId),
+    public ArticleView 뷰_생성(User user) {
+        final ArticleView articleView = new ArticleView(
+            생성(user.getId()),
             false,
             0
         );
+        articleView.setProfile(Profile.of(user, false));
+        return articleView;
     }
 
     public UploadRequest 업로드를_한다() {
