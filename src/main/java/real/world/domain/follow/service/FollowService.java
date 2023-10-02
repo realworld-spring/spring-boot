@@ -1,5 +1,6 @@
 package real.world.domain.follow.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import real.world.domain.follow.entity.Follow;
 import real.world.domain.follow.repository.FollowRepository;
@@ -24,6 +25,7 @@ public class FollowService {
         this.followRepository = followRepository;
     }
 
+    @Transactional
     public ProfileResponse follow(Long loginId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
@@ -40,6 +42,7 @@ public class FollowService {
         return ProfileResponse.of(user, true);
     }
 
+    @Transactional
     public ProfileResponse unfollow(Long loginId, String username) {
         final User user = userRepository.findByUsername(username)
             .orElseThrow(UsernameNotExistException::new);
