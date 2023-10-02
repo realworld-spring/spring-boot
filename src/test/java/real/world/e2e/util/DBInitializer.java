@@ -44,4 +44,11 @@ public class DBInitializer {
         entityManager.persist(FollowFixtures.JOHN이_ALICE를_팔로우.생성());
     }
 
+    @Transactional
+    public void JOHN이_ALICE와_BOB을_팔로우한다() {
+        유저들이_회원가입_돼있다();
+        entityManager.persist(FollowFixtures.JOHN이_ALICE를_팔로우.생성());
+        entityManager.persist(FollowFixtures.JOHN이_BOB를_팔로우.생성());
+    }
+
 }
