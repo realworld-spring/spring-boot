@@ -18,6 +18,8 @@ import real.world.domain.follow.entity.Follow;
 import real.world.domain.follow.repository.FollowRepository;
 import real.world.domain.user.entity.User;
 import real.world.domain.user.repository.UserRepository;
+import real.world.error.exception.AlreadyFollowingException;
+import real.world.error.exception.FollowNotExistException;
 import real.world.error.exception.UsernameNotExistException;
 
 class FollowServiceTest {
@@ -35,13 +37,13 @@ class FollowServiceTest {
         void 정상_호출시_팔로우를_하고_응답을_반환한다() {
             // given
             final User user = JOHN.생성();
-            final User follower = ALICE.생성();
+            final User loginUser = ALICE.생성();
             given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
-            given(userRepository.findById(follower.getId())).willReturn(Optional.of(follower));
-            given(followRepository.existsByUserIdAndFollowerId(user.getId(), follower.getId())).willReturn(false);
+            given(userRepository.findById(loginUser.getId())).willReturn(Optional.of(loginUser));
+            given(followRepository.existsByUserIdAndFollowerId(user.getId(), loginUser.getId())).willReturn(false);
 
             // when
-            final ProfileResponse response = followService.follow(follower.getId(), user.getUsername());
+            final ProfileResponse response = followService.follow(loginUser.getId(), user.getUsername());
 
             // then
             assertAll(() -> {
@@ -54,15 +56,30 @@ class FollowServiceTest {
         }
 
         @Test
+        void 팔로우가_이미_되어있을_때_예외를_던진다() {
+            // given
+            final User user = JOHN.생성();
+            final User loginUser = ALICE.생성();
+            given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
+            given(userRepository.findById(loginUser.getId())).willReturn(Optional.of(loginUser));
+            given(followRepository.existsByUserIdAndFollowerId(user.getId(), loginUser.getId())).willReturn(true);
+
+            // when & then
+            assertThatThrownBy(() ->
+                followService.follow(loginUser.getId(), user.getUsername())
+            ).isInstanceOf(AlreadyFollowingException.class);
+        }
+
+        @Test
         void 유저가_존재하지_않을_시_에외를_던진다() {
             // given
             final User user = JOHN.생성();
-            final User follower = ALICE.생성();
+            final User loginUser = ALICE.생성();
             given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.empty());
 
             // when & then
             assertThatThrownBy(
-                () -> followService.follow(follower.getId(), user.getUsername())
+                () -> followService.follow(loginUser.getId(), user.getUsername())
             ).isInstanceOf(UsernameNotExistException.class);
         }
 
@@ -75,13 +92,13 @@ class FollowServiceTest {
         void 정상_호출시_팔로우를_취소하고_응답을_반환한다() {
             // given
             final User user = JOHN.생성();
-            final User follower = ALICE.생성();
+            final User loginUser = ALICE.생성();
             given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
-            given(userRepository.findById(follower.getId())).willReturn(Optional.of(follower));
-            given(followRepository.existsByUserIdAndFollowerId(user.getId(), follower.getId())).willReturn(true);
+            given(userRepository.findById(loginUser.getId())).willReturn(Optional.of(loginUser));
+            given(followRepository.existsByUserIdAndFollowerId(user.getId(), loginUser.getId())).willReturn(true);
 
             // when
-            final ProfileResponse response = followService.unfollow(follower.getId(), user.getUsername());
+            final ProfileResponse response = followService.unfollow(loginUser.getId(), user.getUsername());
 
             // then
             assertAll(() -> {
@@ -93,6 +110,20 @@ class FollowServiceTest {
             });
         }
 
+        @Test
+        void 팔로우가_존재하지_않을_시_예외를_던진다() {
+            // given
+            final User user = JOHN.생성();
+            final User loginUser = ALICE.생성();
+            given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
+            given(userRepository.findById(loginUser.getId())).willReturn(Optional.of(loginUser));
+            given(followRepository.existsByUserIdAndFollowerId(user.getId(), loginUser.getId())).willReturn(false);
+
+            // when & then
+            assertThatThrownBy(
+                () -> followService.unfollow(loginUser.getId(), user.getUsername())
+            ).isInstanceOf(FollowNotExistException.class);
+        }
     }
 
 }

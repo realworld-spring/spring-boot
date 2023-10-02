@@ -32,13 +32,13 @@ class ProfileQueryServiceTest {
         void 로그인이_되어있고_정상_호출시_프로필을_반환한다() {
             // given
             final User user = JOHN.생성();
-            final Long followerId = ALICE.생성().getId();
+            final Long loginId = ALICE.getId();
             final Profile profile = Profile.of(user, true);
-            given(profileQueryRepository.findByLoginIdAndUsername(eq(followerId), eq(user.getUsername()))).willReturn(
+            given(profileQueryRepository.findByLoginIdAndUsername(eq(loginId), eq(user.getUsername()))).willReturn(
                 Optional.of(profile));
 
             // when
-            final ProfileResponse response = profileQueryService.getProfile(followerId, user.getUsername());
+            final ProfileResponse response = profileQueryService.getProfile(loginId, user.getUsername());
 
             // then
             assertAll(() -> {

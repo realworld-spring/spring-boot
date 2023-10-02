@@ -27,7 +27,6 @@ abstract class E2ETest {
         RestAssured.port = port;
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-        objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         objectMapper.registerModule(new JavaTimeModule());
         RestAssured.config = RestAssured.config()
             .objectMapperConfig(new ObjectMapperConfig().jackson2ObjectMapperFactory(
