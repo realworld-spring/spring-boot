@@ -5,8 +5,6 @@ spring:
   jackson:
     deserialization:
       unwrap-root-value: true
-    serialization:
-      wrap-root-value: true
 
   datasource:
     url: jdbc:h2:mem:test_real;MODE=MYSQL;
