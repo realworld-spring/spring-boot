@@ -9,7 +9,10 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import real.world.e2e.util.DBInitializer;
+import real.world.domain.follow.entity.Follow;
+import real.world.domain.follow.repository.FollowRepository;
+import real.world.domain.user.entity.User;
+import real.world.domain.user.repository.UserRepository;
 import real.world.support.QueryRepositoryTest;
 
 @Import(ProfileQueryRepositoryImpl.class)
@@ -19,17 +22,22 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     private ProfileQueryRepository profileQueryRepository;
 
     @Autowired
-    private DBInitializer dbInitializer;
+    private UserRepository userRepository;
+
+    @Autowired
+    private FollowRepository followRepository;
 
     @Test
     void 팔로우중인_유저의_프로필_가져오기() {
         // given
-        dbInitializer.JOHN이_ALICE를_팔로우한다();
-        Long loginId = JOHN.getId();
-        String username = ALICE.getUsername();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
+        followRepository.save(new Follow(alice, john));
+        final Long loginId = john.getId();
+        final String username = ALICE.getUsername();
 
         // when
-        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUsername(loginId, username);
+        final Optional<Profile> result = profileQueryRepository.findByLoginIdAndUsername(loginId, username);
 
         // then
         assertAll(() -> {
@@ -45,7 +53,8 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     @Test
     void 팔로우중이_아닌_유저의_프로필_가져오기() {
         // given
-        dbInitializer.유저들이_회원가입_돼있다();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
         Long loginId = JOHN.getId();
         String username = ALICE.getUsername();
 
