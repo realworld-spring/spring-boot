@@ -6,17 +6,17 @@ import static real.world.fixture.UserFixtures.ALICE;
 import static real.world.fixture.UserFixtures.BOB;
 import static real.world.fixture.UserFixtures.JOHN;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import real.world.e2e.util.DBInitializer;
+import real.world.domain.follow.entity.Follow;
+import real.world.domain.follow.repository.FollowRepository;
+import real.world.domain.user.entity.User;
+import real.world.domain.user.repository.UserRepository;
 import real.world.fixture.UserFixtures;
 import real.world.support.QueryRepositoryTest;
 
@@ -27,41 +27,45 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     private ProfileQueryRepository profileQueryRepository;
 
     @Autowired
-    private DBInitializer dbInitializer;
+    private UserRepository userRepository;
+
+    @Autowired
+    private FollowRepository followRepository;
 
     @Test
     void 유저네임을_이용해_팔로우중인_유저의_프로필_가져온다() {
         // given
-        dbInitializer.JOHN이_ALICE를_팔로우한다();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
+        followRepository.save(new Follow(alice, john));
 
-        Long loginId = JOHN.getId();
-        UserFixtures userFixture = ALICE;
+        Long loginId = john.getId();
 
         // when
-        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUsername(loginId, userFixture.getUsername());
+        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUsername(loginId, ALICE.getUsername());
 
         // then
         assertAll(() -> {
             assertThat(result.isPresent()).isTrue();
-            assertCorrectProfile(result.get(), userFixture, true);
+            assertCorrectProfile(result.get(), ALICE, true);
         });
     }
 
     @Test
     void 유저네임을_이용해_팔로우중이_아닌_유저의_프로필_가져온다() {
         // given
-        dbInitializer.유저들이_회원가입_돼있다();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
 
-        Long loginId = JOHN.getId();
-        UserFixtures userFixture = ALICE;
+        Long loginId = john.getId();
 
         // when
-        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUsername(loginId, userFixture.getUsername());
+        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUsername(loginId, ALICE.getUsername());
 
         // then
         assertAll(() -> {
             assertThat(result.isPresent()).isTrue();
-            assertCorrectProfile(result.get(), userFixture, false);
+            assertCorrectProfile(result.get(), ALICE, false);
         });
 
     }
@@ -69,36 +73,37 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     @Test
     void 유저id를_이용해_팔로우중인_유저의_프로필_가져온다() {
         // given
-        dbInitializer.JOHN이_ALICE를_팔로우한다();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
+        followRepository.save(new Follow(alice, john));
 
-        Long loginId = JOHN.getId();
-        UserFixtures userFixture = ALICE;
+        Long loginId = john.getId();
 
         // when
-        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUserId(loginId, userFixture.getId());
+        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUserId(loginId, alice.getId());
 
         // then
         assertAll(() -> {
             assertThat(result.isPresent()).isTrue();
-            assertCorrectProfile(result.get(), userFixture, true);
+            assertCorrectProfile(result.get(), ALICE, true);
         });
     }
 
     @Test
     void 유저id를_이용해_팔로우중이_아닌_유저의_프로필_가져온다() {
         // given
-        dbInitializer.유저들이_회원가입_돼있다();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
 
-        Long loginId = JOHN.getId();
-        UserFixtures userFixture = ALICE;
+        Long loginId = john.getId();
 
         // when
-        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUserId(loginId, userFixture.getId());
+        Optional<Profile> result = profileQueryRepository.findByLoginIdAndUserId(loginId, alice.getId());
 
         // then
         assertAll(() -> {
             assertThat(result.isPresent()).isTrue();
-            assertCorrectProfile(result.get(), userFixture, false);
+            assertCorrectProfile(result.get(), ALICE, false);
         });
 
     }
@@ -106,21 +111,27 @@ class ProfileQueryRepositoryTest extends QueryRepositoryTest {
     @Test
     void 타겟_유저들의_프로필_가져온다() {
         // given
-        dbInitializer.JOHN이_ALICE와_BOB을_팔로우한다();
+        final User john = userRepository.save(JOHN.ID없이_생성());
+        final User alice = userRepository.save(ALICE.ID없이_생성());
+        final User bob = userRepository.save(BOB.ID없이_생성());
+        followRepository.save(new Follow(alice, john));
+        followRepository.save(new Follow(bob, john));
 
-        Long loginId = JOHN.getId();
+        Long loginId = john.getId();
+
         List<UserFixtures> userFixtures = List.of(ALICE, BOB);
-        Set<Long> ids = userFixtures.stream().map(UserFixtures::getId)
-            .collect(Collectors.toSet());
+        Set<Long> ids = Set.of(alice.getId(), bob.getId());
 
         // when
         Map<Long, Profile> result = profileQueryRepository.findByLoginIdAndIds(loginId,
             ids);
 
         // then
-        userFixtures.forEach((userFixture) ->
-            assertCorrectProfile(result.get(userFixture.getId()), userFixture, true)
-        );
+        assertAll(() -> {
+            assertThat(result).hasSize(2);
+            assertCorrectProfile(result.get(alice.getId()), ALICE, true);
+            assertCorrectProfile(result.get(bob.getId()), BOB, true);
+        });
 
     }
 
