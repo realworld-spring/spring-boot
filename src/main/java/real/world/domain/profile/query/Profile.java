@@ -1,6 +1,5 @@
 package real.world.domain.profile.query;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import real.world.domain.user.entity.User;
@@ -27,7 +26,6 @@ public class Profile {
         this.following = following;
     }
 
-    @QueryProjection
     public Profile(User user, boolean following) {
         this(user.getId(), user.getUsername(), user.getBio(), user.getImageUrl(), following);
     }
