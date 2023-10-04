@@ -26,7 +26,7 @@ public class CommentQueryService {
 
     public List<CommentResponse> getComments(Long loginId, String slug) {
         List<CommentView> commentViews = commentQueryRepository.findBySlug(slug);
-        if(!loginId.equals(0L)) { setProfile(loginId, commentViews); }
+        setProfile(loginId, commentViews);
 
         return commentViews.stream().map(CommentResponse::of).toList();
     }

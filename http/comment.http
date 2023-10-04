@@ -35,16 +35,53 @@ Content-Type: application/json
 %}
 
 
-### 댓글 추가
+### 업로드
+POST {{domain}}/api/articles
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "article": {
+    "title": "title",
+    "description": "desc",
+    "body": "body",
+    "tagList": [
+      "tag1",
+      "tag2"
+    ]
+  }
+}
+
+> {%
+  client.global.set("slug", response.body.article.slug);
+%}
+
+### 댓글1 추가
 POST {{domain}}/api/articles/{{slug}}/comments
 Authorization: {{access_token}}
 Content-Type: application/json
 
 {
   "comment": {
-    "body": "strssing"
+    "body": "commentbody1ng1"
   }
 }
+
+### 댓글2 추가
+POST {{domain}}/api/articles/{{slug}}/comments
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "comment": {
+    "body": "strssing2"
+  }
+}
+
+### 댓글 읽어오기
+GET {{domain}}/api/articles/{{slug}}/comments
+
+
 
 ### 팔로우
 POST {{domain}}/api/profiles/{{target}}/follow
