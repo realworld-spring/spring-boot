@@ -82,6 +82,10 @@ Content-Type: application/json
 GET {{domain}}/api/articles/{{slug}}/comments
 
 
+### 댓글 삭제
+DELETE {{domain}}/api/articles/{{slug}}/comments/1
+Authorization: {{access_token}}
+
 
 ### 팔로우
 POST {{domain}}/api/profiles/{{target}}/follow

@@ -12,6 +12,7 @@ import real.world.domain.comment.repository.CommentRepository;
 import real.world.domain.profile.query.Profile;
 import real.world.domain.profile.query.ProfileQueryRepository;
 import real.world.error.exception.ArticleNotFoundException;
+import real.world.error.exception.CommentNotFoundException;
 import real.world.error.exception.UsernameNotExistException;
 
 @Service
@@ -41,6 +42,14 @@ public class CommentService {
         final Profile profile = getProfile(loginId, article.getUserId());
         final CommentView commentView = new CommentView(comment, profile);
         return CommentResponse.of(commentView);
+    }
+
+    @Transactional
+    public void delete(Long loginId, Long id) {
+        Comment comment = commentRepository.findById(id)
+            .orElseThrow(CommentNotFoundException::new);
+        comment.verifyUserId(loginId);
+        commentRepository.delete(comment);
     }
 
     private Profile getProfile(Long loginId, Long userId) {

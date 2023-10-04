@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,13 @@ public class CommentController {
         final List<CommentResponse> comments = commentQueryService.getComments(loginId, slug);
 
         return new ResponseEntity<>(new MultiCommentsApiResponse(comments), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/articles/{slug}/comments/{id}")
+    ResponseEntity<MultiCommentsApiResponse> getComment(@Auth Long loginId, @PathVariable Long id) {
+        commentService.delete(loginId, id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
