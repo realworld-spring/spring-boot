@@ -1,0 +1,51 @@
+### 회원가입
+POST {{domain}}/api/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": {{username}},
+    "email": {{email}},
+    "password": "1234"
+  }
+}
+
+### 로그인
+POST {{domain}}/api/users/login
+Content-Type: application/json
+
+{
+  "user": {
+    "email": {{email}},
+    "password": "1234"
+  }
+}
+
+> {%
+  const token = response.headers.valueOf("Authorization");
+
+  client.test("Validate", function() {
+    client.assert(response.status === 200, "Response status invalid");
+    client.assert(response.contentType.mimeType === "application/json", "Content-type invalid");
+    client.assert(response.headers.valueOf("Authorization").startsWith("Token") === true, "Authorization invalid");
+  });
+
+  client.log(token);
+  client.global.set("access_token", token);
+%}
+
+
+### 댓글 추가
+POST {{domain}}/api/articles/{{slug}}/comments
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "comment": {
+    "body": "strssing"
+  }
+}
+
+### 팔로우
+POST {{domain}}/api/profiles/{{target}}/follow
+Authorization: {{access_token}}
