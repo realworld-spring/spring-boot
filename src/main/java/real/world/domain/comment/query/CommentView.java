@@ -12,6 +12,8 @@ public class CommentView {
 
     private Long id;
 
+    private Long userId;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -22,6 +24,7 @@ public class CommentView {
 
     public CommentView(Comment comment) {
         this.id = comment.getId();
+        this.userId = comment.getUserId();
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
         this.body = comment.getBody();
@@ -29,9 +32,14 @@ public class CommentView {
 
     public CommentView(Comment comment, Profile profile) {
         this.id = comment.getId();
+        this.userId = comment.getUserId();
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
         this.body = comment.getBody();
+        this.profile = profile;
+    }
+
+    public void setProfile(Profile profile) {
         this.profile = profile;
     }
 
