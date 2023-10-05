@@ -1,16 +1,14 @@
 package real.world.fixture;
 
-import java.util.Collections;
 import lombok.Getter;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import real.world.domain.profile.query.Profile;
 import real.world.domain.user.dto.request.LoginRequest;
 import real.world.domain.user.dto.request.RegisterRequest;
 import real.world.domain.user.dto.request.UpdateRequest;
 import real.world.domain.user.entity.User;
-import real.world.security.service.CustomUserDetails;
 
 @Getter
 public enum UserFixtures {
@@ -41,6 +39,10 @@ public enum UserFixtures {
         return 지정된_ID로_생성(this.id);
     }
 
+    public User ID없이_생성() {
+        return 지정된_ID로_생성(null);
+    }
+
     public User 지정된_ID로_생성(Long id) {
         final User user = new User(
             this.username,
@@ -53,6 +55,10 @@ public enum UserFixtures {
         return user;
     }
 
+    public Profile 프로필_생성() {
+        return Profile.of(생성(), false);
+    }
+
     public RegisterRequest 회원가입을_한다() {
         final RegisterRequest request = new RegisterRequest();
         ReflectionTestUtils.setField(request, "username", this.username);
@@ -60,7 +66,7 @@ public enum UserFixtures {
         ReflectionTestUtils.setField(request, "email", this.email);
         return request;
     }
-    
+
     public LoginRequest 로그인을_한다() {
         final LoginRequest request = new LoginRequest();
         ReflectionTestUtils.setField(request, "email", this.email);
@@ -76,13 +82,6 @@ public enum UserFixtures {
         ReflectionTestUtils.setField(request, "bio", "updated_" + this.bio);
         ReflectionTestUtils.setField(request, "image", "updated_" + this.imageUrl);
         return request;
-    }
-
-    public CustomUserDetails 유저디테일() {
-        return new CustomUserDetails(
-            생성(),
-            Collections.singleton(new SimpleGrantedAuthority("USER_ROLE"))
-        );
     }
 
 }

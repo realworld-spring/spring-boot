@@ -12,12 +12,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static real.world.fixture.ArticleFixtures.게시물;
+import static real.world.fixture.ArticleFixtures.게시물_2;
 import static real.world.fixture.UserFixtures.JOHN;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import real.world.domain.article.dto.response.ArticleResponse;
 import real.world.domain.article.query.ArticleView;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
+import real.world.domain.global.Page;
 import real.world.error.exception.ArticleNotFoundException;
 import real.world.support.TestSecurityConfig;
 import real.world.support.WithMockUserId;
@@ -221,6 +224,58 @@ public class ArticleControllerTest {
             // then
             resultActions.andExpect(status().isUnprocessableEntity())
                 .andDo(print());
+        }
+
+    }
+
+    @Nested
+    class 팔로잉_피드_조회 {
+
+        @Test
+        @WithMockUserId(user = JOHN)
+        void 상태코드200_으로_성공() throws Exception {
+            // given
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
+            given(articleQueryService.getArticles(eq(JOHN.getId()), any()))
+                .willReturn(List.of(ArticleResponse.of(article)));
+
+            // when
+            final ResultActions resultActions = mockmvc.perform(
+                get("/articles/feed")
+                    .param("offset", "0")
+                    .param("limit", "5")
+                    .contentType(MediaType.APPLICATION_JSON));
+
+            // then
+            resultActions.andExpect(status().isOk())
+                .andDo(print());
+            verify(articleQueryService).getArticles(eq(JOHN.getId()), any());
+        }
+
+    }
+
+    @Nested
+    class 피드_조건으로_조회 {
+
+        @Test
+        @WithMockUserId(user = JOHN)
+        void 상태코드200_으로_성공() throws Exception {
+            // given
+            final ArticleView article = 게시물.뷰_생성(JOHN.생성());
+            given(articleQueryService.getRecent(eq(JOHN.getId()), any(), any(), any(), any()))
+                .willReturn(List.of(ArticleResponse.of(article)));
+
+            // when
+            final ResultActions resultActions = mockmvc.perform(
+                get("/articles")
+                    .param("offset", "0")
+                    .param("limit", "5")
+                    .contentType(MediaType.APPLICATION_JSON));
+
+            // then
+            resultActions.andExpect(status().isOk())
+                .andDo(print());
+            verify(articleQueryService).getRecent(eq(JOHN.getId()), any(), any(), any(), any());
         }
 
     }

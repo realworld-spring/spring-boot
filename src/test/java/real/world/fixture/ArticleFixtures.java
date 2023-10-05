@@ -63,6 +63,14 @@ public enum ArticleFixtures {
         );
     }
 
+    public ArticleView 프로필_없이_뷰_생성(Long userId, Set<String> tags) {
+        return new ArticleView(
+            태그와_함께_생성(userId, tags),
+            false,
+            0
+        );
+    }
+
     public ArticleView 뷰_생성(User user) {
         final ArticleView articleView = new ArticleView(
             생성(user.getId()),
