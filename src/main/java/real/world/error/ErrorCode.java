@@ -27,6 +27,10 @@ public enum ErrorCode {
     ARTICLE_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "article", "not found."),
     ARTICLE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "article", "you have no authority"),
 
+    // Favorite
+    ALREADY_FAVORITE(HttpStatus.UNPROCESSABLE_ENTITY, "favorite", "already exists."),
+    FAVORITE_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "favorite", "not found."),
+
     // Authentication
     AUTH_FORMAT_INVALID(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "format invalid."),
     AUTH_USERNAME_NOT_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "authentication", "user is not exist."),
