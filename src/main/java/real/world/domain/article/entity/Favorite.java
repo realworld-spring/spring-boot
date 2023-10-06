@@ -6,7 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity(name = "favorites")
@@ -29,11 +31,12 @@ public class Favorite {
         this.articleId = articleId;
     }
 
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class FavoriteId implements Serializable {
 
-        private final Long userId;
+        private Long userId;
 
-        private final Long articleId;
+        private Long articleId;
 
         public FavoriteId(Long userId, Long articleId) {
             this.userId = userId;
