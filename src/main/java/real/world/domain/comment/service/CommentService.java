@@ -39,8 +39,7 @@ public class CommentService {
 
         commentRepository.save(comment);
 
-        final Profile profile = getProfile(loginId, article.getUserId());
-        final CommentView commentView = new CommentView(comment, profile);
+        final CommentView commentView = getCommentView(comment, loginId, article.getUserId());
         return CommentResponse.of(commentView);
     }
 
@@ -52,9 +51,16 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private Profile getProfile(Long loginId, Long userId) {
-        return profileQueryRepository.findByLoginIdAndUserId(
+    private CommentView getCommentView(Comment comment, Long loginId, Long userId) {
+        final CommentView commentView = new CommentView(comment);
+        setProfile(commentView, loginId, userId);
+        return commentView;
+    }
+
+    private void setProfile(CommentView commentView, Long loginId, Long userId) {
+        final Profile profile = profileQueryRepository.findByLoginIdAndUserId(
             loginId, userId).orElseThrow(UsernameNotExistException::new);
+        commentView.setProfile(profile);
     }
 
 }

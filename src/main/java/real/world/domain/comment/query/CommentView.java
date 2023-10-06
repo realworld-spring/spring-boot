@@ -30,15 +30,6 @@ public class CommentView {
         this.body = comment.getBody();
     }
 
-    public CommentView(Comment comment, Profile profile) {
-        this.id = comment.getId();
-        this.userId = comment.getUserId();
-        this.createdAt = comment.getCreatedAt();
-        this.updatedAt = comment.getUpdatedAt();
-        this.body = comment.getBody();
-        this.profile = profile;
-    }
-
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
