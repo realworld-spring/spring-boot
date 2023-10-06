@@ -47,7 +47,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/articles/{slug}/comments/{id}")
-    ResponseEntity<MultiCommentsApiResponse> getComment(@Auth Long loginId, @PathVariable Long id) {
+    ResponseEntity<MultiCommentsApiResponse> deleteComment(@Auth Long loginId, @PathVariable Long id) {
         commentService.delete(loginId, id);
 
         return new ResponseEntity<>(HttpStatus.OK);
