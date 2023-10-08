@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import real.world.config.WebMvcConfig;
@@ -62,7 +61,7 @@ public class FavoriteControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/articles/{slug}/favorite", slug).contentType(MediaType.APPLICATION_JSON));
+                post("/articles/{slug}/favorite", slug));
 
             // then
             resultActions.andExpect(status().isOk())
@@ -82,7 +81,7 @@ public class FavoriteControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/articles/{slug}/favorite", slug).contentType(MediaType.APPLICATION_JSON));
+                post("/articles/{slug}/favorite", slug));
 
             // then
             resultActions.andExpect(status().isUnprocessableEntity())
@@ -98,7 +97,7 @@ public class FavoriteControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                post("/articles/{slug}/favorite", slug).contentType(MediaType.APPLICATION_JSON));
+                post("/articles/{slug}/favorite", slug));
 
             // then
             resultActions.andExpect(status().isUnprocessableEntity())
@@ -124,7 +123,7 @@ public class FavoriteControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                delete("/articles/{slug}/favorite", slug).contentType(MediaType.APPLICATION_JSON));
+                delete("/articles/{slug}/favorite", slug));
 
             // then
             resultActions.andExpect(status().isOk())
@@ -144,7 +143,7 @@ public class FavoriteControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                delete("/articles/{slug}/favorite", slug).contentType(MediaType.APPLICATION_JSON));
+                delete("/articles/{slug}/favorite", slug));
 
             // then
             resultActions.andExpect(status().isUnprocessableEntity())
@@ -160,7 +159,7 @@ public class FavoriteControllerTest {
 
             // when
             final ResultActions resultActions = mockmvc.perform(
-                delete("/articles/{slug}/favorite", slug).contentType(MediaType.APPLICATION_JSON));
+                delete("/articles/{slug}/favorite", slug));
 
             // then
             resultActions.andExpect(status().isUnprocessableEntity())
