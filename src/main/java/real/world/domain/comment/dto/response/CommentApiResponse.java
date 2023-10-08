@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SingleCommentApiResponse {
+public class CommentApiResponse {
 
     private CommentResponse comment;
 
-    public SingleCommentApiResponse(CommentResponse commentResponse) {
+    public CommentApiResponse(CommentResponse commentResponse) {
         this.comment = commentResponse;
     }
 

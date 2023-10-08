@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MultiCommentsApiResponse {
+public class MultipleCommentApiResponse {
 
     private List<CommentResponse> comments;
 
-    public MultiCommentsApiResponse(List<CommentResponse> comments) {
+    public MultipleCommentApiResponse(List<CommentResponse> comments) {
         this.comments = comments;
     }
 

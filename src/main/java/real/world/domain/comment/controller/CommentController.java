@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import real.world.domain.auth.annotation.Auth;
 import real.world.domain.comment.dto.request.CommentRequest;
-import real.world.domain.comment.dto.response.SingleCommentApiResponse;
-import real.world.domain.comment.dto.response.MultiCommentsApiResponse;
+import real.world.domain.comment.dto.response.CommentApiResponse;
+import real.world.domain.comment.dto.response.MultipleCommentApiResponse;
 import real.world.domain.comment.dto.response.CommentResponse;
 import real.world.domain.comment.service.CommentQueryService;
 import real.world.domain.comment.service.CommentService;
@@ -32,22 +32,22 @@ public class CommentController {
     }
 
     @PostMapping("/articles/{slug}/comments")
-    ResponseEntity<SingleCommentApiResponse> uploadComment(@Auth Long loginId, @PathVariable String slug, @RequestBody @Valid
+    ResponseEntity<CommentApiResponse> uploadComment(@Auth Long loginId, @PathVariable String slug, @RequestBody @Valid
         CommentRequest commentRequest) {
         final CommentResponse response = commentService.upload(loginId, slug, commentRequest);
 
-        return new ResponseEntity<>(new SingleCommentApiResponse(response), HttpStatus.OK);
+        return new ResponseEntity<>(new CommentApiResponse(response), HttpStatus.OK);
     }
 
     @GetMapping("/articles/{slug}/comments")
-    ResponseEntity<MultiCommentsApiResponse> getComment(@Auth Long loginId, @PathVariable String slug) {
+    ResponseEntity<MultipleCommentApiResponse> getComment(@Auth Long loginId, @PathVariable String slug) {
         final List<CommentResponse> comments = commentQueryService.getComments(loginId, slug);
 
-        return new ResponseEntity<>(new MultiCommentsApiResponse(comments), HttpStatus.OK);
+        return new ResponseEntity<>(new MultipleCommentApiResponse(comments), HttpStatus.OK);
     }
 
     @DeleteMapping("/articles/{slug}/comments/{id}")
-    ResponseEntity<MultiCommentsApiResponse> deleteComment(@Auth Long loginId, @PathVariable Long id) {
+    ResponseEntity<MultipleCommentApiResponse> deleteComment(@Auth Long loginId, @PathVariable Long id) {
         commentService.delete(loginId, id);
 
         return new ResponseEntity<>(HttpStatus.OK);
