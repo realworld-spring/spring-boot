@@ -101,3 +101,14 @@ Authorization: {{access_token}}
 ### 아티클 Global tag 조건 조회
 GET {{domain}}/api/articles?offset=0&limit=10&tag=tag1
 Authorization: {{access_token}}
+
+### 좋아요
+POST {{domain}}/api/articles/{{slug}}/favorite
+Authorization: {{access_token}}
+Content-Type: application/json
+
+### 좋아요 취소
+DELETE {{domain}}/api/articles/{{slug}}/favorite
+Authorization: {{access_token}}
+Content-Type: application/json
+

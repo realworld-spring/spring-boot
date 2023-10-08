@@ -42,7 +42,11 @@ public enum ArticleFixtures {
     }
 
     public Article 생성(Long userId) {
-        return new Article(
+        return ID와_함께_생성(userId, null);
+    }
+
+    public Article ID와_함께_생성(Long userId, Long id) {
+        final Article article = new Article(
             userId,
             this.title,
             TRANSLATOR,
@@ -50,6 +54,8 @@ public enum ArticleFixtures {
             this.body,
             this.tags
         );
+        ReflectionTestUtils.setField(article, "id", id);
+        return article;
     }
 
     public Article 태그와_함께_생성(Long userId, Set<String> tags) {
