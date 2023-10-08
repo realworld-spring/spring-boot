@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ArticlesApiResponse {
+public class MultipleArticleApiResponse {
 
     private List<ArticleResponse> articles;
 
     private int articlesCount;
 
-    public ArticlesApiResponse(List<ArticleResponse> articles) {
+    public MultipleArticleApiResponse(List<ArticleResponse> articles) {
         this.articles = articles;
         this.articlesCount = articles.size();
     }

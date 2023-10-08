@@ -44,17 +44,17 @@ public class ArticleQueryService {
     }
 
     public List<ArticleResponse> getArticles(Long loginId, Page page) {
-        final List<ArticleView> articleView = articleQueryRepository.findByLoginId(loginId, page);
-        setProfile(loginId, articleView);
-        return articleView.stream().map(ArticleResponse::of).toList();
+        final List<ArticleView> articleViews = articleQueryRepository.findByLoginId(loginId, page);
+        setProfile(loginId, articleViews);
+        return articleViews.stream().map(ArticleResponse::of).toList();
     }
 
     public List<ArticleResponse> getRecent(Long loginId, Page page, String tag, String author,
         String favorited) {
-        final List<ArticleView> articleView = articleQueryRepository.findRecent(loginId, page, tag,
+        final List<ArticleView> articleViews = articleQueryRepository.findRecent(loginId, page, tag,
             author, favorited);
-        setProfile(loginId, articleView);
-        return articleView.stream().map(ArticleResponse::of).toList();
+        setProfile(loginId, articleViews);
+        return articleViews.stream().map(ArticleResponse::of).toList();
     }
 
     private void setProfile(Long loginId, ArticleView articleView) {

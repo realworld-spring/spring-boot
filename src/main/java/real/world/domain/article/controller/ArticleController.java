@@ -16,7 +16,7 @@ import real.world.domain.article.dto.request.ArticleUpdateRequest;
 import real.world.domain.article.dto.request.UploadRequest;
 import real.world.domain.article.dto.response.ArticleApiResponse;
 import real.world.domain.article.dto.response.ArticleResponse;
-import real.world.domain.article.dto.response.ArticlesApiResponse;
+import real.world.domain.article.dto.response.MultipleArticleApiResponse;
 import real.world.domain.article.service.ArticleQueryService;
 import real.world.domain.article.service.ArticleService;
 import real.world.domain.auth.annotation.Auth;
@@ -36,18 +36,18 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/feed")
-    public ResponseEntity<ArticlesApiResponse> getArticleFeed(@Auth Long loginId, Page page) {
+    public ResponseEntity<MultipleArticleApiResponse> getArticleFeed(@Auth Long loginId, Page page) {
         List<ArticleResponse> responses = articleQueryService.getArticles(loginId, page);
-        return new ResponseEntity<>(new ArticlesApiResponse(responses), HttpStatus.OK);
+        return new ResponseEntity<>(new MultipleArticleApiResponse(responses), HttpStatus.OK);
     }
 
     @GetMapping("/articles")
-    public ResponseEntity<ArticlesApiResponse> getRecentArticles(@Auth Long loginId, Page page,
+    public ResponseEntity<MultipleArticleApiResponse> getRecentArticles(@Auth Long loginId, Page page,
         @RequestParam(required = false) String tag,
         @RequestParam(required = false) String author,
         @RequestParam(required = false) String favorited) {
         List<ArticleResponse> responses = articleQueryService.getRecent(loginId, page, tag, author, favorited);
-        return new ResponseEntity<>(new ArticlesApiResponse(responses), HttpStatus.OK);
+        return new ResponseEntity<>(new MultipleArticleApiResponse(responses), HttpStatus.OK);
     }
 
     @PostMapping("/articles")
