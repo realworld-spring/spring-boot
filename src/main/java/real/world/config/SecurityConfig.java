@@ -1,5 +1,6 @@
 package real.world.config;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import real.world.security.service.UserDetailsByEmailService;
 import real.world.security.service.UserDetailsByIdService;
 import real.world.security.support.JwtUtil;
 import real.world.security.support.NorRequestMatcher;
+import real.world.security.support.OptionalRequest;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,7 +40,14 @@ public class SecurityConfig {
     private static final String[] AUTH_PATH = {"/users", LOGIN_PATH};
     private static final String[] SWAGGER_PATH = {"/docs/open-api.json", "/swagger-ui/**",
         "/v3/**"};
-    private static final String[]  OPTIONAL_PATH = {"/profiles/*"};
+
+    private static final OptionalRequest[] OPTIONAL_REQUESTS = {
+        OptionalRequest.of("/profiles/*"),
+        OptionalRequest.of("/articles/*/comments", "GET")
+    };
+
+    private static final String[] OPTIONAL_PATH = Arrays.stream(OPTIONAL_REQUESTS).map(
+        OptionalRequest::getPath).toArray(String[]::new);
 
     private final ObjectPostProcessor<Object> objectPostProcessor;
 
@@ -114,7 +123,7 @@ public class SecurityConfig {
             .flatMap(Stream::of)
             .toArray(String[]::new);
         final JwtAuthenticationFilter filter = new JwtAuthenticationFilter(
-            new NorRequestMatcher(norPath), authenticationManager(), OPTIONAL_PATH);
+            new NorRequestMatcher(norPath), authenticationManager(), OPTIONAL_REQUESTS);
         filter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
 
         return filter;

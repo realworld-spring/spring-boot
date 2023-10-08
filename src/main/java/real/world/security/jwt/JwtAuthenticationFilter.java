@@ -1,6 +1,5 @@
 package real.world.security.jwt;
 
-import static java.util.stream.Collectors.toList;
 import static real.world.error.ErrorCode.JWT_FORMAT_INVALID;
 
 import jakarta.servlet.FilterChain;
@@ -11,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,17 +25,19 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import real.world.domain.user.entity.UserRole;
 import real.world.error.exception.AuthenticationErrorCodeException;
+import real.world.security.support.OptionalRequest;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String AUTH_HEADER = "Authorization";
+
     final RequestMatcher optionalRequestMatcher;
 
     public JwtAuthenticationFilter(
         RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager,
-        String[] optionalPath) {
+        OptionalRequest[] optionalRequests) {
         super(requiresAuthenticationRequestMatcher, authenticationManager);
-        this.optionalRequestMatcher = createOptionalRequestMatcher(optionalPath);
+        this.optionalRequestMatcher = createOptionalRequestMatcher(optionalRequests);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     protected void unsuccessfulAuthentication(HttpServletRequest request,
         HttpServletResponse response, FilterChain chain, AuthenticationException failed)
         throws IOException, ServletException {
-        if(isOptionalPath(request)) {
+        if(isOptionalRequest(request)) {
             final Authentication authResult = createAnonymousAuth();
             SecurityContextHolder.getContext().setAuthentication(authResult);
             chain.doFilter(request, response);
@@ -104,15 +104,18 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         }
     }
 
-    private RequestMatcher createOptionalRequestMatcher(String[] path) {
-        final List<String> optionallist = Arrays.stream(path).toList();
-        List<RequestMatcher> requestMatchers = optionallist.stream()
-            .map(AntPathRequestMatcher::new)
-            .collect(toList());
+    private RequestMatcher createOptionalRequestMatcher(OptionalRequest[] optionalRequests) {
+        final List<RequestMatcher> requestMatchers = new ArrayList<>();
+        for (OptionalRequest optionalRequest : optionalRequests) {
+            final String path = optionalRequest.getPath();
+            for (String method : optionalRequest.getMethods()) {
+                requestMatchers.add(new AntPathRequestMatcher(path, method));
+            }
+        }
         return new OrRequestMatcher(requestMatchers);
     }
 
-    private boolean isOptionalPath(HttpServletRequest request) {
+    private boolean isOptionalRequest(HttpServletRequest request) {
         return optionalRequestMatcher.matches(request);
     }
 

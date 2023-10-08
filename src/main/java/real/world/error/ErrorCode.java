@@ -27,6 +27,10 @@ public enum ErrorCode {
     ARTICLE_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "article", "not found."),
     ARTICLE_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "article", "you have no authority"),
 
+    // Comment
+    COMMENT_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "comment", "not found."),
+    COMMENT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "comment", "you have no authority"),
+  
     // Favorite
     ALREADY_FAVORITE(HttpStatus.UNPROCESSABLE_ENTITY, "favorite", "already exists."),
     FAVORITE_NOT_FOUND(HttpStatus.UNPROCESSABLE_ENTITY, "favorite", "not found."),
