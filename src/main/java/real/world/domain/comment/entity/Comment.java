@@ -49,8 +49,8 @@ public class Comment {
         this.body = body;
     }
 
-    public void verifyUserId(Long loginId) {
-        if (!this.userId.equals(loginId)) {
+    public void verifyUserId(Long userId) {
+        if (!this.userId.equals(userId)) {
             throw new CommentUnauthorizedException();
         }
     }

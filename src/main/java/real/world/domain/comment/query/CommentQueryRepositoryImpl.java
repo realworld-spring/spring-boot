@@ -24,11 +24,11 @@ public class CommentQueryRepositoryImpl implements CommentQueryRepository {
                 comment
             ))
             .from(comment)
-            .where(isArticleComment(slug))
+            .where(eqArticleSlug(slug))
             .fetch();
     }
 
-    private BooleanExpression isArticleComment(String slug) {
+    private BooleanExpression eqArticleSlug(String slug) {
         final Long articleId = factory.select(article.id)
             .from(article)
             .where(article.slug.eq(slug))
